@@ -1,49 +1,151 @@
 /* Core features and management - eg finds and tags all slide elements */
 function core() {
 
+    var my = function () {};
     var state = {};
+    my.displays = {
+        slideDeck: function () {
+            var slideWall = document.getElementById("slideWall");
+            my.classed(slideWall, "slide-backdrop", true);
+
+            var slideHolder = document.getElementById("slideHolder");
+            my.classed(slideHolder, "slide-holder", true);
+
+
+
+            my.classed(state.previousNode(), "slide-highlight", false);
+            my.classed(state.previousNode(), "muted", false);
+            my.classed(state.currentNode(), "slide-highlight", true);
+            my.classed(state.currentNode(), "muted", true);
+
+            var modal = document.getElementById("modal");
+            my.classed(modal, "slide-box", true);
+            my.classed(modal, "zoom", true);
+            my.classed(modal, "not-displayed", false);
+            modal.innerHTML = state.currentNode().innerHTML;
+        },
+        walkthrough: function () {
+            var slideWall = document.getElementById("slideWall");
+            my.classed(slideWall, "slide-backdrop", false);
+
+            var slideHolder = document.getElementById("slideHolder");
+            my.classed(slideHolder, "slide-holder", false);
+
+            var modal = document.getElementById("modal");
+            my.classed(modal, "slide-box", false);
+            my.classed(modal, "not-displayed", true);
+
+            my.classed(state.previousNode(), "slide-highlight", false);
+            my.classed(state.previousNode(), "muted", false);
+            my.classed(state.currentNode(), "slide-highlight", true);
+            my.classed(state.currentNode(), "muted", false);
+        },
+        doc: function () {
+            var slideWall = document.getElementById("slideWall");
+            my.classed(slideWall, "slide-backdrop", false);
+
+            var slideHolder = document.getElementById("slideHolder");
+            my.classed(slideHolder, "slide-holder", false);
+
+            var modal = document.getElementById("modal");
+            my.classed(modal, "slide-box", false);
+            my.classed(modal, "not-displayed", true);
+
+            my.classed(state.previousNode(), "slide-highlight", false);
+            my.classed(state.currentNode(), "slide-highlight", false);
+        }
+    };
+
 
     //the currently selected section
-    state.current = 0;
+    state.currentNum = 0;
     state.mode = "doc"; //or deck
     state.numSlides = 0;
+    state.previousNum = function () {
+        if (state.currentNum <= 0) {
+            return state.currentNum;
+        } else {
+            return (state.currentNum - 1);
+        }
+    };
+
+    state.highlightFunc = my.displays.doc;
+
     state.isDeck = function () {
         return (state.mode === "deck");
     }
+    state.isDoc = function () {
+        return (state.mode === "doc");
+    }
+    state.isWalkthrough = function () {
+        return (state.mode === "walkthrough");
+    }
 
     state.slideName = function () {
-        return "slide-" + state.current;
+        return "slide-" + state.currentNum;
     };
 
+    state.previousSlideName = state.slideName(); //initially
+
     state.next = function () {
-        if (state.current >= state.numSlides) {
+        if (state.currentNum >= state.numSlides) {
             return state.slideName();
         }
-
-        state.current++;
+        state.previousSlideName = state.slideName();
+        state.currentNum++;
 
         return state.slideName();
     };
 
     state.previous = function () {
-        if (state.current <= 0) {
+        if (state.currentNum <= 0) {
             return state.slideName();
         }
-
-        state.current--;
+        state.previousSlideName = state.slideName();
+        state.currentNum--;
 
         return state.slideName();
     };
 
+    state.currentNode = function () {
+        return document.getElementById(state.slideName());
+    };
+
+    state.previousNode = function () {
+        return document.getElementById(state.previousSlideName);
+    };
+
+    state.modeNum = 0;
     state.toggleMode = function () {
-        state.mode = (state.mode == "doc") ? "deck" : "doc";
+        var modes = ["doc", "deck", "walkthrough"];
+        //cycle through the possible modes
+        if (state.modeNum === (modes.length - 1)) {
+            state.modeNum = 0;
+        } else {
+            state.modeNum++;
+        }
+        state.mode = modes[state.modeNum];
+
+        //change the highlight function
+        switch (state.mode) {
+            case "doc":
+                state.highlightFunc = my.displays.doc;
+                break;
+
+            case "deck":
+                state.highlightFunc = my.displays.slideDeck;
+                break;
+
+            case "walkthrough":
+                state.highlightFunc = my.displays.walkthrough;
+                break;
+        }
     }
 
     var toplevel = [];
 
 
 
-    var my = function () {};
 
     my.classList = function (element) {
         if (!element) return [];
@@ -110,28 +212,21 @@ function core() {
     };
 
     my.wrapDiv = function (element, id, clazz) {
-        //        var parent = element.parentNode;
-        //        var wrapper = document.createElement("div");
-        //        wrapper.setAttribute("class", clazz);
-        //        wrapper.setAttribute("id", id);
-        //        wrapper.appendChild(element);
-        //        parent.appendChild(wrapper);
         var theHtml = element.innerHTML;
         var newHtml = '<div class="' + clazz + '" id="' + id + '" >' + theHtml + '</div>';
         element.innerHTML = newHtml;
-        //item.setAttribute("data-section-num", i);
-
     }
-
-
 
     my.number = function (nodeList) {
         //        my.tag(nodeList, "data-section-num", function (i) {
         //            return i;
         //        });
-        state.numSlides = nodeList.length;
+        state.numSlides = nodeList.length - 1;
 
-        for (var i = 0; i < state.numSlides; ++i) {
+        //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
+        // ... perhaps wrap in reverse order?
+        //        for (var i = 0; i < state.numSlides; ++i) {
+        for (var i = (state.numSlides); i >= 0; i--) {
             var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
             my.wrapDiv(item, "slide-" + i, "slide");
             var childSlides = my.selects("section[data-slide]", item);
@@ -142,13 +237,14 @@ function core() {
 
     my.toggleMode = function () {
         state.toggleMode();
-        var slideWall = document.getElementById("slideWall");
-        my.classed(slideWall, "slide-backdrop", state.isDeck());
-
-        var slideHolder = document.getElementById("slideHolder");
-        my.classed(slideHolder, "slide-holder", state.isDeck());
-
+        //        var slideWall = document.getElementById("slideWall");
+        //        my.classed(slideWall, "slide-backdrop", state.isDeck());
+        //
+        //        var slideHolder = document.getElementById("slideHolder");
+        //        my.classed(slideHolder, "slide-holder", state.isDeck());
     }
+
+
 
 
     my.key = function () {
@@ -165,44 +261,47 @@ function core() {
             switch (kc) {
                 case 37:
                     console.log("Previous " + evt.keyCode);
-                    var prevEl = document.getElementById(state.slideName());
-                    var modal = document.getElementById("modal");
-                    my.classed(prevEl, "slide-highlight", false);
                     window.location.hash = state.previous(); //side effect on state
-                    if (state.isDeck()) {
-                        my.classed(document.getElementById(state.slideName()), "slide-highlight", true);
-                        modal.innerHTML = document.getElementById(state.slideName()).innerHTML;
+                    console.log("slide=" + state.slideName() + " state.mode is " + state.mode + "  state.modeNum=" + state.modeNum);
+                    console.log("state.highlight= " + state.highlightFunc);
+                    if (state.modeNum) {
+                        state.highlightFunc();
                     }
                     break;
                 case 39:
                     console.log("Next " + evt.keyCode);
-                    var prevEl = document.getElementById(state.slideName());
-                    var modal = document.getElementById("modal");
-                    my.classed(prevEl, "slide-highlight", false);
                     window.location.hash = state.next(); // side effect on state
-                    if (state.isDeck()) {
-                        my.classed(document.getElementById(state.slideName()), "slide-highlight", true);
-                        modal.innerHTML = document.getElementById(state.slideName()).innerHTML;
+                    console.log("slide=" + state.slideName() + " state.mode is " + state.mode + "  state.modeNum=" + state.modeNum);
+                    console.log("state.highlight= " + state.highlightFunc);
+                    if (state.modeNum) {
+                        state.highlightFunc();
                     }
                     break;
                 case 83:
                     if (evt.shiftKey) {
                         console.log("toggle mode: " + state.mode);
 
-                        my.toggleMode();
-                        var currEl = document.getElementById(state.slideName());
-                        var modal = document.getElementById("modal");
-                        if (state.isDeck()) {
-                            window.location.hash = state.slideName();
-                            my.classed(currEl, "slide-highlight", true);
-                            my.classed(modal, "slide-box", true);
-                            modal.innerHTML = currEl.innerHTML;
-                            my.classed(modal, "not-displayed", false);
-                        } else {
-                            my.classed(currEl, "slide-highlight", false);
-                            my.classed(modal, "slide-box", false);
-                            my.classed(modal, "not-displayed", true);
-                        }
+                        my.toggleMode(); //side effect on state.mode
+
+
+                        console.log("slide=" + state.slideName() + " state.mode is " + state.mode + "  state.modeNum=" + state.modeNum);
+                        console.log("state.highlight= " + state.highlightFunc);
+
+
+                        state.highlightFunc();
+
+
+                        /*   if (state.isDeck()) {
+       window.location.hash = state.slideName();
+       my.classed(currEl, "slide-highlight", true);
+       my.classed(modal, "slide-box", true);
+       modal.innerHTML = currEl.innerHTML;
+       my.classed(modal, "not-displayed", false);
+   } else {
+       my.classed(currEl, "slide-highlight", false);
+       my.classed(modal, "slide-box", false);
+       my.classed(modal, "not-displayed", true);
+   }*/
                     }
             };
 
