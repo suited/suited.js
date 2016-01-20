@@ -5,17 +5,32 @@ function core() {
 
     //the currently selected section
     state.current = 0;
-
-    state.next = function () {
-        state.current++;
+    state.mode = "doc" //or deck
+    state.numSlides = 0;
+    
+    state.slideName = function () {
         return "slide-" + state.current;
+    }
+    
+    state.next = function () {
+        if (state.current >= state.numSlides) return state.slideName();
+        
+        state.current++;
+        
+        return state.slideName();
     }
 
     state.previous = function () {
+        if (state.current <= 0) return state.slideName();
+
         state.current--;
-        return "slide-" + state.current;
+        
+        return state.slideName();
     }
 
+    state.toggleMode = function () {
+        state.mode = (state.mode == "doc") ? "deck" : "doc";
+    }
 
     var toplevel = [];
 
@@ -56,10 +71,9 @@ function core() {
         //        my.tag(nodeList, "data-section-num", function (i) {
         //            return i;
         //        });
+        state.numSlides = nodeList.length;
 
-
-
-        for (var i = 0; i < nodeList.length; ++i) {
+        for (var i = 0; i < state.numSlides; ++i) {
             var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
             my.wrapDiv(item, "slide-" + i, "slide");
             var childSlides = my.selects("section[data-slide]", item);
@@ -90,7 +104,11 @@ function core() {
                     console.log("Next " + evt.keyCode);
                     window.location.hash = state.next();
                     break;
-
+                case 83:
+                    if (evt.shiftKey) {
+                        console.log("toggle mode: " + state.mode);
+                        state.toggleMode();
+                    }
             };
 
         };

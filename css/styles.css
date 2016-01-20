@@ -1,0 +1,21 @@
+.deck.slide-backdrop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    z-index: 1;
+    opacity: 0.5;
+}
+
+.slide-holder {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    z-index: 2;
+    padding: 30px 15px;
+}
