@@ -10,7 +10,7 @@
         .invisible {
             display: hidden;
         }
-        .slide-backdrop {
+                .slide-backdrop {
             position: fixed;
             top: 0px;
             left: 0px;
@@ -49,4 +49,23 @@
         .slide-box.scrollable {
             height: 80%;
             overflow-y: scroll;
+        }
+        /* zoom */
+        
+        .zoom {
+            /*            zoom: 2;*/
+            /* IE */
+            -moz-transform: scale(2);
+            /* Firefox */
+            -moz-transform-origin: 0 0;
+            -o-transform: scale(2);
+            /* Opera */
+            -o-transform-origin: 0 0;
+            -webkit-transform: scale(2);
+            /* Safari And Chrome */
+            -webkit-transform-origin: 0 0;
+            transform: scale(2);
+            /* Standard Property */
+            transform-origin: 0 0;
+            /* Standard Property */
         }
