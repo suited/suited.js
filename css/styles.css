@@ -24,14 +24,17 @@
             position: fixed;
             top: 0px;
             left: 0px;
-            height: 100%;
-            width: 100%;
+            height: 80%;
+            width: 80%;
             background: transparent;
             z-index: 2;
             padding: 30px 15px;
         }
         .slide-highlight {
             background: #ff0;
+        }
+        .slide-highlight.muted {
+            background: #20f0fd;
         }
         .slide-box {
             margin: 0 auto;
