@@ -20,6 +20,7 @@ function core() {
 
             var modal = document.getElementById("modal");
             my.classed(modal, "slide-box", true);
+            my.classed(modal, "zoom", true);
             my.classed(modal, "not-displayed", false);
             modal.innerHTML = state.currentNode().innerHTML;
         },
