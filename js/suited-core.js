@@ -166,19 +166,23 @@ function core() {
                 case 37:
                     console.log("Previous " + evt.keyCode);
                     var prevEl = document.getElementById(state.slideName());
-                    my.classed(prevEl, "slide-box", false);
+                    var modal = document.getElementById("modal");
+                    my.classed(prevEl, "slide-highlight", false);
                     window.location.hash = state.previous(); //side effect on state
                     if (state.isDeck()) {
-                        my.classed(document.getElementById(state.slideName()), "slide-box", true);
+                        my.classed(document.getElementById(state.slideName()), "slide-highlight", true);
+                        modal.innerHTML = document.getElementById(state.slideName()).innerHTML;
                     }
                     break;
                 case 39:
                     console.log("Next " + evt.keyCode);
                     var prevEl = document.getElementById(state.slideName());
-                    my.classed(prevEl, "slide-box", false);
+                    var modal = document.getElementById("modal");
+                    my.classed(prevEl, "slide-highlight", false);
                     window.location.hash = state.next(); // side effect on state
                     if (state.isDeck()) {
-                        my.classed(document.getElementById(state.slideName()), "slide-box", true);
+                        my.classed(document.getElementById(state.slideName()), "slide-highlight", true);
+                        modal.innerHTML = document.getElementById(state.slideName()).innerHTML;
                     }
                     break;
                 case 83:
@@ -187,11 +191,17 @@ function core() {
 
                         my.toggleMode();
                         var currEl = document.getElementById(state.slideName());
+                        var modal = document.getElementById("modal");
                         if (state.isDeck()) {
                             window.location.hash = state.slideName();
-                            my.classed(currEl, "slide-box", true);
+                            my.classed(currEl, "slide-highlight", true);
+                            my.classed(modal, "slide-box", true);
+                            modal.innerHTML = currEl.innerHTML;
+                            my.classed(modal, "not-displayed", false);
                         } else {
-                            my.classed(currEl, "slide-box", false);
+                            my.classed(currEl, "slide-highlight", false);
+                            my.classed(modal, "slide-box", false);
+                            my.classed(modal, "not-displayed", true);
                         }
                     }
             };
@@ -213,8 +223,15 @@ function core() {
 
         var slideHolder = document.createElement("div");
         slideHolder.setAttribute("id", "slideHolder"); //TODO name is a magic sprinkle
-        b.appendChild(slideHolder);
 
+        var modal = document.createElement("div");
+        modal.setAttribute("id", "modal"); //TODO name is a magic sprinkle
+        my.classed(modal, "not-displayed", true);
+
+        slideHolder.appendChild(modal)
+
+
+        b.appendChild(slideHolder);
 
     }
 
