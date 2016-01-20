@@ -5,28 +5,35 @@ function core() {
 
     //the currently selected section
     state.current = 0;
-    state.mode = "doc" //or deck
+    state.mode = "doc"; //or deck
     state.numSlides = 0;
-    
+    state.isDeck = function () {
+        return (state.mode === "deck");
+    }
+
     state.slideName = function () {
         return "slide-" + state.current;
-    }
-    
+    };
+
     state.next = function () {
-        if (state.current >= state.numSlides) return state.slideName();
-        
+        if (state.current >= state.numSlides) {
+            return state.slideName();
+        }
+
         state.current++;
-        
+
         return state.slideName();
-    }
+    };
 
     state.previous = function () {
-        if (state.current <= 0) return state.slideName();
+        if (state.current <= 0) {
+            return state.slideName();
+        }
 
         state.current--;
-        
+
         return state.slideName();
-    }
+    };
 
     state.toggleMode = function () {
         state.mode = (state.mode == "doc") ? "deck" : "doc";
@@ -37,6 +44,52 @@ function core() {
 
 
     var my = function () {};
+
+    my.classList = function (element) {
+        var classes = element.getAttribute("class");
+        if (!classes) return [];
+        return classes.split(" "); //Array of Strings
+    }
+
+    my.toggleClass = function (element, clazz1, clazz2) {
+        var newclasses = [];
+        var oldclasses = Array.prototype.slice.call(my.classList(element));
+        for (var i = 0; i < olclasses.lenght; i++) {
+            if (oldclasses[i] == clazz1) {
+                newclasses[i] = clazz2;
+            } else if (oldclasses[i] == clazz2) {
+                newclasses[i] = clazz1;
+            } else {
+                newclasses[i] = oldclasses[i];
+            }
+        }
+        element.setAttribute("class", newclasses.join(" "));
+    };
+
+    my.classed = function (element, clazzname, addit) {
+        var oldclasses = Array.prototype.slice.call(my.classList(element));
+        var add = false; // which means remove
+        //        if(typeof predicate === "function") {
+        //            add = predicate();
+        //        }
+        //        else {
+        //        }
+
+        var index = oldclasses.indexOf(clazzname);
+        if (index >= 0) {
+            if (!addit) {
+                oldclasses.splice(index, 1);
+            }
+
+        } else {
+            if (addit) {
+                oldclasses.push(clazzname)
+            }
+        };
+
+        element.setAttribute("class", oldclasses.join(" "));
+
+    };
 
     my.selects = function (selection, parent) {
         if (!parent) parent = document;
@@ -82,7 +135,12 @@ function core() {
         }
     };
 
-    my.top
+    my.toggleMode = function () {
+        state.toggleMode();
+        var slideWall = document.getElementById("slideWall");
+        my.classed(slideWall, "slide-backdrop", state.isDeck());
+    }
+
 
     my.key = function () {
         /*
@@ -107,7 +165,8 @@ function core() {
                 case 83:
                     if (evt.shiftKey) {
                         console.log("toggle mode: " + state.mode);
-                        state.toggleMode();
+
+                        my.toggleMode();
                     }
             };
 
@@ -119,6 +178,12 @@ function core() {
     my.init = function () {
         my.number(my.selects("section[data-slide]"));
         my.key();
+
+        // add placeholder for Modal backdrop
+        var b = document.body;
+        var slideWall = document.createElement("div");
+        slideWall.setAttribute("id", "slideWall"); //TODO name is a magic sprinkle
+        b.appendChild(slideWall);
     }
 
     return my;
