@@ -46,12 +46,14 @@ function core() {
     var my = function () {};
 
     my.classList = function (element) {
+        if (!element) return [];
         var classes = element.getAttribute("class");
         if (!classes) return [];
         return classes.split(" "); //Array of Strings
     }
 
     my.toggleClass = function (element, clazz1, clazz2) {
+        if (!element) return;
         var newclasses = [];
         var oldclasses = Array.prototype.slice.call(my.classList(element));
         for (var i = 0; i < olclasses.lenght; i++) {
@@ -67,6 +69,7 @@ function core() {
     };
 
     my.classed = function (element, clazzname, addit) {
+        if (!element) return;
         var oldclasses = Array.prototype.slice.call(my.classList(element));
         var add = false; // which means remove
         //        if(typeof predicate === "function") {
@@ -120,6 +123,8 @@ function core() {
 
     }
 
+
+
     my.number = function (nodeList) {
         //        my.tag(nodeList, "data-section-num", function (i) {
         //            return i;
@@ -139,6 +144,10 @@ function core() {
         state.toggleMode();
         var slideWall = document.getElementById("slideWall");
         my.classed(slideWall, "slide-backdrop", state.isDeck());
+
+        var slideHolder = document.getElementById("slideHolder");
+        my.classed(slideHolder, "slide-holder", state.isDeck());
+
     }
 
 
@@ -156,17 +165,34 @@ function core() {
             switch (kc) {
                 case 37:
                     console.log("Previous " + evt.keyCode);
-                    window.location.hash = state.previous();
+                    var prevEl = document.getElementById(state.slideName());
+                    my.classed(prevEl, "slide-box", false);
+                    window.location.hash = state.previous(); //side effect on state
+                    if (state.isDeck()) {
+                        my.classed(document.getElementById(state.slideName()), "slide-box", true);
+                    }
                     break;
                 case 39:
                     console.log("Next " + evt.keyCode);
-                    window.location.hash = state.next();
+                    var prevEl = document.getElementById(state.slideName());
+                    my.classed(prevEl, "slide-box", false);
+                    window.location.hash = state.next(); // side effect on state
+                    if (state.isDeck()) {
+                        my.classed(document.getElementById(state.slideName()), "slide-box", true);
+                    }
                     break;
                 case 83:
                     if (evt.shiftKey) {
                         console.log("toggle mode: " + state.mode);
 
                         my.toggleMode();
+                        var currEl = document.getElementById(state.slideName());
+                        if (state.isDeck()) {
+                            window.location.hash = state.slideName();
+                            my.classed(currEl, "slide-box", true);
+                        } else {
+                            my.classed(currEl, "slide-box", false);
+                        }
                     }
             };
 
@@ -184,6 +210,12 @@ function core() {
         var slideWall = document.createElement("div");
         slideWall.setAttribute("id", "slideWall"); //TODO name is a magic sprinkle
         b.appendChild(slideWall);
+
+        var slideHolder = document.createElement("div");
+        slideHolder.setAttribute("id", "slideHolder"); //TODO name is a magic sprinkle
+        b.appendChild(slideHolder);
+
+
     }
 
     return my;
