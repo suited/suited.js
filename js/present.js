@@ -12,11 +12,7 @@ up = 38
 right = 39
 down = 40
 */
-
-
-var pageElems = document.getElementsByTagName('section')
-
-document.onkeyup = function(evt) {
+document.onkeyup = function (evt) {
     var kc = evt.keyCode;
     if (kc == 37) {
         console.log("Previous " + evt.keyCode);
