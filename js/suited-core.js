@@ -11,11 +11,17 @@ function core() {
             var slideHolder = document.getElementById("slideHolder");
             my.classed(slideHolder, "slide-holder", true);
 
+
+
+            my.classed(state.previousNode(), "slide-highlight", false);
+            my.classed(state.previousNode(), "muted", false);
+            my.classed(state.currentNode(), "slide-highlight", true);
+            my.classed(state.currentNode(), "muted", true);
+
             var modal = document.getElementById("modal");
             my.classed(modal, "slide-box", true);
             my.classed(modal, "not-displayed", false);
             modal.innerHTML = state.currentNode().innerHTML;
-
         },
         walkthrough: function () {
             var slideWall = document.getElementById("slideWall");
@@ -29,7 +35,9 @@ function core() {
             my.classed(modal, "not-displayed", true);
 
             my.classed(state.previousNode(), "slide-highlight", false);
+            my.classed(state.previousNode(), "muted", false);
             my.classed(state.currentNode(), "slide-highlight", true);
+            my.classed(state.currentNode(), "muted", false);
         },
         doc: function () {
             var slideWall = document.getElementById("slideWall");
