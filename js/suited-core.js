@@ -8,7 +8,7 @@ function core() {
         mode: {
             0: "doc",
             1: "deck",
-            2: "walkthough"
+            2: "walkthrough"
         }
 
     }
@@ -305,6 +305,8 @@ function core() {
         slideHolder.appendChild(modal);
 
         b.appendChild(slideHolder);
+        
+        my.hashChanged(window.location);
         
         window.addEventListener("hashchange", function (e) {
             my.hashChanged(window.location);
