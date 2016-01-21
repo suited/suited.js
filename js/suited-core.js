@@ -8,7 +8,7 @@ function core() {
         mode: {
             0: "doc",
             1: "deck",
-            2: "walkthough"
+            2: "walkthrough"
         }
 
     }
@@ -107,16 +107,13 @@ function core() {
         return document.getElementById(state.previousSlideName);
     };
 
-    state.modeNum = 0;
     state.toggleMode = function () {
         var modes = [k.mode[0], k.mode[1], k.mode[2]];
-        //        //cycle through the possible modes
-        if (state.modeNum === (modes.length - 1)) {
-            state.modeNum = 0;
-        } else {
-            state.modeNum++;
-        }
-        state.mode = modes[state.modeNum];
+
+        var modeNum = modes.indexOf(state.mode) + 1;
+        if (modeNum >= modes.length) {modeNum = 0;}
+        
+        state.mode = modes[modeNum];
 
         //change the highlight function
         switch (state.mode) {
@@ -143,6 +140,7 @@ function core() {
 
     my.toggleClass = function (element, clazz1, clazz2) {
         if (!element) return;
+        
         var oldclasses = Array.prototype.slice.call(my.classList(element));
 
         var newclasses = oldclasses.map(function (i) {
@@ -208,55 +206,82 @@ function core() {
 
     my.toggleMode = function () {
         state.toggleMode();
+        
+        //window.location =window.location.origin + window.location.pathname + "?mode=" + state.mode + "#" + state.slideName();
+        window.history.pushState("",window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode + "#" + state.slideName());
+        console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
+        
+        state.highlightFunc();
     }
 
+    my.parseParams = function (searchStr) {
+        
+        if (!searchStr || searchStr.charAt(0) != "?") return { mode: "doc"};
+        
+        var paramList = searchStr.substring(1); //Remove the ?
+        var params = paramList.split("&");
+        
+        var paramMap = {};
+        for (var i=0; i < params.length; i++) {
+            var kv = params[i].split("=");
+            paramMap[kv[0]] = kv[1];
+        }
+        
+        return paramMap;
+    } 
+
+    my.parseSlideNum = function(hash) {
+        if (!hash || hash.charAt(0) != "#") return 0;
+        
+        return hash.substring(hash.indexOf("-") + 1);
+        
+    }
+    
+    my.hashChanged = function(location) {
+         console.log("Location changed!" + location); 
+
+        var paramMap = my.parseParams(location.search);
+        
+        
+        state.mode = paramMap.mode;
+        
+        state.currentNum = my.parseSlideNum(location.hash);
+        
+        
+        state.highlightFunc();  
+    };
+    
     my.key = function () {
         /*
-           keycodes are:
-
-           left = 37
-           up = 38
-            right = 39
-           down = 40
+           keycodes are: left = 37, up = 38, right = 39, down = 40
          */
+        
         document.onkeyup = function (evt) {
             var kc = evt.keyCode;
             switch (kc) {
                 case 37:
                     console.log("Previous " + evt.keyCode);
                     window.location.hash = state.previous(); //side effect on state
-                    console.log("slide=" + state.slideName() + " state.mode is " + state.mode + "  state.modeNum=" + state.modeNum);
-                    console.log("state.highlight= " + state.highlightFunc);
-                    if (state.modeNum) {
-                        state.highlightFunc();
-                    }
+                    console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
+
                     break;
                 case 39:
                     console.log("Next " + evt.keyCode);
                     window.location.hash = state.next(); // side effect on state
-                    console.log("slide=" + state.slideName() + " state.mode is " + state.mode + "  state.modeNum=" + state.modeNum);
-                    console.log("state.highlight= " + state.highlightFunc);
-                    if (state.modeNum) {
-                        state.highlightFunc();
-                    }
+                    console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
+
                     break;
                 case 83:
                     if (evt.shiftKey) {
-                        console.log("toggle mode: " + state.mode);
-
                         my.toggleMode(); //side effect on state.mode
-
-
-                        console.log("slide=" + state.slideName() + " state.mode is " + state.mode + "  state.modeNum=" + state.modeNum);
-                        console.log("state.highlight= " + state.highlightFunc);
-
-
-                        state.highlightFunc();
+                        console.log("current mode: " + state.mode);                        
                     }
             };
 
         };
     };
+    
+    
 
 
 
@@ -277,10 +302,15 @@ function core() {
         modal.setAttribute("id", k.modal);
         my.classed(modal, "not-displayed", true);
 
-        slideHolder.appendChild(modal)
-
+        slideHolder.appendChild(modal);
 
         b.appendChild(slideHolder);
+        
+        my.hashChanged(window.location);
+        
+        window.addEventListener("hashchange", function (e) {
+            my.hashChanged(window.location);
+        });
 
     };
 
