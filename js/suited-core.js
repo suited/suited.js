@@ -285,6 +285,14 @@ function core() {
                         my.toggleMode(); //side effect on state.mode
                         console.log("current mode: " + state.mode);                        
                     }
+                    break;
+                case 84: //t
+                    if (evt.shiftKey) {
+                        window.location.hash = "";
+                        state.setMode(k.mode[0]);
+                        console.log("current mode: " + state.mode);                        
+                    }
+                    break;                    
             };
 
         };
