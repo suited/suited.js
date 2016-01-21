@@ -1,15 +1,29 @@
 /* Core features and management - eg finds and tags all slide elements */
 function core() {
-    var constants = {}
+    var konstants = {
+        slideAttr: "data-slide",
+        modalBackdrop: "slideWall",
+        slideHolder: "slideHolder",
+        modal: "modal",
+        mode: {
+            0: "doc",
+            1: "deck",
+            2: "walkthough"
+        }
+
+    }
+    var k = konstants;
     var config = {};
+    var c = config;
+
     var my = function () {};
     var state = {};
 
-    
+
     my.showSlide = function () {
         var isDeck = state.isDeck();
         var isWalk = state.isWalkthrough();
-        
+
         var slideWall = document.getElementById("slideWall");
         my.classed(slideWall, "slide-backdrop", isDeck);
 
@@ -20,7 +34,7 @@ function core() {
         my.classed(state.previousNode(), "muted", false);
         my.classed(state.currentNode(), "slide-highlight", isDeck || isWalk);
         my.classed(state.currentNode(), "muted", isDeck || isWalk);
-        
+
         var modal = document.getElementById("modal");
         my.classed(modal, "slide-box", isDeck);
         my.classed(modal, "zoom", isDeck);
@@ -37,7 +51,7 @@ function core() {
 
     //the currently selected section
     state.currentNum = 0;
-    state.mode = "doc"; //or deck
+    state.mode = k.mode[0]; //or deck
     state.numSlides = 0;
     state.previousNum = function () {
         if (state.currentNum <= 0) {
@@ -50,13 +64,13 @@ function core() {
     state.highlightFunc = my.displays.doc;
 
     state.isDeck = function () {
-        return (state.mode === "deck");
+        return (state.mode === k.mode[1]);
     }
     state.isDoc = function () {
-        return (state.mode === "doc");
+        return (state.mode === k.mode[0]);
     }
     state.isWalkthrough = function () {
-        return (state.mode === "walkthrough");
+        return (state.mode === k.mode[2]);
     }
 
     state.slideName = function () {
@@ -95,8 +109,8 @@ function core() {
 
     state.modeNum = 0;
     state.toggleMode = function () {
-        var modes = ["doc", "deck", "walkthrough"];
-//        //cycle through the possible modes
+        var modes = [k.mode[0], k.mode[1], k.mode[2]];
+        //        //cycle through the possible modes
         if (state.modeNum === (modes.length - 1)) {
             state.modeNum = 0;
         } else {
@@ -106,15 +120,15 @@ function core() {
 
         //change the highlight function
         switch (state.mode) {
-            case "doc":
+            case k.mode[0]:
                 state.highlightFunc = my.displays.doc;
                 break;
 
-            case "deck":
+            case k.mode[1]:
                 state.highlightFunc = my.displays.slideDeck;
                 break;
 
-            case "walkthrough":
+            case k.mode[2]:
                 state.highlightFunc = my.displays.walkthrough;
                 break;
         }
@@ -247,20 +261,20 @@ function core() {
 
 
     my.init = function () {
-        my.number(my.selects("section[data-slide]"));
+        my.number(my.selects("section[" + k.slideAttr + "]"));
         my.key();
 
         // add placeholder for Modal backdrop
         var b = document.body;
         var slideWall = document.createElement("div");
-        slideWall.setAttribute("id", "slideWall"); //TODO name is a magic sprinkle
+        slideWall.setAttribute("id", k.modalBackdrop);
         b.appendChild(slideWall);
 
         var slideHolder = document.createElement("div");
-        slideHolder.setAttribute("id", "slideHolder"); //TODO name is a magic sprinkle
+        slideHolder.setAttribute("id", k.slideHolder);
 
         var modal = document.createElement("div");
-        modal.setAttribute("id", "modal"); //TODO name is a magic sprinkle
+        modal.setAttribute("id", k.modal);
         my.classed(modal, "not-displayed", true);
 
         slideHolder.appendChild(modal)
