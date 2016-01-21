@@ -11,5 +11,12 @@ The slides will be treated as individual views that fill the screen.
 Initial support for HTML in slides, with other language support such as markdown or reStructuredText
 
 
+Decisions:
+
+In Deck mode -> all slides included nested are flattened in the nav order eg left and right only with nested showing after their parents.
+
+
+
+
 
 

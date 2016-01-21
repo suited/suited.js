@@ -1,8 +1,10 @@
 /* Core features and management - eg finds and tags all slide elements */
 function core() {
-
+    var constants = {}
+    var config = {};
     var my = function () {};
     var state = {};
+
     my.displays = {
         slideDeck: function () {
             var slideWall = document.getElementById("slideWall");
@@ -291,17 +293,6 @@ function core() {
                         state.highlightFunc();
 
 
-                        /*   if (state.isDeck()) {
-       window.location.hash = state.slideName();
-       my.classed(currEl, "slide-highlight", true);
-       my.classed(modal, "slide-box", true);
-       modal.innerHTML = currEl.innerHTML;
-       my.classed(modal, "not-displayed", false);
-   } else {
-       my.classed(currEl, "slide-highlight", false);
-       my.classed(modal, "slide-box", false);
-       my.classed(modal, "not-displayed", true);
-   }*/
                     }
             };
 

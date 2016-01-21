@@ -10,7 +10,7 @@
         .invisible {
             display: hidden;
         }
-        .slide-backdrop {
+                .slide-backdrop {
             position: fixed;
             top: 0px;
             left: 0px;
