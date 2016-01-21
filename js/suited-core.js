@@ -5,12 +5,8 @@ function core() {
         modalBackdrop: "slideWall",
         slideHolder: "slideHolder",
         modal: "modal",
-        mode: {
-            0: "doc",
-            1: "deck",
-            2: "walkthrough"
-        }
-
+        mode: ["doc","deck","walkthrough"]
+        
     }
     var k = konstants;
     var config = {};
@@ -18,41 +14,11 @@ function core() {
 
     var my = function () {};
     var state = {};
-
-
-    my.showSlide = function () {
-        var isDeck = state.isDeck();
-        var isWalk = state.isWalkthrough();
-
-        var slideWall = document.getElementById("slideWall");
-        my.classed(slideWall, "slide-backdrop", isDeck);
-
-        var slideHolder = document.getElementById("slideHolder");
-        my.classed(slideHolder, "slide-holder", isDeck);
-
-        my.classed(state.previousNode(), "slide-highlight", false);
-        my.classed(state.previousNode(), "muted", false);
-        my.classed(state.currentNode(), "slide-highlight", isDeck || isWalk);
-        my.classed(state.currentNode(), "muted", isDeck || isWalk);
-
-        var modal = document.getElementById("modal");
-        my.classed(modal, "slide-box", isDeck);
-        my.classed(modal, "zoom", isDeck);
-        my.classed(modal, "not-displayed", !isDeck);
-        modal.innerHTML = state.currentNode().innerHTML;
-    }
-
-    my.displays = {
-        slideDeck: my.showSlide,
-        walkthrough: my.showSlide,
-        doc: my.showSlide
-    };
-
-
-    //the currently selected section
-    state.currentNum = 0;
+    state.numSlides = 0;          
+    state.highlightFunc = function() {};
+    state.currentNum = 0; //the currently selected section
     state.mode = k.mode[0]; //or deck
-    state.numSlides = 0;
+
     state.previousNum = function () {
         if (state.currentNum <= 0) {
             return state.currentNum;
@@ -60,8 +26,6 @@ function core() {
             return (state.currentNum - 1);
         }
     };
-
-    state.highlightFunc = my.displays.doc;
 
     state.isDeck = function () {
         return (state.mode === k.mode[1]);
@@ -107,13 +71,8 @@ function core() {
         return document.getElementById(state.previousSlideName);
     };
 
-    state.toggleMode = function () {
-        var modes = [k.mode[0], k.mode[1], k.mode[2]];
-
-        var modeNum = modes.indexOf(state.mode) + 1;
-        if (modeNum >= modes.length) {modeNum = 0;}
-        
-        state.mode = modes[modeNum];
+    state.setMode = function(mode) {
+        state.mode = mode;
 
         //change the highlight function
         switch (state.mode) {
@@ -128,9 +87,47 @@ function core() {
             case k.mode[2]:
                 state.highlightFunc = my.displays.walkthrough;
                 break;
-        }
+        }        
     };
+    
+    state.toggleMode = function () {
+        var modes = [k.mode[0], k.mode[1], k.mode[2]];
 
+        var modeNum = modes.indexOf(state.mode) + 1;
+        if (modeNum >= modes.length) {modeNum = 0;}
+        
+        state.setMode(modes[modeNum]);
+    };
+    
+
+    my.showSlide = function () {
+        var isDeck = state.isDeck();
+        var isWalk = state.isWalkthrough();
+
+        var slideWall = document.getElementById("slideWall");
+        my.classed(slideWall, "slide-backdrop", isDeck);
+
+        var slideHolder = document.getElementById("slideHolder");
+        my.classed(slideHolder, "slide-holder", isDeck);
+
+        my.classed(state.previousNode(), "slide-highlight", false);
+        my.classed(state.previousNode(), "muted", false);
+        my.classed(state.currentNode(), "slide-highlight", isDeck || isWalk);
+        my.classed(state.currentNode(), "muted", isDeck || isWalk);
+
+        var modal = document.getElementById("modal");
+        my.classed(modal, "slide-box", isDeck);
+        my.classed(modal, "zoom", isDeck);
+        my.classed(modal, "not-displayed", !isDeck);
+        modal.innerHTML = state.currentNode().innerHTML;
+    }
+
+    my.displays = {
+        slideDeck: my.showSlide,
+        walkthrough: my.showSlide,
+        doc: my.showSlide
+    };
+        
     my.classList = function (element) {
         if (!element) return [];
         var classes = element.getAttribute("class");
@@ -242,15 +239,21 @@ function core() {
 
         var paramMap = my.parseParams(location.search);
         
+        state.setMode(paramMap.mode);
         
-        state.mode = paramMap.mode;
-        
-        state.currentNum = my.parseSlideNum(location.hash);
-        
+        var slideNum = my.parseSlideNum(location.hash);
+        if (state.currentNum != slideNum) {
+            state.previousSlideName = state.slideName();
+            state.currentNum = slideNum;        
+        }
         
         state.highlightFunc();  
     };
     
+    
+    /**
+     * Handle the shortcuts and arrow navigation
+     */
     my.key = function () {
         /*
            keycodes are: left = 37, up = 38, right = 39, down = 40
@@ -259,19 +262,25 @@ function core() {
         document.onkeyup = function (evt) {
             var kc = evt.keyCode;
             switch (kc) {
-                case 37:
+                case 27: //escape
+                    state.mode = k.mode[k.mode.length -1]; // dirty little hack..... because it assumes toggle will wrap around and that doc is the first in the list.
+                    my.toggleMode();
+                    console.log("Mode reset to doc");
+                    
+                    break;
+                case 37: // Left arrow
                     console.log("Previous " + evt.keyCode);
                     window.location.hash = state.previous(); //side effect on state
                     console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
 
                     break;
-                case 39:
+                case 39: // Right arrow
                     console.log("Next " + evt.keyCode);
                     window.location.hash = state.next(); // side effect on state
                     console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
 
                     break;
-                case 83:
+                case 83: //s
                     if (evt.shiftKey) {
                         my.toggleMode(); //side effect on state.mode
                         console.log("current mode: " + state.mode);                        
@@ -280,9 +289,6 @@ function core() {
 
         };
     };
-    
-    
-
 
 
     my.init = function () {
@@ -298,14 +304,17 @@ function core() {
         var slideHolder = document.createElement("div");
         slideHolder.setAttribute("id", k.slideHolder);
 
+        //Add the modal backdrop element
         var modal = document.createElement("div");
         modal.setAttribute("id", k.modal);
         my.classed(modal, "not-displayed", true);
-
         slideHolder.appendChild(modal);
-
         b.appendChild(slideHolder);
         
+        //Default display function is doc.
+        state.highlightFunc = my.displays.doc;
+        
+        //Put everything in the right state
         my.hashChanged(window.location);
         
         window.addEventListener("hashchange", function (e) {
