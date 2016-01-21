@@ -5,57 +5,33 @@ function core() {
     var my = function () {};
     var state = {};
 
+    
+    my.showSlide = function () {
+        var isDeck = state.isDeck();
+        var isWalk = state.isWalkthrough();
+        
+        var slideWall = document.getElementById("slideWall");
+        my.classed(slideWall, "slide-backdrop", isDeck);
+
+        var slideHolder = document.getElementById("slideHolder");
+        my.classed(slideHolder, "slide-holder", isDeck);
+
+        my.classed(state.previousNode(), "slide-highlight", false);
+        my.classed(state.previousNode(), "muted", false);
+        my.classed(state.currentNode(), "slide-highlight", isDeck || isWalk);
+        my.classed(state.currentNode(), "muted", isDeck || isWalk);
+        
+        var modal = document.getElementById("modal");
+        my.classed(modal, "slide-box", isDeck);
+        my.classed(modal, "zoom", isDeck);
+        my.classed(modal, "not-displayed", !isDeck);
+        modal.innerHTML = state.currentNode().innerHTML;
+    }
+
     my.displays = {
-        slideDeck: function () {
-            var slideWall = document.getElementById("slideWall");
-            my.classed(slideWall, "slide-backdrop", true);
-
-            var slideHolder = document.getElementById("slideHolder");
-            my.classed(slideHolder, "slide-holder", true);
-
-
-
-            my.classed(state.previousNode(), "slide-highlight", false);
-            my.classed(state.previousNode(), "muted", false);
-            my.classed(state.currentNode(), "slide-highlight", true);
-            my.classed(state.currentNode(), "muted", true);
-
-            var modal = document.getElementById("modal");
-            my.classed(modal, "slide-box", true);
-            my.classed(modal, "zoom", true);
-            my.classed(modal, "not-displayed", false);
-            modal.innerHTML = state.currentNode().innerHTML;
-        },
-        walkthrough: function () {
-            var slideWall = document.getElementById("slideWall");
-            my.classed(slideWall, "slide-backdrop", false);
-
-            var slideHolder = document.getElementById("slideHolder");
-            my.classed(slideHolder, "slide-holder", false);
-
-            var modal = document.getElementById("modal");
-            my.classed(modal, "slide-box", false);
-            my.classed(modal, "not-displayed", true);
-
-            my.classed(state.previousNode(), "slide-highlight", false);
-            my.classed(state.previousNode(), "muted", false);
-            my.classed(state.currentNode(), "slide-highlight", true);
-            my.classed(state.currentNode(), "muted", false);
-        },
-        doc: function () {
-            var slideWall = document.getElementById("slideWall");
-            my.classed(slideWall, "slide-backdrop", false);
-
-            var slideHolder = document.getElementById("slideHolder");
-            my.classed(slideHolder, "slide-holder", false);
-
-            var modal = document.getElementById("modal");
-            my.classed(modal, "slide-box", false);
-            my.classed(modal, "not-displayed", true);
-
-            my.classed(state.previousNode(), "slide-highlight", false);
-            my.classed(state.currentNode(), "slide-highlight", false);
-        }
+        slideDeck: my.showSlide,
+        walkthrough: my.showSlide,
+        doc: my.showSlide
     };
 
 
@@ -120,7 +96,7 @@ function core() {
     state.modeNum = 0;
     state.toggleMode = function () {
         var modes = ["doc", "deck", "walkthrough"];
-        //cycle through the possible modes
+//        //cycle through the possible modes
         if (state.modeNum === (modes.length - 1)) {
             state.modeNum = 0;
         } else {
@@ -142,12 +118,7 @@ function core() {
                 state.highlightFunc = my.displays.walkthrough;
                 break;
         }
-    }
-
-    var toplevel = [];
-
-
-
+    };
 
     my.classList = function (element) {
         if (!element) return [];
@@ -158,41 +129,28 @@ function core() {
 
     my.toggleClass = function (element, clazz1, clazz2) {
         if (!element) return;
-        var newclasses = [];
         var oldclasses = Array.prototype.slice.call(my.classList(element));
-        for (var i = 0; i < olclasses.lenght; i++) {
-            if (oldclasses[i] == clazz1) {
-                newclasses[i] = clazz2;
-            } else if (oldclasses[i] == clazz2) {
-                newclasses[i] = clazz1;
-            } else {
-                newclasses[i] = oldclasses[i];
-            }
-        }
+
+        var newclasses = oldclasses.map(function (i) {
+            if (i === clazz1) return clazz2;
+            if (i === clazz2) return clazz1;
+            return i;
+        });
+
         element.setAttribute("class", newclasses.join(" "));
     };
 
     my.classed = function (element, clazzname, addit) {
         if (!element) return;
         var oldclasses = Array.prototype.slice.call(my.classList(element));
-        var add = false; // which means remove
-        //        if(typeof predicate === "function") {
-        //            add = predicate();
-        //        }
-        //        else {
-        //        }
 
         var index = oldclasses.indexOf(clazzname);
-        if (index >= 0) {
-            if (!addit) {
-                oldclasses.splice(index, 1);
-            }
-
-        } else {
-            if (addit) {
-                oldclasses.push(clazzname)
-            }
-        };
+        if (index >= 0 && !addit) {
+            oldclasses.splice(index, 1);
+        }
+        if (index < 0 && addit) {
+            oldclasses.push(clazzname);
+        }
 
         element.setAttribute("class", oldclasses.join(" "));
 
@@ -220,9 +178,6 @@ function core() {
     }
 
     my.number = function (nodeList) {
-        //        my.tag(nodeList, "data-section-num", function (i) {
-        //            return i;
-        //        });
         state.numSlides = nodeList.length - 1;
 
         //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
@@ -239,15 +194,7 @@ function core() {
 
     my.toggleMode = function () {
         state.toggleMode();
-        //        var slideWall = document.getElementById("slideWall");
-        //        my.classed(slideWall, "slide-backdrop", state.isDeck());
-        //
-        //        var slideHolder = document.getElementById("slideHolder");
-        //        my.classed(slideHolder, "slide-holder", state.isDeck());
     }
-
-
-
 
     my.key = function () {
         /*
@@ -291,8 +238,6 @@ function core() {
 
 
                         state.highlightFunc();
-
-
                     }
             };
 
@@ -323,7 +268,7 @@ function core() {
 
         b.appendChild(slideHolder);
 
-    }
+    };
 
     return my;
 }; //closure
