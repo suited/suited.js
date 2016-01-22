@@ -1,157 +1,58 @@
-/* Core features and management - eg finds and tags all slide elements */
-function core() {
-    var konstants = {
-        slideAttr: "data-slide",
-        modalBackdrop: "slideWall",
-        slideHolder: "slideHolder",
-        modal: "modal",
-        mode: ["doc","deck","walkthrough"]
-        
-    }
-    var k = konstants;
-    var config = {};
-    var c = config;
+/*
+* Utilies needed by the suited framework
+*/
+function SuitedUtils() {
 
-    var my = function () {};
-    var state = {};
-    state.numSlides = 0;          
-    state.highlightFunc = function() {};
-    state.currentNum = 0; //the currently selected section
-    state.mode = k.mode[0]; //or deck
-
-    state.previousNum = function () {
-        if (state.currentNum <= 0) {
-            return state.currentNum;
-        } else {
-            return (state.currentNum - 1);
-        }
-    };
-
-    state.isDeck = function () {
-        return (state.mode === k.mode[1]);
-    }
-    state.isDoc = function () {
-        return (state.mode === k.mode[0]);
-    }
-    state.isWalkthrough = function () {
-        return (state.mode === k.mode[2]);
-    }
-
-    state.slideName = function () {
-        return "slide-" + state.currentNum;
-    };
-
-    state.previousSlideName = state.slideName(); //initially
-
-    state.next = function () {
-        if (state.currentNum >= state.numSlides) {
-            return state.slideName();
-        }
-        state.previousSlideName = state.slideName();
-        state.currentNum++;
-
-        return state.slideName();
-    };
-
-    state.previous = function () {
-        if (state.currentNum <= 0) {
-            return state.slideName();
-        }
-        state.previousSlideName = state.slideName();
-        state.currentNum--;
-
-        return state.slideName();
-    };
-
-    state.currentNode = function () {
-        return document.getElementById(state.slideName());
-    };
-
-    state.previousNode = function () {
-        return document.getElementById(state.previousSlideName);
-    };
-
-    state.setMode = function(mode) {
-        state.mode = mode;
-
-        //change the highlight function
-        switch (state.mode) {
-            case k.mode[0]:
-                state.highlightFunc = my.displays.doc;
-                break;
-
-            case k.mode[1]:
-                state.highlightFunc = my.displays.slideDeck;
-                break;
-
-            case k.mode[2]:
-                state.highlightFunc = my.displays.walkthrough;
-                break;
-        }        
-    };
+    var su = {};
     
-    state.toggleMode = function () {
-        var modes = [k.mode[0], k.mode[1], k.mode[2]];
-
-        var modeNum = modes.indexOf(state.mode) + 1;
-        if (modeNum >= modes.length) {modeNum = 0;}
-        
-        state.setMode(modes[modeNum]);
-    };
-    
-
-    my.showSlide = function () {
-        var isDeck = state.isDeck();
-        var isWalk = state.isWalkthrough();
-
-        var slideWall = document.getElementById("slideWall");
-        my.classed(slideWall, "slide-backdrop", isDeck);
-
-        var slideHolder = document.getElementById("slideHolder");
-        my.classed(slideHolder, "slide-holder", isDeck);
-
-        my.classed(state.previousNode(), "slide-highlight", false);
-        my.classed(state.previousNode(), "muted", false);
-        my.classed(state.currentNode(), "slide-highlight", isDeck || isWalk);
-        my.classed(state.currentNode(), "muted", isDeck || isWalk);
-
-        var modal = document.getElementById("modal");
-        my.classed(modal, "slide-box", isDeck);
-        my.classed(modal, "zoom", isDeck);
-        my.classed(modal, "not-displayed", !isDeck);
-        modal.innerHTML = state.currentNode().innerHTML;
-    }
-
-    my.displays = {
-        slideDeck: my.showSlide,
-        walkthrough: my.showSlide,
-        doc: my.showSlide
-    };
-        
-    my.classList = function (element) {
+    /**
+     * Return the list of CSS classes on the element as an array 
+     * @param   {Element} element The element to inspect for classes
+     * @returns {Array}    Of Strings. The class names applied to the element
+     */
+    var classList = function (element) {
         if (!element) return [];
+        
         var classes = element.getAttribute("class");
         if (!classes) return [];
+        
         return classes.split(" "); //Array of Strings
     }
 
-    my.toggleClass = function (element, clazz1, clazz2) {
+    /**
+     * Replace on class in the list of classes with another. Replace clazz1 with clazz2
+     * 
+     * if classes on the element are: ["c1","c2","c3"] and clazz1='c2' and clazz2='c4' then resulting array is: ["c1","c4","c3"]
+     * 
+     * @param   {Element} element The element whose classes to change
+     * @param   {String} clazz1  Classname to find and replace with clazz2
+     * @param   {String} clazz2  Classname to use in place of clazz1
+     * @returns {void} Side effecting. Changes the supplied element in place
+     */
+    su.toggleClass = function (element, clazz1, clazz2) {
         if (!element) return;
         
-        var oldclasses = Array.prototype.slice.call(my.classList(element));
+        var oldclasses = Array.prototype.slice.call(classList(element));
 
         var newclasses = oldclasses.map(function (i) {
-            if (i === clazz1) return clazz2;
-            if (i === clazz2) return clazz1;
-            return i;
+            return (i === clazz1) ? clazz2 : i;
         });
-
+        
         element.setAttribute("class", newclasses.join(" "));
     };
-
-    my.classed = function (element, clazzname, addit) {
+    
+    
+    /**
+     * Add the class to the list of classes if present and addit=false, remove it. If NOT present and addit=true, add it.
+     * 
+     * @param {Element} element   The element whose classes to modify
+     * @param {String}  clazzname The name of the class to add or remove
+     * @param {Boolean} addit     Indicates if class should exist. Will be added or removed where necessary 
+     * @returns {void}  Side affecting. Changes the clases of the element in place
+     */
+    su.classed = function (element, clazzname, addit) {
         if (!element) return;
-        var oldclasses = Array.prototype.slice.call(my.classList(element));
+        var oldclasses = Array.prototype.slice.call(classList(element));
 
         var index = oldclasses.indexOf(clazzname);
         if (index >= 0 && !addit) {
@@ -165,10 +66,156 @@ function core() {
 
     };
 
-    my.selects = function (selection, parent) {
+    /**
+     * Query using the selector within the scope of the provided parent node.
+     * 
+     * @param   {String} selection Query selection string
+     * @param   {Element} parent    The parent node to search within
+     * @returns {NodeList} The list of nodes matching the query. Empty list of nothing is found
+     */
+    su.selects = function (selection, parent) {
         if (!parent) parent = document;
         return parent.querySelectorAll(selection);
     };
+    
+    return su;
+}
+
+/**
+ * The state of the system. Supports the Suited framework and keep track of the current slide and mode
+ * and allos the state to be manipulated.
+ * 
+ * @param   {Array} modesArr Array of strings describing the available modes
+ * @returns {Object}   Containing the functions necessary to check and manipulate the state
+ */
+function SuitedState (modesArr) {
+    
+    var modes = modesArr;
+    var s = {};
+    
+    s.numSlides = 0;          
+    s.currentNum = 0; //the currently selected section
+    s.mode = modes[0]; //or deck
+
+    s.previousNum = function () {
+        if (s.currentNum <= 0) {
+            return s.currentNum;
+        } else {
+            return (s.currentNum - 1);
+        }
+    };
+
+    s.isDeck = function () {
+        return (s.mode === modes[1]);
+    }
+    s.isDoc = function () {
+        return (s.mode === modes[0]);
+    }
+    s.isWalkthrough = function () {
+        return (s.mode === modes[2]);
+    }
+
+    s.slideName = function () {
+        return "slide-" + s.currentNum;
+    };
+
+    s.previousSlideName = s.slideName(); //initially
+
+    s.next = function () {
+        if (s.currentNum >= s.numSlides) {
+            return s.slideName();
+        }
+        s.previousSlideName = s.slideName();
+        s.currentNum++;
+
+        return s.slideName();
+    };
+
+    s.previous = function () {
+        if (s.currentNum <= 0) {
+            return s.slideName();
+        }
+        s.previousSlideName = s.slideName();
+        s.currentNum--;
+
+        return s.slideName();
+    };
+
+    s.currentNode = function () {
+        return document.getElementById(s.slideName());
+    };
+
+    s.previousNode = function () {
+        return document.getElementById(s.previousSlideName);
+    };
+
+    s.setMode = function(mode) {
+        s.mode = mode;
+    };
+    
+    s.toggleMode = function () {
+        
+        var modeNum = modes.indexOf(s.mode) + 1;
+        if (modeNum >= modes.length) {modeNum = 0;}
+        
+        s.setMode(modes[modeNum]);
+    };    
+    
+    return s;
+}
+
+
+/* Core features and management - eg finds and tags all slide elements */
+function core() {
+    
+    var konstants = {
+        slideAttr: "data-slide",
+        modalBackdrop: "slideWall",
+        slideHolder: "slideHolder",
+        modal: "modal",
+        mode: ["doc","deck","walkthrough"]
+    }
+    var k = konstants;
+    var config = {};
+    var c = config;
+    
+    var utils = new SuitedUtils();
+    var state = new SuitedState(k.mode);
+    
+
+    var my = function () {};
+    
+    my.showSlide = function () {
+        var isDeck = state.isDeck();
+        var isWalk = state.isWalkthrough();
+
+        var slideWall = document.getElementById("slideWall");
+        utils.classed(slideWall, "slide-backdrop", isDeck);
+
+        var slideHolder = document.getElementById("slideHolder");
+        utils.classed(slideHolder, "slide-holder", isDeck);
+
+        utils.classed(state.previousNode(), "slide-highlight", false);
+        utils.classed(state.previousNode(), "muted", false);
+        utils.classed(state.currentNode(), "slide-highlight", isDeck || isWalk);
+        utils.classed(state.currentNode(), "muted", isDeck || isWalk);
+
+        var modal = document.getElementById("modal");
+        utils.classed(modal, "slide-box", isDeck);
+        utils.classed(modal, "zoom", isDeck);
+        utils.classed(modal, "not-displayed", !isDeck);
+        modal.innerHTML = state.currentNode().innerHTML;
+    }
+    
+    my.highlightFunc = my.showSlide; //Idea is to have dynamic highlight functions when changing the mode;
+
+    my.displays = {
+        slideDeck: my.showSlide,
+        walkthrough: my.showSlide,
+        doc: my.showSlide
+    };
+        
+
 
     //TODO check if attr Values is an array or a function(dia) and call it to set the values
     /* attValues is an array of values or a function(index, origArray) that returns the value for each item in the array */
@@ -195,20 +242,24 @@ function core() {
         for (var i = (state.numSlides); i >= 0; i--) {
             var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
             my.wrapDiv(item, "slide-" + i, "slide");
-            var childSlides = my.selects("section[data-slide]", item);
+            var childSlides = utils.selects("section[data-slide]", item);
             my.tag(childSlides, "data-sub-slide");
-
         }
     };
-
+    
+    my.changeHighlightFunc = function (mode) {
+        
+        my.highlightFunc = my.showSlide; // The highlightFunc can be updated here based on mode. For now all the same function
+    }
+    
     my.toggleMode = function () {
         state.toggleMode();
+        my.changeHighlightFunc(state.mode);
         
-        //window.location =window.location.origin + window.location.pathname + "?mode=" + state.mode + "#" + state.slideName();
         window.history.pushState("",window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode + "#" + state.slideName());
         console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
         
-        state.highlightFunc();
+        my.highlightFunc();
     }
 
     my.parseParams = function (searchStr) {
@@ -253,11 +304,10 @@ function core() {
     
     /**
      * Handle the shortcuts and arrow navigation
+     * 
+     * keycodes are: left = 37, up = 38, right = 39, down = 40
      */
     my.key = function () {
-        /*
-           keycodes are: left = 37, up = 38, right = 39, down = 40
-         */
         
         document.onkeyup = function (evt) {
             var kc = evt.keyCode;
@@ -270,7 +320,14 @@ function core() {
                     break;
                 case 37: // Left arrow
                     console.log("Previous " + evt.keyCode);
-                    window.location.hash = state.previous(); //side effect on state
+                    
+                    var current = state.currentNum;
+                    var nextSlide = state.previous();
+                    if (current == state.currentNum) {
+                        nextSlide = "";
+                    }
+                    
+                    window.location.hash = nextSlide; //side effect on state            
                     console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
 
                     break;
@@ -289,7 +346,7 @@ function core() {
                 case 84: //t
                     if (evt.shiftKey) {
                         window.location.hash = "";
-                        state.setMode(k.mode[0]);
+                        my.setMode(k.mode[0]);
                         console.log("current mode: " + state.mode);                        
                     }
                     break;                    
@@ -300,7 +357,7 @@ function core() {
 
 
     my.init = function () {
-        my.number(my.selects("section[" + k.slideAttr + "]"));
+        my.number(utils.selects("section[" + k.slideAttr + "]"));
         my.key();
 
         // add placeholder for Modal backdrop
@@ -315,7 +372,7 @@ function core() {
         //Add the modal backdrop element
         var modal = document.createElement("div");
         modal.setAttribute("id", k.modal);
-        my.classed(modal, "not-displayed", true);
+        utils.classed(modal, "not-displayed", true);
         slideHolder.appendChild(modal);
         b.appendChild(slideHolder);
         
