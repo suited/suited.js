@@ -1,9 +1,6 @@
         .not-displayed {
             display: none;
         }
-        .displayed {
-            display: ;
-        }
         .visible {
             visibility: visible;
         }
@@ -28,7 +25,8 @@
             height: 100%;
             background: transparent;
             z-index: 2;
-            display: inline-block;  /*shrink to fit */
+            display: inline-block;
+            /*shrink to fit */
         }
         .slide-highlight {
             background: #ff0;
@@ -46,13 +44,13 @@
             box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 3;
-            
             position: absolute;
-
-            top: 15; bottom: 15; right: 0; left: 0;   follow the parent's edges 
-/*  outline: thin dashed green;  
+            top: 15;
+            bottom: 15;
+            right: 0;
+            left: 0;
+            /*  outline: thin dashed green;  
 */
-            
         }
         .slide-box.scrollable {
             height: 80%;
