@@ -5,7 +5,7 @@ var konstants = {
     modalBackdrop: "slideWall",
     slideHolder: "slideHolder",
     modal: "modal",
-    mode: ["doc", "deck", "walkthrough"]
+    modes: ["doc", "deck", "walkthrough"]
 }
 
 module.exports = konstants;
