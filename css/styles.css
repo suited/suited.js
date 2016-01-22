@@ -28,7 +28,7 @@
             height: 100%;
             background: transparent;
             z-index: 2;
-/*            padding: 30px 15px;*/
+            display: inline-block;  /*shrink to fit */
         }
         .slide-highlight {
             background: #ff0;
@@ -40,16 +40,18 @@
             margin: 0 auto;
             /*width: 100%;*/
             background: #fff;
-            width: 60%;
+            width: 70%;
             padding: 15px;
             border-radius: 4px;
             box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 3;
             
-              position: absolute;
-  top: 0; bottom: 0; right: 0; left: 0;  /* follow the parent's edges */
-  outline: thin dashed green;  
+            position: absolute;
+
+            top: 15; bottom: 15; right: 0; left: 0;   follow the parent's edges 
+/*  outline: thin dashed green;  
+*/
             
         }
         .slide-box.scrollable {
