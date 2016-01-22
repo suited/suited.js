@@ -6,4 +6,4 @@
 
 var core = require('./core.js');
 
-window.addEventListener("load", core().init);
+window.addEventListener("load", core.init);

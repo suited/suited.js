@@ -4,37 +4,35 @@
 
 
 /* Core features and management - eg finds and tags all slide elements */
-var mod = function () {
+
 
     var konstants = require('./konstants.js')
     var konfig = require('./konfig.js')
     var utils = require('./utils.js');
-    var stateMod = require('./state.js');
+    var state = require('./state.js');
 
-//    var konstants = {
-//        slideAttr: "data-slide",
-//        modalBackdrop: "slideWall",
-//        slideHolder: "slideHolder",
-//        modal: "modal",
-//        mode: ["doc", "deck", "walkthrough"]
-//    }
+    //    var konstants = {
+    //        slideAttr: "data-slide",
+    //        modalBackdrop: "slideWall",
+    //        slideHolder: "slideHolder",
+    //        modal: "modal",
+    //        mode: ["doc", "deck", "walkthrough"]
+    //    }
     var k = konstants;
-//    var config = {
-//        modalBackdropOpacity: 0.5
-//    };
+    //    var config = {
+    //        modalBackdropOpacity: 0.5
+    //    };
 
     var c = konfig;
 
 
-    var state = stateMod(k.mode);
 
+    var core = function () {};
 
-    var my = function () {};
+    core.maxModalWidth = 0;
+    core.maxModalHeight = 0;
 
-    my.maxModalWidth = 0;
-    my.maxModalHeight = 0;
-
-    my.showSlide = function () {
+    core.showSlide = function () {
         var isDeck = state.isDeck();
         var isWalk = state.isWalkthrough();
 
@@ -68,19 +66,19 @@ var mod = function () {
         utils.placeIn(modal, temp);
     }
 
-    my.highlightFunc = my.showSlide; //Idea is to have dynamic highlight functions when changing the mode;
+    core.highlightFunc = core.showSlide; //Idea is to have dynamic highlight functions when changing the mode;
 
-    my.displays = {
-        slideDeck: my.showSlide,
-        walkthrough: my.showSlide,
-        doc: my.showSlide
+    core.displays = {
+        slideDeck: core.showSlide,
+        walkthrough: core.showSlide,
+        doc: core.showSlide
     };
 
 
 
     //TODO check if attr Values is an array or a function(dia) and call it to set the values
     /* attValues is an array of values or a function(index, origArray) that returns the value for each item in the array */
-    my.tag = function (nodeList, attrName, attrValues) {
+    core.tag = function (nodeList, attrName, attrValues) {
         for (var i = 0; i < nodeList.length; ++i) {
             var theValue = (!attrValues) ? '' : attrValues(i);
             nodeList[i].setAttribute(attrName, theValue);
@@ -88,13 +86,13 @@ var mod = function () {
         }
     };
 
-    my.wrapDiv = function (element, id, clazz) {
+    core.wrapDiv = function (element, id, clazz) {
         var theHtml = element.innerHTML;
         var newHtml = '<div class="' + clazz + '" id="' + id + '" >' + theHtml + '</div>';
         element.innerHTML = newHtml;
     }
 
-    my.number = function (nodeList) {
+    core.number = function (nodeList) {
         state.numSlides = nodeList.length - 1;
 
         //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
@@ -102,28 +100,28 @@ var mod = function () {
         //        for (var i = 0; i < state.numSlides; ++i) {
         for (var i = (state.numSlides); i >= 0; i--) {
             var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
-            my.wrapDiv(item, "slide-" + i, "slide");
+            core.wrapDiv(item, "slide-" + i, "slide");
             var childSlides = utils.selects("section[data-slide]", item);
-            my.tag(childSlides, "data-sub-slide");
+            core.tag(childSlides, "data-sub-slide");
         }
     };
 
-    my.changeHighlightFunc = function (mode) {
+    core.changeHighlightFunc = function (mode) {
 
-        my.highlightFunc = my.showSlide; // The highlightFunc can be updated here based on mode. For now all the same function
+        core.highlightFunc = core.showSlide; // The highlightFunc can be updated here based on mode. For now all the same function
     }
 
-    my.toggleMode = function () {
+    core.toggleMode = function () {
         state.toggleMode();
-        my.changeHighlightFunc(state.mode);
+        core.changeHighlightFunc(state.mode);
 
         window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode + "#" + state.slideName());
         console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
 
-        my.highlightFunc();
+        core.highlightFunc();
     }
 
-    my.parseParams = function (searchStr) {
+    core.parseParams = function (searchStr) {
 
         if (!searchStr || searchStr.charAt(0) != "?") return {
             mode: "doc"
@@ -141,21 +139,21 @@ var mod = function () {
         return paramMap;
     }
 
-    my.parseSlideNum = function (hash) {
+    core.parseSlideNum = function (hash) {
         if (!hash || hash.charAt(0) != "#") return 0;
 
         return hash.substring(hash.indexOf("-") + 1);
 
     }
 
-    my.hashChanged = function (location) {
+    core.hashChanged = function (location) {
         console.log("Location changed!" + location);
 
-        var paramMap = my.parseParams(location.search);
+        var paramMap = core.parseParams(location.search);
 
         state.setMode(paramMap.mode);
 
-        var slideNum = my.parseSlideNum(location.hash);
+        var slideNum = core.parseSlideNum(location.hash);
         if (state.currentNum != slideNum) {
             state.previousSlideName = state.slideName();
             state.currentNum = slideNum;
@@ -170,14 +168,14 @@ var mod = function () {
      * 
      * keycodes are: left = 37, up = 38, right = 39, down = 40
      */
-    my.key = function () {
+    core.key = function () {
 
         document.onkeyup = function (evt) {
             var kc = evt.keyCode;
             switch (kc) {
                 case 27: //escape
                     state.mode = k.mode[k.mode.length - 1]; // dirty little hack..... because it assumes toggle will wrap around and that doc is the first in the list.
-                    my.toggleMode();
+                    core.toggleMode();
                     console.log("Mode reset to doc");
 
                     break;
@@ -202,14 +200,14 @@ var mod = function () {
                     break;
                 case 83: //s
                     if (evt.shiftKey) {
-                        my.toggleMode(); //side effect on state.mode
+                        core.toggleMode(); //side effect on state.mode
                         console.log("current mode: " + state.mode);
                     }
                     break;
                 case 84: //t
                     if (evt.shiftKey) {
                         window.location.hash = "";
-                        my.setMode(k.mode[0]);
+                        core.setMode(k.mode[0]);
                         console.log("current mode: " + state.mode);
                     }
                     break;
@@ -219,9 +217,9 @@ var mod = function () {
     };
 
 
-    my.init = function () {
-        my.number(utils.selects("section[" + k.slideAttr + "]"));
-        my.key();
+    core.init = function () {
+        core.number(utils.selects("section[" + k.slideAttr + "]"));
+        core.key();
 
         // add placeholder for Modal backdrop
         var b = document.body;
@@ -238,17 +236,15 @@ var mod = function () {
         slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
 
         //Default display function is doc.        
-        state.highlightFunc = my.displays.doc;
+        state.highlightFunc = core.displays.doc;
 
         //Put everything in the right state
-        my.hashChanged(window.location);
+        core.hashChanged(window.location);
 
         window.addEventListener("hashchange", function (e) {
-            my.hashChanged(window.location);
+            core.hashChanged(window.location);
         });
     };
 
-    return my;
-}; //closure
 
-module.exports = mod;
+module.exports = core;
