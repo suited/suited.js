@@ -202,9 +202,25 @@ function core() {
 
         var modal = document.getElementById("modal");
         utils.classed(modal, "slide-box", isDeck);
-        utils.classed(modal, "zoom", isDeck);
+      //  utils.classed(modal, "zoom", isDeck);
+        
+        
         utils.classed(modal, "not-displayed", !isDeck);
         modal.innerHTML = state.currentNode().innerHTML;
+
+        /* TODO: Move to utils*/
+        var width = modal.clientWidth;
+        var height = modal.clientHeight;
+        
+        var wRatio = window.innerWidth / width;
+        var hRatio = window.innerHeight / height;
+        
+        var ratio = Math.min(wRatio, hRatio);
+        ratio = ratio * 0.95;
+        
+        console.log("modal width: " + width + " modal height: " + height + " window width: " + window.innerWidth + "window height:" + window.innerHeight + " wRatio: " + wRatio + " hRatio: " + hRatio +" ratio: " + ratio);
+        
+        modal.setAttribute("style", "transform: scale(" + ratio + ");transform-origin: 0 0;");
     }
     
     my.highlightFunc = my.showSlide; //Idea is to have dynamic highlight functions when changing the mode;

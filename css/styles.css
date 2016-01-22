@@ -10,7 +10,7 @@
         .invisible {
             display: hidden;
         }
-                .slide-backdrop {
+        .slide-backdrop {
             position: fixed;
             top: 0px;
             left: 0px;
@@ -24,11 +24,11 @@
             position: fixed;
             top: 0px;
             left: 0px;
-            height: 80%;
-            width: 80%;
+            /*height: 80%;
+            width: 40%;*/
             background: transparent;
             z-index: 2;
-            padding: 30px 15px;
+/*            padding: 30px 15px;*/
         }
         .slide-highlight {
             background: #ff0;
@@ -38,7 +38,7 @@
         }
         .slide-box {
             margin: 0 auto;
-            width: 100%;
+            /*width: 100%;*/
             background: #fff;
             padding: 15px;
             border-radius: 4px;
