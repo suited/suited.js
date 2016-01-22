@@ -78,6 +78,21 @@ function SuitedUtils() {
         return parent.querySelectorAll(selection);
     };
     
+    su.resizeTo = function (elm, maxWidth, maxHeight) {
+        var width = elm.clientWidth;
+        var height = elm.clientHeight;
+        
+        var wRatio = maxWidth / width;
+        var hRatio = maxHeight / height;
+        
+        var ratio = Math.max(wRatio, hRatio);
+        ratio = ratio * 0.95;    
+        
+        elm.setAttribute("style", "float: left; transform: scale(" + ratio + "); transform-origin: 0 0;");
+         // element.setAttribute("style", "float: left; width: 60%;");
+        return ratio;
+    }
+    
     return su;
 }
 
@@ -176,7 +191,10 @@ function core() {
         mode: ["doc","deck","walkthrough"]
     }
     var k = konstants;
-    var config = {};
+    var config = {
+        modalBackdropOpacity: 0.5
+    };
+    
     var c = config;
     
     var utils = new SuitedUtils();
@@ -185,13 +203,17 @@ function core() {
 
     var my = function () {};
     
+    my.maxModalWidth = 0;
+    my.maxModalHeight = 0;
+    
     my.showSlide = function () {
         var isDeck = state.isDeck();
         var isWalk = state.isWalkthrough();
 
         var slideWall = document.getElementById("slideWall");
         utils.classed(slideWall, "slide-backdrop", isDeck);
-
+        slideWall.setAttribute("style","opacity: " + c.modalBackdropOpacity);        
+        
         var slideHolder = document.getElementById("slideHolder");
         utils.classed(slideHolder, "slide-holder", isDeck);
 
@@ -202,25 +224,10 @@ function core() {
 
         var modal = document.getElementById("modal");
         utils.classed(modal, "slide-box", isDeck);
-      //  utils.classed(modal, "zoom", isDeck);
-        
-        
         utils.classed(modal, "not-displayed", !isDeck);
         modal.innerHTML = state.currentNode().innerHTML;
-
-        /* TODO: Move to utils*/
-        var width = modal.clientWidth;
-        var height = modal.clientHeight;
         
-        var wRatio = window.innerWidth / width;
-        var hRatio = window.innerHeight / height;
-        
-        var ratio = Math.min(wRatio, hRatio);
-        ratio = ratio * 0.95;
-        
-        console.log("modal width: " + width + " modal height: " + height + " window width: " + window.innerWidth + "window height:" + window.innerHeight + " wRatio: " + wRatio + " hRatio: " + hRatio +" ratio: " + ratio);
-        
-        modal.setAttribute("style", "transform: scale(" + ratio + ");transform-origin: 0 0;");
+        utils.resizeTo(modal, my.maxModalWidth, my.maxModalHeight);
     }
     
     my.highlightFunc = my.showSlide; //Idea is to have dynamic highlight functions when changing the mode;
@@ -371,26 +378,41 @@ function core() {
         };
     };
 
-
+    
+//    <div>
+//        <div class="left"></div>
+//        <div id="modal" class="center"></div>
+//        <div class="right"></div>
+//    </div>
+    
     my.init = function () {
         my.number(utils.selects("section[" + k.slideAttr + "]"));
         my.key();
 
         // add placeholder for Modal backdrop
         var b = document.body;
+        
         var slideWall = document.createElement("div");
         slideWall.setAttribute("id", k.modalBackdrop);
         b.appendChild(slideWall);
 
         var slideHolder = document.createElement("div");
         slideHolder.setAttribute("id", k.slideHolder);
+        b.appendChild(slideHolder);
 
         //Add the modal backdrop element
-        var modal = document.createElement("div");
-        modal.setAttribute("id", k.modal);
-        utils.classed(modal, "not-displayed", true);
-        slideHolder.appendChild(modal);
-        b.appendChild(slideHolder);
+//        var modal = document.createElement("div");
+//        modal.setAttribute("style", "align-content: center;");
+        //modal.setAttribute("id", k.modal);
+       // utils.classed(modal, "not-displayed", true);
+        slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
+        //slideHolder.appendChild(modal);
+        
+        var modal = utils.selects("#modal", slideHolder)[0];
+        my.maxModalWidth = modal.clientWidth;
+        my.maxModalHeight = window.innerHeight;
+        
+        slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left;">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
         
         //Default display function is doc.
         state.highlightFunc = my.displays.doc;
@@ -401,7 +423,6 @@ function core() {
         window.addEventListener("hashchange", function (e) {
             my.hashChanged(window.location);
         });
-
     };
 
     return my;
