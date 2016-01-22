@@ -78,19 +78,19 @@ function SuitedUtils() {
         return parent.querySelectorAll(selection);
     };
     
-    su.resizeTo = function (elm, maxWidth, maxHeight) {
-        var width = elm.clientWidth;
-        var height = elm.clientHeight;
+    su.placeIn = function (container, child) {
+        var width = child.clientWidth;
+        var height = child.clientHeight;
         
-        var wRatio = maxWidth / width;
-        var hRatio = maxHeight / height;
+        var wRatio = container.clientWidth / width;
+        var hRatio = container.clientHeight / height;
         
-        var ratio = Math.max(wRatio, hRatio);
+        var ratio = Math.min(wRatio, hRatio);
         ratio = ratio * 0.95;    
         
-        elm.setAttribute("style", "float: left; transform: scale(" + ratio + "); transform-origin: 0 0;");
-         // element.setAttribute("style", "float: left; width: 60%;");
-        return ratio;
+        container.innerHTML = ""
+        container.appendChild(child);
+        child.setAttribute("style", "float: left; transform: scale(" + ratio + "); transform-origin: 0 0;");
     }
     
     return su;
@@ -219,15 +219,25 @@ function core() {
 
         utils.classed(state.previousNode(), "slide-highlight", false);
         utils.classed(state.previousNode(), "muted", false);
-        utils.classed(state.currentNode(), "slide-highlight", isDeck || isWalk);
-        utils.classed(state.currentNode(), "muted", isDeck || isWalk);
+        
+        var currentNode = state.currentNode();
+        utils.classed(currentNode, "slide-highlight", isDeck || isWalk);
+        utils.classed(currentNode, "muted", isDeck || isWalk);
 
         var modal = document.getElementById("modal");
         utils.classed(modal, "slide-box", isDeck);
         utils.classed(modal, "not-displayed", !isDeck);
-        modal.innerHTML = state.currentNode().innerHTML;
+        //modal.innerHTML = state.currentNode().innerHTML;
         
-        utils.resizeTo(modal, my.maxModalWidth, my.maxModalHeight);
+        var temp = document.createElement("div");
+        temp.setAttribute("style", "display: inline-block; visible: false;");
+        
+        document.body.appendChild(temp);
+        temp.innerHTML = currentNode.innerHTML;
+        
+        console.log("Temp size is: " + temp.clientWidth);
+        
+        utils.placeIn(modal, temp);
     }
     
     my.highlightFunc = my.showSlide; //Idea is to have dynamic highlight functions when changing the mode;
@@ -379,12 +389,6 @@ function core() {
     };
 
     
-//    <div>
-//        <div class="left"></div>
-//        <div id="modal" class="center"></div>
-//        <div class="right"></div>
-//    </div>
-    
     my.init = function () {
         my.number(utils.selects("section[" + k.slideAttr + "]"));
         my.key();
@@ -401,20 +405,9 @@ function core() {
         b.appendChild(slideHolder);
 
         //Add the modal backdrop element
-//        var modal = document.createElement("div");
-//        modal.setAttribute("style", "align-content: center;");
-        //modal.setAttribute("id", k.modal);
-       // utils.classed(modal, "not-displayed", true);
         slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
-        //slideHolder.appendChild(modal);
-        
-        var modal = utils.selects("#modal", slideHolder)[0];
-        my.maxModalWidth = modal.clientWidth;
-        my.maxModalHeight = window.innerHeight;
-        
-        slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left;">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
-        
-        //Default display function is doc.
+                
+        //Default display function is doc.        
         state.highlightFunc = my.displays.doc;
         
         //Put everything in the right state
