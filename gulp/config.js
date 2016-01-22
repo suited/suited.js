@@ -86,7 +86,7 @@ module.exports = {
 //        // external: [ 'angular', 'jquery', 'underscore']
 //    },
             {
-                entries: app + '/js/app.js',
+                entries: app + '/js/startup.js',
                 dest: dest + '/js',
                 outputName: 'bundle.js',
                 // list of externally available modules to exclude from the bundle
