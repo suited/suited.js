@@ -99,5 +99,39 @@ utils.placeIn = function (container, child) {
 }
 
 
+/** parse parameters from a search string where
+searchStr = location.search
+
+returns a param Map object leyed on param name and value is param value.
+*/
+utils.parseParams = function (searchStr) {
+
+    if (!searchStr || searchStr.charAt(0) != "?") return {
+        mode: "doc"
+    };
+
+    var paramList = searchStr.substring(1); //Remove the ?
+    var params = paramList.split("&");
+
+    var paramMap = {};
+    for (var i = 0; i < params.length; i++) {
+        var kv = params[i].split("=");
+        paramMap[kv[0]] = kv[1];
+    }
+
+    return paramMap;
+}
+
+/**
+  extract slide number from location.hash
+  */
+utils.parseSlideNum = function (hash) {
+    if (!hash || hash.charAt(0) != "#") return 0;
+
+    return hash.substring(hash.indexOf("-") + 1);
+
+}
+
+
 
 module.exports = utils;
