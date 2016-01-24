@@ -17,3 +17,45 @@ Initial support for HTML in slides, with future language support such as markdow
 
 In Deck mode -> all slides included nested are flattened in the nav order eg left and right only with nested showing after their parents.
 
+
+### Development
+
+#### instalation
+
+    # checkout the project
+    git clone git@bitbucket.org:avocadornd/angular-skeleton.git
+    # create a master branch.
+    git checkout -b master
+
+    # the next line assumes you have installed
+    # Node.js v0.12.2 using nvm
+    # as per these instructins :- https://github.com/creationix/nvm/blob/master/README.markdown
+    # If you alreeady have Node installed globbaly (you're crazy and headed for pain) then skip the next command
+    . ./setupnvm.sh 
+    
+    # get the build dependencies
+    npm install
+
+    # install karma and gulp as globals
+      npm install -g gulp
+      npm install -g karma-cli
+
+    
+
+#### run tests
+either
+
+    gulp karma
+    
+or
+
+    karma start
+    
+#### to develp
+run the build in a browser with browserify so you can see changes as you code
+
+    gulp
+
+#### package up the production build
+
+    gulp package

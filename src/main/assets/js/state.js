@@ -9,6 +9,7 @@
 
 
 var konstants = require('./konstants.js');
+var utils = require('./utils.js');
 
 var modes = konstants.modes;
 
@@ -83,6 +84,18 @@ s.toggleMode = function () {
 
     s.setMode(modes[modeNum]);
 };
+
+s.change = function (paramMap) {
+    s.setMode(paramMap.mode);
+
+    var slideNum = utils.parseSlideNum(location.hash);
+    if (s.currentNum != slideNum) {
+        s.previousSlideName = s.slideName();
+        s.currentNum = slideNum;
+    }
+
+    s.highlightFunc();
+}
 
 
 
