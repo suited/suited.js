@@ -100,6 +100,41 @@ utils.selects = function (selection, parent) {
     return parent.querySelectorAll(selection);
 };
 
+//TODO check if attr Values is an array or a function(dia) and call it to set the values
+/* attValues is an array of values or a function(index, origArray) that returns the value for each item in the array */
+utils.tag = function (nodeList, attrName, attrValues) {
+    for (var i = 0; i < nodeList.length; ++i) {
+        var theValue = (!attrValues) ? '' : attrValues(i);
+        nodeList[i].setAttribute(attrName, theValue);
+
+    }
+};
+
+utils.wrapDiv = function (element, id, clazz) {
+    var theHtml = element.innerHTML;
+    var newHtml = '<div class="' + clazz + '" id="' + id + '" >' + theHtml + '</div>';
+    element.innerHTML = newHtml;
+}
+
+/** tag wrap nodes in nodeList in a div with attr slide-<num>, tag child data-slides with data-sub-slide.
+
+@return number of slides
+**/
+utils.number = function (nodeList) {
+    var numSlides = nodeList.length - 1;
+
+    //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
+    // ... perhaps wrap in reverse order?
+    //        for (var i = 0; i < state.numSlides; ++i) {
+    for (var i = (numSlides); i >= 0; i--) {
+        var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
+        utils.wrapDiv(item, "slide-" + i, "slide");
+        var childSlides = utils.selects("section[data-slide]", item);
+        utils.tag(childSlides, "data-sub-slide");
+    }
+    return numSlides;
+};
+
 utils.placeIn = function (container, child) {
     var width = child.clientWidth;
     var height = child.clientHeight;

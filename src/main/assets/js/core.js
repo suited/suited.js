@@ -98,35 +98,35 @@ core.displays = {
 
 
 
-//TODO check if attr Values is an array or a function(dia) and call it to set the values
-/* attValues is an array of values or a function(index, origArray) that returns the value for each item in the array */
-core.tag = function (nodeList, attrName, attrValues) {
-    for (var i = 0; i < nodeList.length; ++i) {
-        var theValue = (!attrValues) ? '' : attrValues(i);
-        nodeList[i].setAttribute(attrName, theValue);
+////TODO check if attr Values is an array or a function(dia) and call it to set the values
+///* attValues is an array of values or a function(index, origArray) that returns the value for each item in the array */
+//core.tag = function (nodeList, attrName, attrValues) {
+//    for (var i = 0; i < nodeList.length; ++i) {
+//        var theValue = (!attrValues) ? '' : attrValues(i);
+//        nodeList[i].setAttribute(attrName, theValue);
+//
+//    }
+//};
+//
+//core.wrapDiv = function (element, id, clazz) {
+//    var theHtml = element.innerHTML;
+//    var newHtml = '<div class="' + clazz + '" id="' + id + '" >' + theHtml + '</div>';
+//    element.innerHTML = newHtml;
+//}
 
-    }
-};
-
-core.wrapDiv = function (element, id, clazz) {
-    var theHtml = element.innerHTML;
-    var newHtml = '<div class="' + clazz + '" id="' + id + '" >' + theHtml + '</div>';
-    element.innerHTML = newHtml;
-}
-
-core.number = function (nodeList) {
-    state.numSlides = nodeList.length - 1;
-
-    //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
-    // ... perhaps wrap in reverse order?
-    //        for (var i = 0; i < state.numSlides; ++i) {
-    for (var i = (state.numSlides); i >= 0; i--) {
-        var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
-        core.wrapDiv(item, "slide-" + i, "slide");
-        var childSlides = utils.selects("section[data-slide]", item);
-        core.tag(childSlides, "data-sub-slide");
-    }
-};
+//core.number = function (nodeList) {
+//    state.numSlides = nodeList.length - 1;
+//
+//    //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
+//    // ... perhaps wrap in reverse order?
+//    //        for (var i = 0; i < state.numSlides; ++i) {
+//    for (var i = (state.numSlides); i >= 0; i--) {
+//        var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
+//        core.wrapDiv(item, "slide-" + i, "slide");
+//        var childSlides = utils.selects("section[data-slide]", item);
+//        core.tag(childSlides, "data-sub-slide");
+//    }
+//};
 
 core.changeHighlightFunc = function (mode) {
 
@@ -208,7 +208,7 @@ core.key = function () {
 
 
 core.init = function () {
-    core.number(utils.selects("section[" + k.slideAttr + "]"));
+    state.numSlides = utils.number(utils.selects("section[" + k.slideAttr + "]"));
     core.key();
 
     // add placeholder for Modal backdrop
