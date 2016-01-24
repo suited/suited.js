@@ -121,45 +121,13 @@
         core.highlightFunc();
     }
 
-    core.parseParams = function (searchStr) {
-
-        if (!searchStr || searchStr.charAt(0) != "?") return {
-            mode: "doc"
-        };
-
-        var paramList = searchStr.substring(1); //Remove the ?
-        var params = paramList.split("&");
-
-        var paramMap = {};
-        for (var i = 0; i < params.length; i++) {
-            var kv = params[i].split("=");
-            paramMap[kv[0]] = kv[1];
-        }
-
-        return paramMap;
-    }
-
-    core.parseSlideNum = function (hash) {
-        if (!hash || hash.charAt(0) != "#") return 0;
-
-        return hash.substring(hash.indexOf("-") + 1);
-
-    }
 
     core.hashChanged = function (location) {
         console.log("Location changed!" + location);
 
-        var paramMap = core.parseParams(location.search);
+        var paramMap = utils.parseParams(location.search);
 
-        state.setMode(paramMap.mode);
-
-        var slideNum = core.parseSlideNum(location.hash);
-        if (state.currentNum != slideNum) {
-            state.previousSlideName = state.slideName();
-            state.currentNum = slideNum;
-        }
-
-        state.highlightFunc();
+        state.change(paramMap);
     };
 
 
