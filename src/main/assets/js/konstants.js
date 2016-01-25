@@ -21,6 +21,16 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 
 var konstants = {
     slideAttr: "data-slide",
+    slideTypes: {
+        "data-figure": "figure", //vis in doc and deck
+        "data-slide": "slide" //viz in deck only
+            //default section is in doc only
+    },
+    slideAttrs: {
+        figure: "data-figure", //vis in doc and deck
+        slide: "data-slide" //viz in deck only
+            //default section is in doc only
+    },
     modalBackdrop: "slideWall",
     slideHolder: "slideHolder",
     modal: "modal",

@@ -30,6 +30,12 @@ var modes = konstants.modes;
 
 var s = {};
 
+// nav structure has a value in each position where the mode is valid and a null otherwise. populated by utils.number()
+s.nav = {
+    figure: [],
+    slide: []
+};
+
 s.numSlides = 0;
 s.currentNum = 0; //the currently selected section
 s.mode = modes[0]; //or deck
@@ -98,6 +104,12 @@ s.toggleMode = function () {
     }
 
     s.setMode(modes[modeNum]);
+
+    //fix location bar
+    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + s.mode + "#" + s.slideName());
+    console.log("slide=" + s.slideName() + " state.mode is " + s.mode);
+
+    return s.mode;
 };
 
 s.change = function (paramMap) {
