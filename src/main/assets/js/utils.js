@@ -25,6 +25,9 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 */
 
 
+
+var konstants = require('./konstants.js');
+var k = konstants;
 /**
  * Return the list of CSS classes on the element as an array 
  * @param   {Element} element The element to inspect for classes
@@ -116,11 +119,13 @@ utils.wrapDiv = function (element, id, clazz) {
     element.innerHTML = newHtml;
 }
 
-/** tag wrap nodes in nodeList in a div with attr slide-<num>, tag child data-slides with data-sub-slide.
+/** walk the sections tag/wrap nodes in a div with attr slide-<num>, tag child data-slides with data-sub-slide. and populate the state.nav structure
+
+NB state requires utils... so state is passed into this func as it is called to prevent a cyclic dependency in require
 
 @return number of slides
 **/
-utils.number = function (nodeList) {
+utils.number = function (nodeList, state) {
     var numSlides = nodeList.length - 1;
 
     //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
@@ -129,11 +134,42 @@ utils.number = function (nodeList) {
     for (var i = (numSlides); i >= 0; i--) {
         var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
         utils.wrapDiv(item, "slide-" + i, "slide");
+
+        //populate nav structure
+        utils.populateNav(item, i, state.nav);
         var childSlides = utils.selects("section[data-slide]", item);
         utils.tag(childSlides, "data-sub-slide");
     }
     return numSlides;
 };
+
+utils.typeSlide = function (slideEl) {
+    var ret = "section"; //belt and braces
+    if (slideEl.hasAttribute("data-figure")) {
+        ret = k.slideTypes["data-figure"];
+    } else if (slideEl.hasAttribute("data-slide")) {
+        ret = k.slideTypes["data-slide"]; //expected default
+    }
+    return ret;
+}
+
+//looks at the slide and puts it in the right location in the nav structure 
+utils.populateNav = function (slideEl, position, nav) {
+    switch (utils.typeSlide(slideEl)) {
+        case "figure":
+            nav.figure[position] = "filled";
+            nav.slide[position] = "filled";
+            break;
+        case "slide":
+            nav.figure[position] = null;
+            nav.slide[position] = "filled";
+            break;
+        default:
+            nav.figure[position] = null;
+            nav.slide[position] = null;
+            break;
+    }
+}
 
 utils.placeIn = function (container, child) {
     var width = child.clientWidth;
