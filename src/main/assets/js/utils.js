@@ -155,18 +155,22 @@ utils.typeSlide = function (slideEl) {
 
 //looks at the slide and puts it in the right location in the nav structure 
 utils.populateNav = function (slideEl, position, nav) {
+    //TODO create a rule object so we can walk trough all modes applying the rules, rather than hardcode all values.
     switch (utils.typeSlide(slideEl)) {
         case "figure":
-            nav.figure[position] = "filled";
-            nav.slide[position] = "filled";
+            nav.modepos.doc[position] = true;
+            nav.modepos.deck[position] = true;
+            nav.modepos.walkthrough[position] = true;
             break;
         case "slide":
-            nav.figure[position] = null;
-            nav.slide[position] = "filled";
+            nav.modepos.doc[position] = false;
+            nav.modepos.deck[position] = true;
+            nav.modepos.walkthrough[position] = false;
             break;
         default:
-            nav.figure[position] = null;
-            nav.slide[position] = null;
+            nav.modepos.doc[position] = false;
+            nav.modepos.deck[position] = false;
+            nav.modepos.walkthrough[position] = false;
             break;
     }
 }

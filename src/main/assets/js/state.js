@@ -30,22 +30,52 @@ var modes = konstants.modes;
 
 var s = {};
 
-// nav structure has a value in each position where the mode is valid and a null otherwise. populated by utils.number()
-s.nav = {
-    figure: [],
-    slide: []
-};
-
+/* Initialise states */
 s.numSlides = 0;
 s.currentNum = 0; //the currently selected section
 s.mode = modes[0]; //or deck
 
-s.previousNum = function () {
-    if (s.currentNum <= 0) {
-        return s.currentNum;
-    } else {
-        return (s.currentNum - 1);
+// nav structure has a value in each position where the mode is valid and a null otherwise. populated by utils.number()
+s.nav = {
+    modepos: {
+        doc: [],
+        deck: [],
+        walkthrough: []
+    },
+    calcNextNum: function (start) {
+        if (start >= s.numSlides) {
+            return s.numSlides;
+        } else {
+            var tryme = start + 1;
+            if (!(s.nav.modepos[s.mode][tryme])) {
+                return s.nav.calcNextNum(tryme);
+            } else
+                return tryme;
+        }
+    },
+    /** recurs becwards loolin for a valid value for mode.
+    @param start = starting num, usually s.currentNum */
+    calcPrevNum: function (start) {
+        if (start <= 0) {
+            return 0;
+        } else {
+            var tryme = start - 1;
+            if (!(s.nav.modepos[s.mode][tryme])) {
+                return s.nav.calcPrevNum(tryme);
+            } else
+                return tryme;
+        }
     }
+
+};
+
+
+s.previousNum = function () {
+    s.nav.calcPrevNum(s.currentNum);
+};
+
+s.nextNum = function () {
+    s.nav.calcNextNum(s.currentNum);
 };
 
 s.isDeck = function () {
@@ -58,30 +88,28 @@ s.isWalkthrough = function () {
     return (s.mode === modes[2]);
 }
 
-s.slideName = function () {
-    return "slide-" + s.currentNum;
+s.slideName = function (slidenum) {
+    if (!slidenum) slidenum = s.currentNum;
+    return "slide-" + slidenum;
 };
 
 s.previousSlideName = s.slideName(); //initially
 
 s.next = function () {
-    if (s.currentNum >= s.numSlides) {
-        return s.slideName();
-    }
-    s.previousSlideName = s.slideName();
-    s.currentNum++;
+    s.previousSlideName = s.slideName(s.nav.calcPrevNum(s.currentNum));
+    s.currentNum = s.nav.calcNextNum(s.currentNum);
 
-    return s.slideName();
+    return s.slideName(s.currentNum);
 };
 
 s.previous = function () {
     if (s.currentNum <= 0) {
         return s.slideName();
     }
-    s.previousSlideName = s.slideName();
-    s.currentNum--;
+    s.previousSlideName = s.slideName(s.nav.calcPrevNum(s.currentNum));
+    s.currentNum = s.nav.calcPrevNum(s.currentNum);
 
-    return s.slideName();
+    return s.slideName(s.currentNum);
 };
 
 s.currentNode = function () {
@@ -121,7 +149,7 @@ s.change = function (paramMap) {
         s.currentNum = slideNum;
     }
 
-    s.highlightFunc();
+//    s.highlightFunc();
 }
 
 
