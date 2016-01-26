@@ -221,7 +221,18 @@ utils.parseSlideNum = function (hash) {
     if (!hash || hash.charAt(0) != "#") return 0;
 
     return hash.substring(hash.indexOf("-") + 1);
+}
 
+/**
+ * Scroll window to an elements y location
+ **/
+utils.scrollToY = function (element) {
+    if (element.scrollIntoView) {
+        element.scrollIntoView();
+    } else {
+        var rect = element.getBoundingClientRect();
+        window.scrollTo(0, rect.top);
+    }
 }
 
 
