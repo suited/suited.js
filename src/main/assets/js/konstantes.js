@@ -19,7 +19,8 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    limitations under the License.
 */
 
-var konstants = {
+var konstantes = {
+    idPrefix:"slide-",
     slideAttr: "data-slide",
     slideTypes: {
         "data-figure": "figure", //vis in doc and deck
@@ -37,4 +38,4 @@ var konstants = {
     modes: ["doc", "deck", "walkthrough"]
 }
 
-module.exports = konstants;
+module.exports = konstantes;
