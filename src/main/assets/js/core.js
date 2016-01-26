@@ -55,8 +55,15 @@ core.maxModalWidth = 0;
 core.maxModalHeight = 0;
 
 core.showSlide = function () {
+    var isDoc = state.isDoc();
     var isDeck = state.isDeck();
     var isWalk = state.isWalkthrough();
+
+    //unhide all slides
+    var slides = utils.selects("section[data-slide]");
+    for (var i = 0; i < slides.length; ++i) {
+        utils.classed(slides[i], "not-displayed", false);
+    }
 
     var slideWall = document.getElementById("slideWall");
     utils.classed(slideWall, "slide-backdrop", isDeck);
@@ -88,12 +95,39 @@ core.showSlide = function () {
     utils.placeIn(modal, temp);
 }
 
-core.highlightFunc = core.showSlide; //Idea is to have dynamic highlight functions when changing the mode;
+core.showDoc = function () {
+    var isDoc = state.isDoc();
+    var isDeck = state.isDeck();
+    var isWalk = state.isWalkthrough();
+
+    var slideWall = document.getElementById("slideWall");
+    utils.classed(slideWall, "slide-backdrop", false);
+    slideWall.setAttribute("style", "opacity: 0");
+
+    var slideHolder = document.getElementById("slideHolder");
+    utils.classed(slideHolder, "slide-holder", false);
+
+    utils.classed(state.previousNode(), "slide-highlight", false);
+    utils.classed(state.previousNode(), "muted", false);
+
+    var currentNode = state.currentNode();
+    utils.classed(currentNode, "slide-highlight", false);
+    utils.classed(currentNode, "muted", false);
+
+    //hide all slides
+    var slides = utils.selects("section[data-slide]");
+    for (var i = 0; i < slides.length; ++i) {
+        utils.classed(slides[i], "not-displayed", true);
+    }
+
+};
+
+core.highlightFunc = core.showDoc; //Idea is to have dynamic highlight functions when changing the mode;
 
 core.displays = {
-    slideDeck: core.showSlide,
+    deck: core.showSlide,
     walkthrough: core.showSlide,
-    doc: core.showSlide
+    doc: core.showDoc
 };
 
 
@@ -101,12 +135,12 @@ core.changeHighlightFunc = function (mode) {
 
     var wantedMode = mode
 
-    core.highlightFunc = core.showSlide; //TODO The highlightFunc can be updated here based on mode. For now all the same function// NB showSlide uses state
+    core.highlightFunc = core.displays[mode]; //TODO The highlightFunc can be updated here based on mode. For now all the same function// NB showSlide uses state
 }
 
 core.toggleMode = function () {
     state.toggleMode();
-    core.changeHighlightFunc();
+    core.changeHighlightFunc(state.mode);
     core.highlightFunc();
 }
 
@@ -117,6 +151,7 @@ core.hashChanged = function (location) {
     var paramMap = utils.parseParams(location.search);
 
     state.change(paramMap);
+    core.highlightFunc();
 };
 
 
@@ -193,7 +228,7 @@ core.init = function () {
     slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
 
     //Default display function is doc.        
-    state.highlightFunc = core.displays.doc;
+    core.changeHighlightFunc("doc");
 
     //Put everything in the right state
     core.hashChanged(window.location);
