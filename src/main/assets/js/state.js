@@ -94,9 +94,11 @@ s.slideName = function (slidenum) {
 };
 
 s.previousSlideName = s.slideName(); //initially
+s.nextSlideName = s.slideName(); //initially
 
 s.next = function () {
     s.previousSlideName = s.slideName(s.nav.calcPrevNum(s.currentNum));
+    s.nextSlideName = s.slideName(s.nav.calcNextNum(s.currentNum));
     s.currentNum = s.nav.calcNextNum(s.currentNum);
 
     return s.slideName(s.currentNum);
@@ -107,6 +109,7 @@ s.previous = function () {
         return s.slideName();
     }
     s.previousSlideName = s.slideName(s.nav.calcPrevNum(s.currentNum));
+    s.nextSlideName = s.slideName(s.currentNum);
     s.currentNum = s.nav.calcPrevNum(s.currentNum);
 
     return s.slideName(s.currentNum);
@@ -118,6 +121,10 @@ s.currentNode = function () {
 
 s.previousNode = function () {
     return document.getElementById(s.previousSlideName);
+};
+
+s.nextNode = function () {
+    return document.getElementById(s.nextSlideName);
 };
 
 s.setMode = function (mode) {
@@ -149,7 +156,7 @@ s.change = function (paramMap) {
         s.currentNum = slideNum;
     }
 
-//    s.highlightFunc();
+    //    s.highlightFunc();
 }
 
 
