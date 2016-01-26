@@ -22,7 +22,7 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 */
 
 var config = {
-    modalBackdropOpacity: 0.5
+    modalBackdropOpacity: 0.8
 };
 
 module.exports = config;
