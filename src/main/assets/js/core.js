@@ -97,49 +97,16 @@ core.displays = {
 };
 
 
-
-////TODO check if attr Values is an array or a function(dia) and call it to set the values
-///* attValues is an array of values or a function(index, origArray) that returns the value for each item in the array */
-//core.tag = function (nodeList, attrName, attrValues) {
-//    for (var i = 0; i < nodeList.length; ++i) {
-//        var theValue = (!attrValues) ? '' : attrValues(i);
-//        nodeList[i].setAttribute(attrName, theValue);
-//
-//    }
-//};
-//
-//core.wrapDiv = function (element, id, clazz) {
-//    var theHtml = element.innerHTML;
-//    var newHtml = '<div class="' + clazz + '" id="' + id + '" >' + theHtml + '</div>';
-//    element.innerHTML = newHtml;
-//}
-
-//core.number = function (nodeList) {
-//    state.numSlides = nodeList.length - 1;
-//
-//    //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
-//    // ... perhaps wrap in reverse order?
-//    //        for (var i = 0; i < state.numSlides; ++i) {
-//    for (var i = (state.numSlides); i >= 0; i--) {
-//        var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
-//        core.wrapDiv(item, "slide-" + i, "slide");
-//        var childSlides = utils.selects("section[data-slide]", item);
-//        core.tag(childSlides, "data-sub-slide");
-//    }
-//};
-
 core.changeHighlightFunc = function (mode) {
 
-    core.highlightFunc = core.showSlide; // The highlightFunc can be updated here based on mode. For now all the same function
+    var wantedMode = mode
+
+    core.highlightFunc = core.showSlide; //TODO The highlightFunc can be updated here based on mode. For now all the same function// NB showSlide uses state
 }
 
 core.toggleMode = function () {
     state.toggleMode();
-    core.changeHighlightFunc(state.mode);
-
-    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode + "#" + state.slideName());
-    console.log("slide=" + state.slideName() + " state.mode is " + state.mode);
-
+    core.changeHighlightFunc();
     core.highlightFunc();
 }
 
@@ -164,7 +131,7 @@ core.key = function () {
         var kc = evt.keyCode;
         switch (kc) {
             case 27: //escape
-                state.mode = k.mode[k.mode.length - 1]; // dirty little hack..... because it assumes toggle will wrap around and that doc is the first in the list.
+                state.mode = k.modes[k.modes.length - 1]; // dirty little hack..... because it assumes toggle will wrap around and that doc is the first in the list.
                 core.toggleMode();
                 console.log("Mode reset to doc");
 
@@ -208,7 +175,7 @@ core.key = function () {
 
 
 core.init = function () {
-    state.numSlides = utils.number(utils.selects("section[" + k.slideAttr + "]"));
+    state.numSlides = utils.number(utils.selects("section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]"), state);
     core.key();
 
     // add placeholder for Modal backdrop
