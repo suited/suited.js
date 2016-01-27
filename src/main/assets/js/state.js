@@ -56,7 +56,7 @@ var State = function (desiredPos, desiredMode) {
                 var numSlides = nav.modepos[mode].length; 
                 
                 if (start >= numSlides) {
-                    return numSlides - 1;
+                    return nav.calcPrevNum(start);
                 } else {
                     var tryme = start + 1;
                     if (!(nav.modepos[mode][tryme])) {
@@ -68,6 +68,7 @@ var State = function (desiredPos, desiredMode) {
             /** recurs becwards loolin for a valid value for mode.
             @param start = starting num, usually s.currentNum */
             calcPrevNum: function (start) {
+                start = Number(start);
                 if (start <= 0) {
                     return 0;
                 } else {
