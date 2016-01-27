@@ -28,9 +28,11 @@ var utils = require('./utils.js');
 
 var modes = konstants.modes;
 var k = konstants;
+var State = function (desiredPos, desiredMode) {
 
-var s = function (desiredPos, desiredMode) {
-
+    
+        var self = this; //For the private methods
+    
         //sanity
         /* Initialise states */
         var currentNum = (desiredPos) ? Number(desiredPos) : 0;
@@ -50,11 +52,14 @@ var s = function (desiredPos, desiredMode) {
         var nav = {
             modepos: {},
             calcNextNum: function (start) {
-                if (start >= s.numSlides) {
-                    return s.numSlides;
+                start = Number(start);
+                var numSlides = nav.modepos[mode].length; 
+                
+                if (start >= numSlides) {
+                    return numSlides - 1;
                 } else {
                     var tryme = start + 1;
-                    if (!(nav.modepos[s.mode][tryme])) {
+                    if (!(nav.modepos[mode][tryme])) {
                         return nav.calcNextNum(tryme);
                     } else
                         return tryme;
@@ -67,7 +72,7 @@ var s = function (desiredPos, desiredMode) {
                     return 0;
                 } else {
                     var tryme = start - 1;
-                    if (!(nav.modepos[s.mode][tryme])) {
+                    if (!(nav.modepos[mode][tryme])) {
                         return nav.calcPrevNum(tryme);
                     } else
                         return tryme;
@@ -91,19 +96,30 @@ var s = function (desiredPos, desiredMode) {
 
         this.isWalkthrough = function isWalkthrough() {
                 return (mode === modes[2]);
-            }
+        }
             //---------------
 
+        function makeSlideName(num) {
+            return slidePrefix + num;
+        }
+        
         this.currentSlideName = function currentSlideName() {
-            return slidePrefix + currentNum;
+            return makeSlideName(currentNum);
         }
 
         // private
-        function changeState(fnChange, fnBeforeStateChange, fnAfterStateChange) {
-            fnBeforeStateChange(currentSlideName());
+        function changeSlide(fnChange, fnBeforeStateChange, fnAfterStateChange) {
+            if (fnBeforeStateChange) {
+                fnBeforeStateChange(self.currentSlideName());
+            }
+            
             currentNum = fnChange(currentNum);
-            fnAfterStateChange(currentSlideName());
-            return currentSlideName();
+            
+            if (fnAfterStateChange) {
+                fnAfterStateChange(self.currentSlideName());
+            }
+            
+            return self.currentSlideName();
         }
 
         // private
@@ -129,7 +145,7 @@ var s = function (desiredPos, desiredMode) {
         }
 
         this.populateNavs = function populateNavs(listNavigableNodes) {
-            for (var i = 0; listNavigableNodes.length; i++) {
+            for (var i = 0; i < listNavigableNodes.length; i++) {
                 populateNav(listNavigableNodes[i], i);
             }
         }
@@ -138,17 +154,39 @@ var s = function (desiredPos, desiredMode) {
          * modifies state to change current. 
          * @returns new currentID name.
          **/
-        this.next = function next(fnBeforeStateChange, fnAfterStateChange) {
-            changeState(nav.calcNextNum, fnBeforeStateChange, fnAfterStateChange);
+        this.next = function next() {
+            return makeSlideName(nav.calcNextNum(currentNum));
         };
 
         /**
          * modifies state to change current. 
          * @returns new currentID name.
          **/
-        this.previous = function previous(fnBeforeStateChange, fnAfterStateChange) {
-            changeState(nav.calcPrevNum, fnBeforeStateChange, fnAfterStateChange);
+        this.previous = function previous() {
+            return makeSlideName(nav.calcPrevNum(currentNum));
         };
+    
+        this.changeMode = function (newMode, fnBeforeModeChange, fnAfterModeChange) {
+            var bMode = mode;
+            
+            if (k.modes.indexOf(newMode) < 0) {
+                newMode = k.modes[0];
+            }
+            
+            if (fnBeforeModeChange) {
+                fnBeforeModeChange(bMode, newMode);
+            }
+            
+            // NB this is the real state change
+            mode = newMode;
+            console.debug("slide=" + this.currentSlideName() + " state.mode is " + mode);
+
+            if (fnAfterModeChange) {
+                fnAfterModeChange(bMode, mode);
+            }
+            
+            return mode;
+        }
 
         //TODO refactor to listen for mode chage event
         /**
@@ -162,31 +200,24 @@ var s = function (desiredPos, desiredMode) {
             if (modeNum >= modes.length) {
                 modeNum = 0;
             }
-            var bMode = mode;
-            fnBeforeModeChange(bMode, modes[modeNum]);
-
-            // NB this is the real state change
-            mode = modes[modeNum];
-            console.debug("slide=" + currentSlideName() + " state.mode is " + mode);
-
-            fnAfterModeChange(bMode, mode);
-
-            return mode;
+         
+            return this.changeMode(modes[modeNum], fnBeforeModeChange, fnAfterModeChange);
         };
-
-        //        function change (paramMap) {
-        //            s.setMode(paramMap.mode);
-        //
-        //            var slideNum = utils.parseSlideNum(location.hash);
-        //            if (s.currentNum != slideNum) {
-        //                s.previousSlideName = s.currentSlideName();
-        //                s.currentNum = slideNum;
-        //            }
-        //
-        //            //    s.highlightFunc();
-        //        }
+    
+        this.changeState = function (newSlideNumber, newMode, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange) {
+            
+            if (currentNum != newSlideNumber) {
+                
+                changeSlide(function() {return newSlideNumber;}, fnBeforeSlideChange, fnAfterSlideChange);
+            }
+            
+            if (mode != newMode) {
+                this.changeMode(newMode, fnBeforeModeChange, fnAfterModeChange);
+            }
+            
+        };
 
     } // end constructor
 
 
-module.exports = s;
+module.exports = State;
