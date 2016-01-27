@@ -192,7 +192,7 @@ core.addKeyListeners = function () {
                 console.log("Previous " + evt.keyCode);
                 var prevHash = window.location.hash;
                 
-                window.location.hash = state.previous(core.defaultBefore, core.defaultAfter); //side effect on state            
+                window.location.hash = state.previous(); //side effect on state            
                 
                 //If previous did not change the location then we can assume we are at the beginning. Clear hash to scroll all the way to the top
                 if (prevHash === window.location.hash) {
@@ -203,7 +203,7 @@ core.addKeyListeners = function () {
                 break;
             case 39: // Right arrow
                 console.log("Next " + evt.keyCode);
-                window.location.hash = state.next(core.defaultBefore, core.defaultAfter); // side effect on state
+                window.location.hash = state.next(); // side effect on state
                 console.log("slide=" + state.currentSlideName() + " state.mode is " + state.mode());
                 break;
             case 83: //s
