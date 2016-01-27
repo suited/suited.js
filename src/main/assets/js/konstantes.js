@@ -20,7 +20,7 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 */
 
 var konstantes = {
-    idPrefix:"slide-",
+    idPrefix: "slide-",
     slideAttr: "data-slide",
     slideTypes: {
         "data-figure": "figure", //vis in doc and deck
@@ -35,7 +35,11 @@ var konstantes = {
     modalBackdrop: "slideWall",
     slideHolder: "slideHolder",
     modal: "modal",
-    modes: ["doc", "deck", "walkthrough"]
+    modes: ["doc", "deck", "walkthrough"],
+    defaultTnames: {
+        "jump": "jump",
+        "scrollzoom": "scrollzoom"
+    }
 }
 
 module.exports = konstantes;
