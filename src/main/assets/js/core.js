@@ -87,6 +87,8 @@ core.defaultAfter = function (slideId) {
 
         utils.placeIn(modal, temp);
     }
+    
+    currentNode.scrollIntoView({block: "start", behavior: "smooth"});
 };
 
 core.defaultBeforeModeChange = function (oldmode, newmode) {
@@ -137,8 +139,12 @@ core.defaultAfterModeChange = function (oldmode, newmode) {
 
 core.toggleMode = function () {
     state.toggleMode(core.defaultBeforeModeChange, core.defaultAfterModeChange);
+    
+    //We need to do this because going into deck, we need to do the slide stuff.
+    core.defaultAfter(state.currentSlideName());
+    
     //fix location bar
-    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + mode + "#" + s.currentSlideName());
+    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode() + "#" + state.currentSlideName());
 }
 
 
@@ -148,12 +154,14 @@ core.hashChanged = function (location) {
 
     var theSlideNum = utils.parseSlideNum(window.location.hash);
     var queryParams = utils.parseParams(window.location.search);
-    state = new State(theSlideNum, queryParams["mode"]);
-    //TODO pos move to contructor
-    state.isDeck();
-    state.populateNavs(utils.selects(selectString));
-    core.defaultAfterModeChange("doc", state.mode());
-    core.defaultAfter(state.currentSlideName());
+    if (!state.changeState) {
+        state = new State(theSlideNum, queryParams["mode"]);
+        //TODO pos move to contructor
+        state.populateNavs(utils.selects(selectString));
+    }
+    else {
+        state.changeState(theSlideNum, queryParams["mode"], core.defaultBefore, core.defaultAfter, core.defaultBeforeModeChange, core.defaultAfterModeChange);
+    }
 
 };
 
@@ -169,14 +177,21 @@ core.addKeyListeners = function () {
         var kc = evt.keyCode;
         switch (kc) {
             case 27: //escape
-                state.mode = k.modes[k.modes.length - 1]; // dirty little hack..... because it assumes toggle will wrap around and that doc is the first in the list.
-                core.toggleMode();
+                state.changeMode(k.modes[0], core.defaultBeforeModeChange, core.defaultAfterModeChange);
                 console.log("Mode reset to doc");
 
                 break;
             case 37: // Left arrow
                 console.log("Previous " + evt.keyCode);
-                window.location.hash = state.previous(core.defaultBefore, core.defaultAfter);; //side effect on state            
+                var prevHash = window.location.hash;
+                
+                window.location.hash = state.previous(core.defaultBefore, core.defaultAfter); //side effect on state            
+                
+                //If previous did not change the location then we can assume we are at the beginning. Clear hash to scroll all the way to the top
+                if (prevHash === window.location.hash) {
+                    window.location.hash = "";
+                }
+                
                 console.log("slide=" + state.currentSlideName() + " state.mode is " + state.mode());
                 break;
             case 39: // Right arrow
@@ -193,7 +208,7 @@ core.addKeyListeners = function () {
             case 84: //t
                 if (evt.shiftKey) {
                     window.location.hash = "";
-                    core.setMode(k.mode[0]);
+
                     console.log("current mode: " + state.mode());
                 }
                 break;
@@ -206,11 +221,6 @@ core.addKeyListeners = function () {
 core.init = function () {
     var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
     utils.number(utils.selects(selectString));
-
-
-
-    //interactivity
-    core.addKeyListeners();
 
     // add placeholder for Modal backdrop
     var b = document.body;
@@ -228,8 +238,13 @@ core.init = function () {
     slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
 
 
-    //Put everything in the right state // side effect on state
-    core.hashChanged(window.location);
+    //Create new state object and put everything in the right state 
+    core.hashChanged(window.location);    
+    core.defaultAfterModeChange("doc", state.mode());
+    core.defaultAfter(state.currentSlideName());
+    
+    //interactivity
+    core.addKeyListeners();
 
     window.addEventListener("hashchange", function (e) {
         core.hashChanged(window.location);
