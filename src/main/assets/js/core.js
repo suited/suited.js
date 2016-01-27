@@ -119,7 +119,7 @@ core.defaultAfterModeChange = function (oldmode, newmode) {
     //hide or reveal all slides as required
     var slides = utils.selects("section[data-slide]");
     for (var i = 0; i < slides.length; ++i) {
-        utils.classed(slides[i], "not-displayed", isDoc);
+        utils.classed(slides[i], "not-displayed", isDoc || isWalk);
     }
 
     var slideWall = document.getElementById("slideWall");
@@ -136,17 +136,24 @@ core.defaultAfterModeChange = function (oldmode, newmode) {
 
 };
 
-
-core.toggleMode = function () {
-    state.toggleMode(core.defaultBeforeModeChange, core.defaultAfterModeChange);
+/**
+ * Toggle the presentation mode. If newMode is provided then set mode to that, else get state to switch to the next mode
+ * @param {String} newMode (Optional) The mode to switch to. If left out then next mode is selected
+ */
+core.toggleMode = function (newMode) {
+    if (newMode) {
+         state.changeMode(newMode, core.defaultBeforeModeChange, core.defaultAfterModeChange);
+    }
+    else {
+        state.toggleMode(core.defaultBeforeModeChange, core.defaultAfterModeChange);
+    }
     
-    //We need to do this because going into deck, we need to do the slide stuff.
+        //We need to do this because going into deck, we need to do the slide stuff.
     core.defaultAfter(state.currentSlideName());
     
     //fix location bar
     window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode() + "#" + state.currentSlideName());
 }
-
 
 core.hashChanged = function (location) {
     console.log("Location changed!" + location);
@@ -177,7 +184,7 @@ core.addKeyListeners = function () {
         var kc = evt.keyCode;
         switch (kc) {
             case 27: //escape
-                state.changeMode(k.modes[0], core.defaultBeforeModeChange, core.defaultAfterModeChange);
+                core.toggleMode(k.modes[0]);
                 console.log("Mode reset to doc");
 
                 break;
