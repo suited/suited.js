@@ -28,6 +28,9 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 
 var konstants = require('./konstantes.js');
 var k = konstants;
+
+var konfig = require('./konfig.js');
+var c = konfig;
 /**
  * Return the list of CSS classes on the element as an array 
  * @param   {Element} element The element to inspect for classes
@@ -209,6 +212,33 @@ utils.scrollToY = function (element) {
         var rect = element.getBoundingClientRect();
         window.scrollTo(0, rect.top);
     }
+}
+
+/**
+ * find the correct transition function for the direction elementId and mode
+ * first check the element for a clue ie look for attribute transition
+ * then look at the config to find the one for the mode (it may have been overidden)
+ * once we have a name, look it up then return the direction for that transition.
+ **/
+utils.findTransition = function (direction, elId, mode) {
+    mode = (!!mode) ? mode : "doc";
+    var el = document.getElementById(elId);
+    var tname = "jump"; //default
+    var defaultModeTName = c.transitionName[mode];
+    defaultModeTName = (!!defaultModeTName) ? defaultModeTName : c.transitionName["doc"];
+
+    if (el.hasAttribute("transition")) {
+        var attrV = el.getAttribute("transition");
+        tname = (!!attrV) ? attrV : defaultModeTName;
+    }
+
+    //we now know the tname so look it up
+    var transition = c.transitions[tname];
+    if (!transition) {
+        transition = c.transitions["jump"];
+    }
+    return transition[direction];
+
 }
 
 

@@ -19,7 +19,7 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    limitations under the License.
 */
 
-var konstantes = {
+var k = {
     idPrefix: "slide-",
     slideAttr: "data-slide",
     slideTypes: {
@@ -37,9 +37,34 @@ var konstantes = {
     modal: "modal",
     modes: ["doc", "deck", "walkthrough"],
     defaultTnames: {
+        "scroll": "scroll",
         "jump": "jump",
         "scrollzoom": "scrollzoom"
     }
 }
 
-module.exports = konstantes;
+k.defaultTransitions = {};
+k.defaultTransitions.jump = {};
+k.defaultTransitions.jump.left = function (elId) {
+    var prevHash = window.location.hash;
+
+    window.location.hash = elId; //side effect on state            
+
+    //If previous did not change the location then we can assume we are at the beginning. Clear hash to scroll all the way to the top
+    if (prevHash === window.location.hash) {
+        window.location.hash = "";
+    }
+
+};
+k.defaultTransitions.jump.right = function (elId) {
+    window.location.hash = elId;
+};
+k.defaultTransitions.jump.up = k.defaultTransitions.jump.left;
+k.defaultTransitions.jump.down = k.defaultTransitions.jump.right;
+
+k.defaultTransitions.scroll = k.defaultTransitions.jump; //TODO fixme when scroll implemented
+k.defaultTransitions.scrollzoom = k.defaultTransitions.jump; //TODO fixme when scrollzoom implemented
+
+
+
+module.exports = k;
