@@ -26,7 +26,7 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 
 
 
-var konstants = require('./konstants.js');
+var konstants = require('./konstantes.js');
 var k = konstants;
 /**
  * Return the list of CSS classes on the element as an array 
@@ -125,7 +125,7 @@ NB state requires utils... so state is passed into this func as it is called to 
 
 @return number of slides
 **/
-utils.number = function (nodeList, state) {
+utils.number = function (nodeList) {
     var numSlides = nodeList.length - 1;
 
     //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
@@ -134,13 +134,10 @@ utils.number = function (nodeList, state) {
     for (var i = (numSlides); i >= 0; i--) {
         var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
         utils.wrapDiv(item, "slide-" + i, "slide");
-
-        //populate nav structure
-        utils.populateNav(item, i, state.nav);
         var childSlides = utils.selects("section[data-slide]", item);
         utils.tag(childSlides, "data-sub-slide");
     }
-    return numSlides;
+    return;
 };
 
 utils.typeSlide = function (slideEl) {
@@ -153,27 +150,6 @@ utils.typeSlide = function (slideEl) {
     return ret;
 }
 
-//looks at the slide and puts it in the right location in the nav structure 
-utils.populateNav = function (slideEl, position, nav) {
-    //TODO create a rule object so we can walk trough all modes applying the rules, rather than hardcode all values.
-    switch (utils.typeSlide(slideEl)) {
-        case "figure":
-            nav.modepos.doc[position] = true;
-            nav.modepos.deck[position] = true;
-            nav.modepos.walkthrough[position] = true;
-            break;
-        case "slide":
-            nav.modepos.doc[position] = false;
-            nav.modepos.deck[position] = true;
-            nav.modepos.walkthrough[position] = false;
-            break;
-        default:
-            nav.modepos.doc[position] = false;
-            nav.modepos.deck[position] = false;
-            nav.modepos.walkthrough[position] = false;
-            break;
-    }
-}
 
 utils.placeIn = function (container, child) {
     var width = child.clientWidth;
@@ -221,7 +197,18 @@ utils.parseSlideNum = function (hash) {
     if (!hash || hash.charAt(0) != "#") return 0;
 
     return hash.substring(hash.indexOf("-") + 1);
+}
 
+/**
+ * Scroll window to an elements y location
+ **/
+utils.scrollToY = function (element) {
+    if (element.scrollIntoView) {
+        element.scrollIntoView();
+    } else {
+        var rect = element.getBoundingClientRect();
+        window.scrollTo(0, rect.top);
+    }
 }
 
 
