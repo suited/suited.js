@@ -21,8 +21,17 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    limitations under the License.
 */
 
-var config = {
-    modalBackdropOpacity: 0.8
+var konstants = require('./konstantes.js');
+var k = konstants;
+
+var c = {};
+
+c.modalBackdropOpacity = 0.8;
+
+c.transition = {};
+c.transition.deck = k.defaultTnames["jump"];
+c.transition.walkthrough = k.defaultTnames["scrllzoom"];
+
 };
 
-module.exports = config;
+module.exports = c;
