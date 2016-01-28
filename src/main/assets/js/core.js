@@ -87,8 +87,11 @@ core.defaultAfter = function (slideId) {
 
         utils.placeIn(modal, temp);
     }
-    
-    currentNode.scrollIntoView({block: "start", behavior: "smooth"});
+
+    currentNode.scrollIntoView({
+        block: "start",
+        behavior: "smooth"
+    });
 };
 
 core.defaultBeforeModeChange = function (oldmode, newmode) {
@@ -142,15 +145,14 @@ core.defaultAfterModeChange = function (oldmode, newmode) {
  */
 core.toggleMode = function (newMode) {
     if (newMode) {
-         state.changeMode(newMode, core.defaultBeforeModeChange, core.defaultAfterModeChange);
-    }
-    else {
+        state.changeMode(newMode, core.defaultBeforeModeChange, core.defaultAfterModeChange);
+    } else {
         state.toggleMode(core.defaultBeforeModeChange, core.defaultAfterModeChange);
     }
-    
-        //We need to do this because going into deck, we need to do the slide stuff.
+
+    //We need to do this because going into deck, we need to do the slide stuff.
     core.defaultAfter(state.currentSlideName());
-    
+
     //fix location bar
     window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode() + "#" + state.currentSlideName());
 }
@@ -165,8 +167,7 @@ core.hashChanged = function (location) {
         state = new State(theSlideNum, queryParams["mode"]);
         //TODO pos move to contructor
         state.populateNavs(utils.selects(selectString));
-    }
-    else {
+    } else {
         state.changeState(theSlideNum, queryParams["mode"], core.defaultBefore, core.defaultAfter, core.defaultBeforeModeChange, core.defaultAfterModeChange);
     }
 
@@ -190,20 +191,22 @@ core.addKeyListeners = function () {
                 break;
             case 37: // Left arrow
                 console.log("Previous " + evt.keyCode);
-                var prevHash = window.location.hash;
-                
-                window.location.hash = state.previous(); //side effect on state            
-                
-                //If previous did not change the location then we can assume we are at the beginning. Clear hash to scroll all the way to the top
-                if (prevHash === window.location.hash) {
-                    window.location.hash = "";
-                }
-                
+
+                //handle state change and transition
+                var elId = state.previous(); //side effect on state.mode
+                var transitionFunc = utils.findTransition("left", elId, state.mode());
+                transitionFunc(elId);
+
                 console.log("slide=" + state.currentSlideName() + " state.mode is " + state.mode());
                 break;
             case 39: // Right arrow
                 console.log("Next " + evt.keyCode);
-                window.location.hash = state.next(); // side effect on state
+
+                //handle state change and transition
+                var elId = state.next(); // side effect on state
+                var transitionFunc = utils.findTransition("right", elId, state.mode());
+                transitionFunc(elId);
+
                 console.log("slide=" + state.currentSlideName() + " state.mode is " + state.mode());
                 break;
             case 83: //s
@@ -246,10 +249,10 @@ core.init = function () {
 
 
     //Create new state object and put everything in the right state 
-    core.hashChanged(window.location);    
+    core.hashChanged(window.location);
     core.defaultAfterModeChange("doc", state.mode());
     core.defaultAfter(state.currentSlideName());
-    
+
     //interactivity
     core.addKeyListeners();
 
