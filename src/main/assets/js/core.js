@@ -78,7 +78,7 @@ core.defaultAfter = function (slideId) {
         var modal = document.getElementById("modal");
 
         var temp = document.createElement("div");
-        temp.setAttribute("style", "display: inline-block; visible: false;");
+        //temp.setAttribute("style", "display: inline-block; visible: false;");
 
         document.body.appendChild(temp);
         temp.innerHTML = currentNode.innerHTML;
@@ -130,10 +130,12 @@ core.defaultAfterModeChange = function (oldmode, newmode) {
     slideWall.setAttribute("style", "opacity: " + c.modalBackdropOpacity);
 
     var slideHolder = document.getElementById("slideHolder");
+    utils.classed(slideHolder, "container", isDeck);
     utils.classed(slideHolder, "slide-holder", isDeck);
 
 
     var modal = document.getElementById("modal");
+    utils.classed(modal, "row", isDeck);
     utils.classed(modal, "slide-box", isDeck);
     utils.classed(modal, "not-displayed", !isDeck);
 
@@ -245,8 +247,8 @@ core.init = function () {
     b.appendChild(slideHolder);
 
     //Add the modal backdrop element TODO template layouty stuff should do this
-    slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
-
+    //slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
+    slideHolder.innerHTML = '<div id="' + k.modal + '" class="row"></div>';
 
     //Create new state object and put everything in the right state 
     core.hashChanged(window.location);

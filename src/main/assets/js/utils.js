@@ -154,7 +154,24 @@ utils.typeSlide = function (slideEl) {
 }
 
 
-utils.placeIn = function (container, child) {
+
+utils.placeIn = function(container, child) {
+    container.innerHTML = "";
+    
+    utils.classed(child, "col-xs-12 ", true);
+    
+    var preElements = child.getElementsByTagName("pre")
+    if (preElements.length > 0) {
+        utils.classed(child, "col-xs-offset-0", true);
+    }
+    else {
+        utils.classed(child, "col-xs-offset-0 col-sm-offset-1 col-md-offset-2", true);
+    }
+    
+    container.appendChild(child);
+}
+    
+utils.placeInOld = function (container, child) {
     var width = child.clientWidth;
     var height = child.clientHeight;
 
