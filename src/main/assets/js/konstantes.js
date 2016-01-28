@@ -47,14 +47,11 @@ k.defaultTransitions = {};
 k.defaultTransitions.jump = {};
 k.defaultTransitions.jump.left = function (elId) {
     var prevHash = window.location.hash;
-
     window.location.hash = elId; //side effect on state            
-
     //If previous did not change the location then we can assume we are at the beginning. Clear hash to scroll all the way to the top
     if (prevHash === window.location.hash) {
         window.location.hash = "";
     }
-
 };
 k.defaultTransitions.jump.right = function (elId) {
     window.location.hash = elId;
@@ -62,7 +59,28 @@ k.defaultTransitions.jump.right = function (elId) {
 k.defaultTransitions.jump.up = k.defaultTransitions.jump.left;
 k.defaultTransitions.jump.down = k.defaultTransitions.jump.right;
 
-k.defaultTransitions.scroll = k.defaultTransitions.jump; //TODO fixme when scroll implemented
+k.defaultTransitions.scroll = {};
+k.defaultTransitions.scroll.left = function (elId) {
+    var el = document.getElementById(elId);
+    if (el.scrollIntoView) {
+        //    if (false) {
+        el.scrollIntoView({
+            block: "end",
+            behavior: "smooth"
+        });
+    } else {
+        var rect = el.getBoundingClientRect();
+        window.scrollTo(0, rect.top);
+        //fix location bar
+
+    }
+
+};
+k.defaultTransitions.scroll.right = k.defaultTransitions.scroll.left;
+k.defaultTransitions.scroll.up = k.defaultTransitions.scroll.left;
+k.defaultTransitions.scroll.down = k.defaultTransitions.scroll.left;
+
+
 k.defaultTransitions.scrollzoom = k.defaultTransitions.jump; //TODO fixme when scrollzoom implemented
 
 

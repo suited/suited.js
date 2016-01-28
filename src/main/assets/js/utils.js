@@ -230,6 +230,8 @@ utils.findTransition = function (direction, elId, mode) {
     if (el.hasAttribute("transition")) {
         var attrV = el.getAttribute("transition");
         tname = (!!attrV) ? attrV : defaultModeTName;
+    } else {
+        tname = defaultModeTName;
     }
 
     //we now know the tname so look it up

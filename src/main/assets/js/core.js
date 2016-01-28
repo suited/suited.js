@@ -194,8 +194,12 @@ core.addKeyListeners = function () {
 
                 //handle state change and transition
                 var elId = state.previous(); //side effect on state.mode
+                var slideNum = utils.parseSlideNum("#" + elId);
                 var transitionFunc = utils.findTransition("left", elId, state.mode());
                 transitionFunc(elId);
+                state.changeState(slideNum, state.mode(), core.defaultBefore, core.defaultAfter, core.defaultBeforeModeChange, core.defaultAfterModeChange);
+
+                window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode() + "#" + state.currentSlideName());
 
                 console.log("slide=" + state.currentSlideName() + " state.mode is " + state.mode());
                 break;
@@ -204,8 +208,11 @@ core.addKeyListeners = function () {
 
                 //handle state change and transition
                 var elId = state.next(); // side effect on state
+                var slideNum = utils.parseSlideNum("#" + elId);
                 var transitionFunc = utils.findTransition("right", elId, state.mode());
                 transitionFunc(elId);
+                state.changeState(slideNum, state.mode(), core.defaultBefore, core.defaultAfter, core.defaultBeforeModeChange, core.defaultAfterModeChange);
+                window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.mode() + "#" + state.currentSlideName());
 
                 console.log("slide=" + state.currentSlideName() + " state.mode is " + state.mode());
                 break;
