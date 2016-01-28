@@ -15,6 +15,7 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 
 */
 
+
 .not-displayed {
     display: none;
 }
@@ -55,25 +56,108 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
     margin: 0 auto;
     /*width: 100%;*/
     background: #fff;
-    width: 70%;
+    width: 90%;
+    height: 90%;
     padding: 15px;
     border-radius: 4px;
     box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 3;
     position: absolute;
-    top: 15;
-    bottom: 15;
+    z-index: 3;
+    top: 30px;
     right: 0;
     left: 0;
-    /*  outline: thin dashed green;  
-*/
+    font-size: 2.5em;
+    font-family: $font-family-sans-serif;
+    text-align: left;
+    
+    @media (max-width: $screen-md-max) {
+        font-size: 2em;
+    };
+    
+    @media (max-width: $screen-sm-max) {
+        font-size: 1.5em;
+    };
+    
+    @media (max-width:  $screen-xs-max) {
+        font-size: 1em;
+    }
+    
+    
 }
+
+.slide-box h1 {
+    text-transform: uppercase;
+    font-weight: $h-font-weight;
+    font-size: 3em;
+}
+
+.slide-box h2 {
+    font-weight: $h-font-weight;
+    font-size: 2.5em;
+}
+
+.slide-box h3 {
+    font-weight: $h-font-weight;
+    font-size: 2em;
+}
+
+.slide-box h4 {
+    font-weight: $h-font-weight;
+    font-size: 1.7em;
+}
+
+.slide-box h5 {
+    font-weight: $h-font-weight;
+    font-size: 1.5em;
+}
+
+.slide-box h6 {
+    font-weight: $h-font-weight;
+    font-size: 1.2em;
+}
+
 .slide-box.scrollable {
-    height: 80%;
     overflow-y: scroll;
 }
 
+.slide-box li {
+    
+    //Want to reduce space between list items
+
+}
+
+.slide-box img{
+//    position: absolute;
+//    margin: auto;
+//    top: 0;
+//    left: 0;
+//    right: 0;
+//    bottom: 0; 
+}
+
+.slide-box pre {
+//    font-size: 1em;
+    width: 100%;
+    font-variant: normal;
+    font-family: monospace;
+    
+    @media (min-width: $screen-md-max) {
+        font-size: 1em;
+    };
+    
+    @media (max-width: $screen-md-max) {
+        font-size: 0.8em;
+    };
+
+    
+    @media (max-width: $screen-sm-max) {
+        font-size: 0.9em;
+    };
+    
+    @media (max-width:  $screen-xs-max) {
+        font-size: 0.8em;
+    }
+}
 /* zoom */
 
 .zoom {
