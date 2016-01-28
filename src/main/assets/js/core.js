@@ -176,6 +176,10 @@ core.hashChanged = function (location) {
  */
 core.addKeyListeners = function () {
 
+//    window.onscroll = function () {
+         //        console.debug("scrolling event ... " + window.scrollY);
+         //    }
+
     document.onkeyup = function (evt) {
         var kc = evt.keyCode;
         switch (kc) {
