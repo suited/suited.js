@@ -64,6 +64,7 @@ core.defaultBefore = function (slideId) {
     utils.classed(currentNode, "muted", false);
 
 };
+
 core.defaultAfter = function (slideId) {
     var isDoc = state.isDoc();
     var isDeck = state.isDeck();
@@ -77,21 +78,13 @@ core.defaultAfter = function (slideId) {
     if (isDeck) {
         var modal = document.getElementById("modal");
 
-        var temp = document.createElement("div");
-        temp.setAttribute("style", "display: inline-block; visible: false;");
-
-        document.body.appendChild(temp);
-        temp.innerHTML = currentNode.innerHTML;
-
-        console.log("Temp size is: " + temp.clientWidth);
-
-        utils.placeIn(modal, temp);
+        //Need to copy - otherwise it is removed from the main document.
+        var copy = document.createElement("div");
+        copy.innerHTML = currentNode.innerHTML;
+        
+        modal.innerHTML = ""
+        modal.appendChild(copy);
     }
-
-    currentNode.scrollIntoView({
-        block: "start",
-        behavior: "smooth"
-    });
 };
 
 core.defaultBeforeModeChange = function (oldmode, newmode) {
@@ -127,9 +120,11 @@ core.defaultAfterModeChange = function (oldmode, newmode) {
 
     var slideWall = document.getElementById("slideWall");
     utils.classed(slideWall, "slide-backdrop", isDeck);
+    utils.classed(slideWall, "container", isDeck);
     slideWall.setAttribute("style", "opacity: " + c.modalBackdropOpacity);
 
     var slideHolder = document.getElementById("slideHolder");
+    utils.classed(slideHolder, "row", isDeck);
     utils.classed(slideHolder, "slide-holder", isDeck);
 
 
@@ -252,8 +247,8 @@ core.init = function () {
     b.appendChild(slideHolder);
 
     //Add the modal backdrop element TODO template layouty stuff should do this
-    slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
-
+    //slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
+    slideHolder.innerHTML = '<div id="' + k.modal + '"></div>';
 
     //Create new state object and put everything in the right state 
     core.hashChanged(window.location);
