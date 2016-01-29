@@ -117,9 +117,17 @@ utils.tag = function (nodeList, attrName, attrValues) {
 };
 
 utils.wrapDiv = function (element, id, clazz) {
-    var theHtml = element.innerHTML;
-    var newHtml = '<div class="' + clazz + '" id="' + id + '" >' + theHtml + '</div>';
-    element.innerHTML = newHtml;
+    
+    var temp = document.createElement("div");
+    temp.innerHTML = element.innerHTML;
+    element.innerHTML = "";
+    
+    var wrapper = document.createElement("div");
+    utils.classed(wrapper, clazz, true);
+    wrapper.setAttribute("id", id);
+    element.appendChild(wrapper);
+    
+    utils.placeIn(wrapper, temp);
 }
 
 /** walk the sections tag/wrap nodes in a div with attr slide-<num>, tag child data-slides with data-sub-slide. and populate the state.nav structure
@@ -158,20 +166,33 @@ utils.typeSlide = function (slideEl) {
 utils.placeIn = function(container, child) {
     container.innerHTML = "";
     
-    utils.classed(child, "col-xs-12 ", true);
+    var elems = Array.prototype.slice.call(child.childNodes);
     
-    var preElements = child.getElementsByTagName("pre")
-    if (preElements.length > 0) {
-        utils.classed(child, "col-xs-offset-0", true);
+    for (var i=0; i< elems.length; i++) {
+        var elem = elems[i];       
+
+        if (!elem.tagName && elem.textContent.trim().length > 0) {
+            var txtWrapper = document.createElement("div");
+            txtWrapper.appendChild(elem);
+            elem = txtWrapper;
+        }
+        
+        if (elem.tagName) {
+            var tag = elem.tagName.toUpperCase();
+            var wrapper = document.createElement("div");
+            wrapper.appendChild(elem);
+
+            var indent = (tag != "PRE" && !(tag.length == 2 && tag.charAt(0) == "H") )
+
+            utils.classed(elem,"col-md-offset-3", indent);
+            utils.classed(elem,"col-md-offset-0", !indent);
+
+            container.appendChild(wrapper);        
+        }
     }
-    else {
-        utils.classed(child, "col-xs-offset-0 col-sm-offset-1 col-md-offset-2", true);
-    }
-    
-    container.appendChild(child);
 }
-    
-utils.placeInOld = function (container, child) {
+
+utils.placeInZoom = function (container, child) {
     var width = child.clientWidth;
     var height = child.clientHeight;
 
