@@ -8,4 +8,5 @@
 source ~/.nvm/nvm.sh
 
 nvm list
-nvm use v0.12.2
+# nvm use v0.12.2
+nvm use v0.12.9
