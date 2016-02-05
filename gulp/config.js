@@ -98,6 +98,23 @@ module.exports = {
         cssDest: dest + '/css',
         jsSrc: dest + '/js/*.js',
         jsDest: dest + '/js'
+    },
+    publish: {
+        src: dest + '/**/*',
+        bucket: "test.aws.owtelse.com",
+        // Either set Creds here in knox style or have a file in AWS defined format at ~/.s3SuitedCredentials like
+        //AWS_ACCESS_KEY_ID=somekeyID
+        //AWS_SECRET_ACCESS_KEY=somekeysecret
+        //AWS_REGION=us-east-1
+        //AWS_BUCKET=test.aws.owtelse.com
+        creds: {
+            //            key: "AWS_ACCESS_KEY_ID",
+            //            secret: "AWS_SECRET_ACCESS_KEY",
+            //            region: "ap-southeast-2",
+            //            bucket: "owtelse-repo-oss"
+        },
+        s3Prefix: "suited/"
+
     }
 
 
