@@ -82,8 +82,7 @@ core.defaultAfter = function (slideId) {
         var copy = document.createElement("div");
         copy.innerHTML = currentNode.innerHTML;
         
-        modal.innerHTML = ""
-        modal.appendChild(copy);
+        utils.placeIn(modal, copy);
     }
 };
 
