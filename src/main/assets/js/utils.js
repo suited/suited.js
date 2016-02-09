@@ -118,8 +118,7 @@ utils.tag = function (nodeList, attrName, attrValues) {
 
 utils.wrapDiv = function (element, id, clazz) {
     
-    var temp = document.createElement("div");
-    temp.innerHTML = element.innerHTML;
+    var innerHtml = element.innerHTML;
     element.innerHTML = "";
     
     var wrapper = document.createElement("div");
@@ -127,7 +126,7 @@ utils.wrapDiv = function (element, id, clazz) {
     wrapper.setAttribute("id", id);
     element.appendChild(wrapper);
     
-    utils.placeIn(wrapper, temp);
+    wrapper.innerHTML = innerHtml;
 }
 
 /** walk the sections tag/wrap nodes in a div with attr slide-<num>, tag child data-slides with data-sub-slide. and populate the state.nav structure
