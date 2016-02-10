@@ -123,7 +123,6 @@ core.defaultAfterModeChange = function (oldmode, newmode) {
     slideWall.setAttribute("style", "opacity: " + c.modalBackdropOpacity);
 
     var slideHolder = document.getElementById("slideHolder");
-    utils.classed(slideHolder, "row", isDeck);
     utils.classed(slideHolder, "slide-holder", isDeck);
 
 

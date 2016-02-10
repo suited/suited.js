@@ -28,7 +28,7 @@ module.exports = {
     },
     sass: {
         //    src: app + "/sass/**/*.{sass,scss}",
-        src: app + "/sass/*.{sass,scss}",
+        src: app + "/sass/**/*.{sass,scss}",
         dest: dest + "/css"
     },
     images: {
