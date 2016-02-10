@@ -1,0 +1,23 @@
+{
+    "brackets-file-tree-exclude.excludeList": [
+        "/.git/",
+        "/dist/",
+        "/bower_components/",
+        "/node_modules/",
+        ".sass-cache/"
+    ],
+    "hirse.beautify.onSave": true,
+    "path": {
+        "thirdparty/**.js": {
+            "hirse.beautify.onSave": false
+        },
+        "**min**.js": {
+            "hirse.beautify.onSave": false
+        }
+    },
+    "language": {
+        "php": {
+            "hirse.beautify.onSave": false
+        }
+    }
+}

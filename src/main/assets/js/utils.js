@@ -143,7 +143,7 @@ utils.number = function (nodeList) {
     //        for (var i = 0; i < state.numSlides; ++i) {
     for (var i = (numSlides); i >= 0; i--) {
         var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
-        utils.wrapDiv(item, "slide-" + i, "slide");
+    utils.wrapDiv(item, "slide-" + (i), "slide");
         var childSlides = utils.selects("section[data-slide]", item);
         utils.tag(childSlides, "data-sub-slide");
     }
@@ -162,12 +162,12 @@ utils.typeSlide = function (slideEl) {
 
 
 
-utils.placeIn = function(container, child) {
+utils.placeIn = function (container, child) {
     container.innerHTML = "";
     
     var elems = Array.prototype.slice.call(child.childNodes);
     
-    for (var i=0; i< elems.length; i++) {
+  for (var i = 0; i < elems.length; i++) {
         var elem = elems[i];       
 
         if (!elem.tagName && elem.textContent.trim().length > 0) {
@@ -181,10 +181,10 @@ utils.placeIn = function(container, child) {
             var wrapper = document.createElement("div");
             wrapper.appendChild(elem);
 
-            var indent = (tag != "PRE" && !(tag.length == 2 && tag.charAt(0) == "H") )
+      var indent = (tag != "PRE" && !(tag.length == 2 && tag.charAt(0) == "H"))
 
-            utils.classed(elem,"col-md-offset-3", indent);
-            utils.classed(elem,"col-md-offset-0", !indent);
+      utils.classed(elem, "col-md-offset-3", indent);
+      utils.classed(elem, "col-md-offset-0", !indent);
 
             container.appendChild(wrapper);        
         }
@@ -258,13 +258,16 @@ utils.scrollToY = function (element) {
  * once we have a name, look it up then return the direction for that transition.
  **/
 utils.findTransition = function (direction, elId, mode) {
+
+  // we need to hack a top for transitoion scroll or you can';t get to the top again
+
     mode = (!!mode) ? mode : "doc";
     var el = document.getElementById(elId);
     var tname = "jump"; //default
     var defaultModeTName = c.transitionName[mode];
     defaultModeTName = (!!defaultModeTName) ? defaultModeTName : c.transitionName["doc"];
 
-    if (el.hasAttribute("transition")) {
+  if (el && el.hasAttribute("transition")) {
         var attrV = el.getAttribute("transition");
         tname = (!!attrV) ? attrV : defaultModeTName;
     } else {

@@ -21,49 +21,49 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 
 
 function linearnterpolateNumber(a, b) {
-    return function (t) {
-        return a + t * (b - a);
-    };
+  return function (t) {
+    return a + t * (b - a);
+  };
 }
 
 function tween(startnum, endnum, durationMs, doFn, interpolator, delay) {
 
-    //close over these 
-    var ease = interpolator(startnum, endnum);
-    var startTime = (new Date()).getTime();
-    var duration = durationMs;
+  //close over these 
+  var ease = interpolator(startnum, endnum);
+  var startTime = (new Date()).getTime();
+  var duration = durationMs;
 
-    var endTime = startTime + durationMs;
-    var t = 0;
-    delay = (!!delay) ? delay : 0; //ms
+  var endTime = startTime + durationMs;
+  var t = 0;
+  delay = (!!delay) ? delay : 0; //ms
 
-    //    console.debug("startTime=" + startTime + "  endTime = " + endTime);
-    //doFn(ease(0));
+  //    console.debug("startTime=" + startTime + "  endTime = " + endTime);
+  //doFn(ease(0));
 
 
-    //@recursive
-    function _tween() {
+  //@recursive
+  function _tween() {
 
-        setTimeout(function () {
-            var now = (new Date()).getTime(); // in millisecs
+    setTimeout(function () {
+      var now = (new Date()).getTime(); // in millisecs
 
-            // bail out
-            if (now >= endTime) {
-                doFn(endnum);
-                return;
-            }
+      // bail out
+      if (now >= endTime) {
+        doFn(endnum);
+        return;
+      }
 
-            //otherwise
-            var new_t = (now - startTime) / duration;
-            var newval = ease(new_t);
-            //            console.debug("new_t=" + new_t + "  newval = " + newval);
-            doFn(newval);
-            _tween();
-        }, (delay > 0 ? delay : 0));
-    };
+      //otherwise
+      var new_t = (now - startTime) / duration;
+      var newval = ease(new_t);
+      //            console.debug("new_t=" + new_t + "  newval = " + newval);
+      doFn(newval);
+      _tween();
+    }, (delay > 0 ? delay : 0));
+  };
 
-    //kick off
-    _tween(doFn, ease);
+  //kick off
+  _tween(doFn, ease);
 }
 
 
@@ -74,62 +74,56 @@ function tween(startnum, endnum, durationMs, doFn, interpolator, delay) {
 
 
 var k = {
-    idPrefix: "slide-",
-    slideAttr: "data-slide",
-    slideTypes: {
-        "data-figure": "figure", //vis in doc and deck
-        "data-slide": "slide" //viz in deck only
-            //default section is in doc only
-    },
-    slideAttrs: {
-        figure: "data-figure", //vis in doc and deck
-        slide: "data-slide" //viz in deck only
-            //default section is in doc only
-    },
-    modalBackdrop: "slideWall",
-    slideHolder: "slideHolder",
-    modal: "modal",
-    modes: ["doc", "deck", "walkthrough"],
-    defaultTnames: {
-        "scroll": "scroll",
-        "jump": "jump",
-        "scrollzoom": "scrollzoom"
-    }
+  idPrefix: "slide-",
+  slideAttr: "data-slide",
+  slideTypes: {
+    "data-figure": "figure", //vis in doc and deck
+    "data-slide": "slide" //viz in deck only
+      //default section is in doc only
+  },
+  slideAttrs: {
+    figure: "data-figure", //vis in doc and deck
+    slide: "data-slide" //viz in deck only
+      //default section is in doc only
+  },
+  modalBackdrop: "slideWall",
+  slideHolder: "slideHolder",
+  modal: "modal",
+  modes: ["doc", "deck", "walkthrough"],
+  defaultTnames: {
+    "scroll": "scroll",
+    "jump": "jump",
+    "scrollzoom": "scrollzoom"
+  }
 }
 
 k.defaultTransitions = {};
 k.defaultTransitions.jump = {};
+
 k.defaultTransitions.jump.left = function (elId) {
-    var prevHash = window.location.hash;
-    window.location.hash = elId; //side effect on state            
-    //If previous did not change the location then we can assume we are at the beginning. Clear hash to scroll all the way to the top
-    if (prevHash === window.location.hash) {
-        window.location.hash = "";
-    }
+  window.location.hash = elId; //side effect on state            
 };
 k.defaultTransitions.jump.right = function (elId) {
-    window.location.hash = elId;
+  window.location.hash = elId;
 };
 k.defaultTransitions.jump.up = k.defaultTransitions.jump.left;
 k.defaultTransitions.jump.down = k.defaultTransitions.jump.right;
 
 k.defaultTransitions.scroll = {};
 k.defaultTransitions.scroll.left = function (elId) {
-    var el = document.getElementById(elId);
-    var yPos = 0;
-    var startPos = window.scrollY;
-    if (elId === "slide-0") { //hack TODO FIXME
-        yPos = -window.scrollY;
-    } else {
-        var rect = el.getBoundingClientRect();
-        yPos = rect.top;
+  var el = document.getElementById(elId);
+  var yPos = 0;
+  var startPos = window.scrollY;
 
-    }
+  var rect = el.getBoundingClientRect();
+  yPos = rect.top;
 
-    //calc relative tweens and scrollTo so start at 0 go to start + ypos
-    tween(0, yPos, 400, function (y) {
-        window.scrollTo(0, startPos + y);
-    }, linearnterpolateNumber, 15)
+
+
+  //calc relative tweens and scrollTo so start at 0 go to start + ypos
+  tween(0, yPos, 400, function (y) {
+    window.scrollTo(0, startPos + y);
+  }, linearnterpolateNumber, 15)
 
 
 

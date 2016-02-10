@@ -159,7 +159,7 @@ core.hashChanged = function (location) {
     if (!state.changeState) {
         state = new State(theSlideNum, queryParams["mode"]);
         //TODO pos move to contructor
-        state.populateNavs(utils.selects(selectString));
+    //        state.populateNavs(utils.selects(selectString));
     } else {
         state.changeState(theSlideNum, queryParams["mode"], core.defaultBefore, core.defaultAfter, core.defaultBeforeModeChange, core.defaultAfterModeChange);
     }
@@ -174,7 +174,7 @@ core.hashChanged = function (location) {
  */
 core.addKeyListeners = function () {
 
-//    window.onscroll = function () {
+  //    window.onscroll = function () {
          //        console.debug("scrolling event ... " + window.scrollY);
          //    }
 

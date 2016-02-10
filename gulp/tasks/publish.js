@@ -107,9 +107,7 @@ gulp.task('publish', function () {
 
     var publisher = awspublish.create({
         params: {
-            Bucket: creds.bucket,
-            Key: "wibble"
-
+            Bucket: creds.bucket
         },
         accessKeyId: creds.key,
         secretAccessKey: creds.secret,
