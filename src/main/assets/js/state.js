@@ -28,197 +28,167 @@ var utils = require('./utils.js');
 
 var modes = konstants.modes;
 var k = konstants;
+
+var Nav = require("./nav.js");
+
 var State = function (desiredPos, desiredMode) {
 
-    
-        var self = this; //For the private methods
-    
-        //sanity
-        /* Initialise states */
-        var currentNum = (desiredPos) ? Number(desiredPos) : 0;
-        if (isNaN(currentNum)) {
-            currentNum = 0
-        };
 
-        var mode = (modes.indexOf(desiredMode) >= 0) ? desiredMode : modes[0]; //or deck
+    var self = this; //For the private methods
 
-        this.mode = function () {
-            return mode;
-        }
+    //sanity
+    /* Initialise states */
+    var currentNum = (desiredPos >= 0) ? Number(desiredPos) : 0;
+    if (isNaN(currentNum)) {
+      currentNum = 0
+    };
 
-        var slidePrefix = k.idPrefix;
+    var mode = (modes.indexOf(desiredMode) >= 0) ? desiredMode : modes[0]; //or deck
 
-        // nav structure has a value in each position where the mode is valid and a null otherwise. populated by utils.number()
-        var nav = {
-            modepos: {},
-            calcNextNum: function (start) {
-                start = Number(start);
-                var numSlides = nav.modepos[mode].length; 
-                
-                if (start >= numSlides) {
-                    return nav.calcPrevNum(start);
-                } else {
-                    var tryme = start + 1;
-                    if (!(nav.modepos[mode][tryme])) {
-                        return nav.calcNextNum(tryme);
-                    } else
-                        return tryme;
-                }
-            },
-            /** recurs becwards loolin for a valid value for mode.
-            @param start = starting num, usually s.currentNum */
-            calcPrevNum: function (start) {
-                start = Number(start);
-                if (start <= 0) {
-                    return 0;
-                } else {
-                    var tryme = start - 1;
-                    if (!(nav.modepos[mode][tryme])) {
-                        return nav.calcPrevNum(tryme);
-                    } else
-                        return tryme;
-                }
-            }
-        };
-        // initailise an array to hold positions for each mode
-        for (var i = 0; i < modes.length; i++) {
-            nav.modepos[modes[i]] = [];
-        }
+    this.mode = function () {
+      return mode;
+    }
+
+    var slidePrefix = k.idPrefix;
 
 
-        //TODO FIXME bin these we need seperate functions for a pluging that gets attached to a mode
-        this.isDeck = function isDeck() {
-            return (mode === modes[1]);
-        }
+    //todo build string from an array in config.
+    var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
+    var navigableNodes = utils.selects(selectString);
 
-        this.isDoc = function isDoc() {
-            return (mode === modes[0]);
-        }
 
-        this.isWalkthrough = function isWalkthrough() {
-                return (mode === modes[2]);
-        }
-            //---------------
+    //TODO FIXME need a better plugggble magic func in each mode
+    function magicModePosTest(pos, mode) {
 
-        function makeSlideName(num) {
-            return slidePrefix + num;
-        }
-        
-        this.currentSlideName = function currentSlideName() {
-            return makeSlideName(currentNum);
-        }
+      if (pos < 0) return true;
 
-        // private
-        function changeSlide(fnChange, fnBeforeStateChange, fnAfterStateChange) {
-            if (fnBeforeStateChange) {
-                fnBeforeStateChange(self.currentSlideName());
-            }
-            
-            currentNum = fnChange(currentNum);
-            
-            if (fnAfterStateChange) {
-                fnAfterStateChange(self.currentSlideName());
-            }
-            
-            return self.currentSlideName();
-        }
+      // TODO should return undifined immediatly if pos is too big?
+      if (pos >= navigableNodes.length) return undefined; // this is bad perf becaus we double count up then back down.
+      var el = navigableNodes.item(pos);
+      switch (utils.typeSlide(el)) {
+        case "figure":
+          return true
+          break;
+        case "slide":
+          return (mode === "deck");
 
-        // private
-        function populateNav(slideEl, position) {
-            //TODO create a rule object so we can walk trough all modes applying the rules, rather than hardcode all values.
-            switch (utils.typeSlide(slideEl)) {
-                case "figure":
-                    nav.modepos.doc[position] = true;
-                    nav.modepos.deck[position] = true;
-                    nav.modepos.walkthrough[position] = true;
-                    break;
-                case "slide":
-                    nav.modepos.doc[position] = false;
-                    nav.modepos.deck[position] = true;
-                    nav.modepos.walkthrough[position] = false;
-                    break;
-                default:
-                    nav.modepos.doc[position] = false;
-                    nav.modepos.deck[position] = false;
-                    nav.modepos.walkthrough[position] = false;
-                    break;
-            }
-        }
+          break;
+        default:
+          return false;
+          break;
+      }
+    }
 
-        this.populateNavs = function populateNavs(listNavigableNodes) {
-            for (var i = 0; i < listNavigableNodes.length; i++) {
-                populateNav(listNavigableNodes[i], i);
-            }
-        }
+    var nav = new Nav(modes, magicModePosTest);
 
-        /**
-         * modifies state to change current. 
-         * @returns new currentID name.
-         **/
-        this.next = function next() {
-            return makeSlideName(nav.calcNextNum(currentNum));
-        };
+    //TODO FIXME bin these we need seperate functions for a pluging that gets attached to a mode
+    this.isDeck = function isDeck() {
+      return (mode === modes[1]);
+    }
 
-        /**
-         * modifies state to change current. 
-         * @returns new currentID name.
-         **/
-        this.previous = function previous() {
-            return makeSlideName(nav.calcPrevNum(currentNum));
-        };
-    
-        this.changeMode = function (newMode, fnBeforeModeChange, fnAfterModeChange) {
-            var bMode = mode;
-            
-            if (k.modes.indexOf(newMode) < 0) {
-                newMode = k.modes[0];
-            }
-            
-            if (fnBeforeModeChange) {
-                fnBeforeModeChange(bMode, newMode);
-            }
-            
-            // NB this is the real state change
-            mode = newMode;
-            console.debug("slide=" + this.currentSlideName() + " state.mode is " + mode);
+    this.isDoc = function isDoc() {
+      return (mode === modes[0]);
+    }
 
-            if (fnAfterModeChange) {
-                fnAfterModeChange(bMode, mode);
-            }
-            
-            return mode;
-        }
+    this.isWalkthrough = function isWalkthrough() {
+        return (mode === modes[2]);
+      }
+      //---------------
 
-        //TODO refactor to listen for mode chage event
-        /**
-          switches mode, and applied lifcycle function before and after.
-          @param fnBeforeModeChange(previousMode, nextMode)
-          @param fnAfterModeChange(previousMode, nextMode)
-        **/
-        this.toggleMode = function toggleMode(fnBeforeModeChange, fnAfterModeChange) {
+    function makeSlideName(num) {
+      //if (Number(num) < 0) return slidePrefix + "top";
+      return slidePrefix + num;
+    }
 
-            var modeNum = modes.indexOf(mode) + 1;
-            if (modeNum >= modes.length) {
-                modeNum = 0;
-            }
-         
-            return this.changeMode(modes[modeNum], fnBeforeModeChange, fnAfterModeChange);
-        };
-    
-        this.changeState = function (newSlideNumber, newMode, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange) {
-            
-            if (currentNum != newSlideNumber) {
-                
-                changeSlide(function() {return newSlideNumber;}, fnBeforeSlideChange, fnAfterSlideChange);
-            }
-            
-            if (mode != newMode) {
-                this.changeMode(newMode, fnBeforeModeChange, fnAfterModeChange);
-            }
-            
-        };
+    this.currentSlideName = function currentSlideName() {
+      return makeSlideName(currentNum);
+    }
 
-    } // end constructor
+    // private
+    function changeSlide(fnChange, fnBeforeStateChange, fnAfterStateChange) {
+      if (fnBeforeStateChange) {
+        fnBeforeStateChange(self.currentSlideName());
+      }
+
+      currentNum = fnChange(currentNum);
+
+      if (fnAfterStateChange) {
+        fnAfterStateChange(self.currentSlideName());
+      }
+
+      return self.currentSlideName();
+    }
+
+    /**
+     * modifies state to change current. 
+     * @returns new currentID name.
+     **/
+    this.next = function next() {
+      return makeSlideName(nav.calcNextNum(currentNum, mode));
+    };
+
+    /**
+     * modifies state to change current. 
+     * @returns new currentID name.
+     **/
+    this.previous = function previous() {
+      return makeSlideName(nav.calcPrevNum(currentNum, mode));
+    };
+
+    this.changeMode = function (newMode, fnBeforeModeChange, fnAfterModeChange) {
+      var bMode = mode;
+
+      if (k.modes.indexOf(newMode) < 0) {
+        newMode = k.modes[0];
+      }
+
+      if (fnBeforeModeChange) {
+        fnBeforeModeChange(bMode, newMode);
+      }
+
+      // NB this is the real state change
+      mode = newMode;
+      console.debug("slide=" + this.currentSlideName() + " state.mode is " + mode);
+
+      if (fnAfterModeChange) {
+        fnAfterModeChange(bMode, mode);
+      }
+
+      return mode;
+    }
+
+    //TODO refactor to listen for mode chage event
+    /**
+      switches mode, and applied lifcycle function before and after.
+      @param fnBeforeModeChange(previousMode, nextMode)
+      @param fnAfterModeChange(previousMode, nextMode)
+    **/
+    this.toggleMode = function toggleMode(fnBeforeModeChange, fnAfterModeChange) {
+
+      var modeNum = modes.indexOf(mode) + 1;
+      if (modeNum >= modes.length) {
+        modeNum = 0;
+      }
+
+      return this.changeMode(modes[modeNum], fnBeforeModeChange, fnAfterModeChange);
+    };
+
+    this.changeState = function (newSlideNumber, newMode, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange) {
+
+      if (currentNum != newSlideNumber) {
+
+        changeSlide(function () {
+          return newSlideNumber;
+        }, fnBeforeSlideChange, fnAfterSlideChange);
+      }
+
+      if (mode != newMode) {
+        this.changeMode(newMode, fnBeforeModeChange, fnAfterModeChange);
+      }
+
+    };
+
+  } // end constructor
 
 
 module.exports = State;
