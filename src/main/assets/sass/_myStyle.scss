@@ -1,4 +1,4 @@
-/*
+  /*
 Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com> 
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,17 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    limitations under the License.
 
 */
-
-
-.not-displayed {
+  
+  .not-displayed {
     display: none;
-}
-.visible {
+  }
+  .visible {
     visibility: visible;
-}
-.invisible {
+  }
+  .invisible {
     display: hidden;
-}
-.slide-backdrop {
+  }
+  .slide-backdrop {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -34,8 +33,8 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
     background: #000;
     z-index: 1;
     opacity: 0.5;
-}
-.slide-holder {
+  }
+  .slide-holder {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -45,14 +44,14 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
     z-index: 3;
     display: inline-block;
     /*shrink to fit */
-}
-.slide-highlight {
+  }
+  .slide-highlight {
     background: #ff0;
-}
-.slide-highlight.muted {
+  }
+  .slide-highlight.muted {
     background: #20f0fd;
-}
-.slide-box {
+  }
+  .slide-box {
     margin: 0 auto;
     /*width: 100%;*/
     background: #fff;
@@ -69,118 +68,106 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
     font-size: 2em;
     font-family: $font-family-sans-serif;
     text-align: left;
-    
     @media (max-width: $screen-md-max) {
-        top: 20px;
-        font-size: 1.8em;
-    };
-    
-    @media (max-width: $screen-sm-max) {
-        top: 10px;
-        height: 95%;
-        font-size: 1em;
-    };
-    
-    @media (max-width:  $screen-xs-max) {
-        top: 0px;
-        height: 100%;
-        width: 100%;
-        font-size: 0.8em;
+      top: 20px;
+      font-size: 1.8em;
     }
-    
-    
-}
-
-.slide-box h1 {
+    ;
+    @media (max-width: $screen-sm-max) {
+      top: 10px;
+      height: 95%;
+      font-size: 1em;
+    }
+    ;
+    @media (max-width: $screen-xs-max) {
+      top: 0px;
+      height: 100%;
+      width: 100%;
+      font-size: 0.8em;
+    }
+  }
+  .slide-box h1 {
     font-weight: $h-font-weight;
     text-align: center;
     font-size: 3em;
-}
-
-.slide-box h1:first-child {
+  }
+  .slide-box h1:first-child {
     text-transform: uppercase;
-}
-
-.slide-box h2 {
+  }
+  .slide-box h2 {
     font-weight: $h-font-weight;
     word-wrap: break-word;
-    text-align: center;    
+    text-align: center;
     font-size: 2.5em;
-}
-
-.slide-box h3 {
+  }
+  .slide-box h3 {
     font-weight: $h-font-weight;
-    text-align: center;    
+    text-align: center;
     font-size: 2em;
-}
-
-.slide-box h4 {
+  }
+  .slide-box h4 {
     font-weight: $h-font-weight;
-    text-align: center;    
+    text-align: center;
     font-size: 1.7em;
-}
-
-.slide-box h5 {
+  }
+  .slide-box h5 {
     font-weight: $h-font-weight;
-    text-align: center;    
+    text-align: center;
     font-size: 1.5em;
-}
-
-.slide-box h6 {
+  }
+  .slide-box h6 {
     font-weight: $h-font-weight;
-    text-align: center;    
+    text-align: center;
     font-size: 1.2em;
-}
-
-.slide-box.scrollable {
+  }
+  .slide-box.scrollable {
     overflow-y: scroll;
-}
-
-.slide-box li {
+  }
+  .slide-box li {
     line-height: 1.1;
     //Want to reduce space between list items
-
-}
-
-.slide-box pre {
-//    font-size: 1em;
+  }
+  .slide-box pre {
+    //    font-size: 1em;
     width: 100%;
     font-variant: normal;
     font-family: monospace;
-    
     @media (min-width: $screen-md-max) {
-        font-size: 1em;
-    };
-    
-    @media (max-width: $screen-md-max) {
-        font-size: 0.9em;
-    };
-
-    
-    @media (max-width: $screen-sm-max) {
-        font-size: 0.8em;
-    };
-    
-    @media (max-width:  $screen-xs-max) {
-        font-size: 0.7em;
+      font-size: 1em;
     }
-}
-/* zoom */
-
-.zoom {
+    ;
+    @media (max-width: $screen-md-max) {
+      font-size: 0.9em;
+    }
+    ;
+    @media (max-width: $screen-sm-max) {
+      font-size: 0.8em;
+    }
+    ;
+    @media (max-width: $screen-xs-max) {
+      font-size: 0.7em;
+    }
+  }
+  /* zoom */
+  
+  .zoom {
     /*            zoom: 2;*/
     /* IE */
+    /**
     -moz-transform: scale(2);
-    /* Firefox */
+    // Firefox 
     -moz-transform-origin: 0 0;
     -o-transform: scale(2);
-    /* Opera */
+    // Opera 
     -o-transform-origin: 0 0;
     -webkit-transform: scale(2);
-    /* Safari And Chrome */
+    // Safari And Chrome 
     -webkit-transform-origin: 0 0;
     transform: scale(2);
-    /* Standard Property */
+    // Standard Property 
     transform-origin: 0 0;
-    /* Standard Property */
-}
+    // Standard Property 
+  */
+    transform: scale(2);
+    transform-origin: 0 0;
+  }
