@@ -4,6 +4,10 @@
     "dest": "./public"
   },
 
+  "node_modules": {
+    "src": "./node_modules"
+  },
+
   "tasks": {
     "browserSync": {
       "server": {
@@ -24,6 +28,11 @@
         "bundle": ["./startup.js"]
       },
       "extensions": ["js"]
+    },
+
+    "bootstrapSass": {
+      "src": "bootstrap-sass/assets",
+      "dest": "_sass_assets/bootstrap-sass"
     },
 
     "css": {
