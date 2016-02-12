@@ -24,7 +24,10 @@ gen
 out
 tmp
 
+# gulp generated
+public
+src/main/assets/sass/_sass-assets/
+
 # node.js stuff
 node_modules/
-src/main/assets/sass/_sass-assets/
 
