@@ -1,14 +1,14 @@
 var gulp = require('gulp');
 var _ = require('lodash');
 //var jshint = require('gulp-jshint');
-var config = require('../config').publish;
+var config = require('../config').tasks.publish;
 var configRoot = require('../config');
 var fs = require('fs');
 //var s3 = require("./mys3.js");
 //var gzip = require("gulp-gzip");
 var rename = require('gulp-rename');
 var parallelize = require("concurrent-transform");
-var path    = require('path');
+var path = require('path');
 
 
 var awspublish = require('gulp-awspublish');
@@ -19,29 +19,29 @@ var awspublish = require('gulp-awspublish');
  **/
 
 var paths = {
-  src: path.join(configRoot.root.dest,  '/**/*')
-//  , dest: path.join(config.root.dest, config.tasks.images.dest)
+  src: path.join(configRoot.root.dest, '/**/*')
+    //  , dest: path.join(config.root.dest, config.tasks.images.dest)
 }
 
 function envVarCreds() {
-    var ret = {};
-    var k = process.env.AWS_ACCESS_KEY_ID || null;
-    var s = process.env.AWS_SECRET_ACCESS_KEY || null;
-    var r = process.env.AWS_REGION || null;
-    var b = process.env.AWS_BUCKET || null;
-    if (k) {
-        ret.key = k;
-    }
-    if (s) {
-        ret.secret = s;
-    }
-    if (r) {
-        ret.secret = r;
-    }
-    if (b) {
-        ret.secret = b;
-    }
-    return ret;
+  var ret = {};
+  var k = process.env.AWS_ACCESS_KEY_ID || null;
+  var s = process.env.AWS_SECRET_ACCESS_KEY || null;
+  var r = process.env.AWS_REGION || null;
+  var b = process.env.AWS_BUCKET || null;
+  if (k) {
+    ret.key = k;
+  }
+  if (s) {
+    ret.secret = s;
+  }
+  if (r) {
+    ret.secret = r;
+  }
+  if (b) {
+    ret.secret = b;
+  }
+  return ret;
 };
 
 /**
@@ -50,99 +50,103 @@ function envVarCreds() {
  * first value found sticks.
  */
 function buildCreds() {
-    var confCreds = config.creds;
-    var envCreds = envVarCreds();
-    var fileCreds = parseIntoCreds(fs.readFileSync("" + getUserHome() + "/.s3SuitedCredentials", "utf8"));
-    var confBucket = {};
-    if (config.bucket) confBucket.bucket = config.bucket;
+  var confCreds = config.creds;
+  var envCreds = envVarCreds();
+  var fileCreds = parseIntoCreds(fs.readFileSync("" + getUserHome() + "/.s3SuitedCredentials", "utf8"));
+  var confBucket = {};
+  if (config.bucket) confBucket.bucket = config.bucket;
 
-    //chain definitions to create first com first served creds
-    var creds = _.defaults({}, confBucket, confCreds, envCreds, fileCreds);
+  //chain definitions to create first com first served creds
+  var creds = _.defaults({}, confBucket, confCreds, envCreds, fileCreds);
 
-    if (!creds.key) {
-        throw new Error('Missing config `key`');
-    }
-    if (!creds.secret) {
-        throw new Error('Missing config `secret`');
-    }
-    if (!creds.region) {
-        throw new Error('Missing config `region`');
-    }
-    if (!creds.bucket) {
-        throw new Error('Missing config `bucket`');
-    }
-    console.log("creds are : " + JSON.stringify(creds, null, 2));
-    return creds;
+  if (!creds.key) {
+    throw new Error('Missing config `key`');
+  }
+  if (!creds.secret) {
+    throw new Error('Missing config `secret`');
+  }
+  if (!creds.region) {
+    throw new Error('Missing config `region`');
+  }
+  if (!creds.bucket) {
+    throw new Error('Missing config `bucket`');
+  }
+  console.log("creds are : " + JSON.stringify(creds, null, 2));
+  return creds;
 }
 
 function getUserHome() {
-    return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
 function parseIntoCreds(contents) {
-    var ret = {};
-    var keyRe = /(AWS_ACCESS_KEY_ID)=(.*)$/;
-    var secretRe = /(AWS_SECRET_ACCESS_KEY)=(.*)$/;
-    var regionRe = /(AWS_REGION)=(.*)$/;
-    var bucketRE = /(AWS_BUCKET)=(.*)$/;
+  var ret = {};
+  var keyRe = /(AWS_ACCESS_KEY_ID)=(.*)$/;
+  var secretRe = /(AWS_SECRET_ACCESS_KEY)=(.*)$/;
+  var regionRe = /(AWS_REGION)=(.*)$/;
+  var bucketRE = /(AWS_BUCKET)=(.*)$/;
 
-    arrayOfLines = contents.match(/[^\r\n]+/g);
-    console.log("arrayoflines is " + JSON.stringify(arrayOfLines, null, 2));
-    arrayOfLines.forEach(function (d, i, a) {
-        if (d.substring(0, "#".length) === "#") return;
-        if (d.match(keyRe)) {
-            ret.key = d.match(keyRe)[2];
-        } else if (d.match(secretRe)) {
-            ret.secret = d.match(secretRe)[2];
-        } else if (d.match(regionRe)) {
-            ret.region = d.match(regionRe)[2];
-        } else if (d.match(bucketRE)) {
-            ret.bucket = d.match(bucketRE)[2];
-        }
-    });
-    return ret;
+  arrayOfLines = contents.match(/[^\r\n]+/g);
+  console.log("arrayoflines is " + JSON.stringify(arrayOfLines, null, 2));
+  arrayOfLines.forEach(function (d, i, a) {
+    if (d.substring(0, "#".length) === "#") return;
+    if (d.match(keyRe)) {
+      ret.key = d.match(keyRe)[2];
+    } else if (d.match(secretRe)) {
+      ret.secret = d.match(secretRe)[2];
+    } else if (d.match(regionRe)) {
+      ret.region = d.match(regionRe)[2];
+    } else if (d.match(bucketRE)) {
+      ret.bucket = d.match(bucketRE)[2];
+    }
+  });
+  return ret;
 }
 
 
 
 gulp.task('publish', function () {
 
-    //    console.log("publish");
-    var creds = buildCreds();
+  //  console.log("publish");
+  //  console.log("publish config is : " + JSON.stringify(config, null, 2));
+  //  return;
 
-    var thePrefix = (config.s3Prefix) ? config.s3Prefix : "";
+  var creds = buildCreds();
 
-    var publisher = awspublish.create({
-        params: {
-            Bucket: creds.bucket
-        },
-        accessKeyId: creds.key,
-        secretAccessKey: creds.secret,
-        //                profile: "suited"
-    });
+  var thePrefix = (config.s3Prefix) ? config.s3Prefix : "";
 
-    // define custom headers 
-    var headers = {
-        'Cache-Control': 'max-age=315360000, no-transform, public'
-            // ... 
-    };
+  var publisher = awspublish.create({
+    params: {
+      Bucket: creds.bucket
+    },
+    accessKeyId: creds.key,
+    secretAccessKey: creds.secret,
+    //                profile: "suited"
+  });
 
-    console.log("Finding files at:- " + config.src)
+  // define custom headers 
+  var headers = {
+    'Cache-Control': 'max-age=315360000, no-transform, public'
+      // ... 
+  };
 
-    return gulp.src(config.src)
-        .pipe(rename(function (path) {
-            path.dirname = thePrefix + path.dirname;
-        }))
-        .pipe(awspublish.gzip())
-        .pipe(parallelize(publisher.publish(headers, {
-                                force: true
-                            })), 10)
-//        .pipe(publisher.publish(headers, {
-                  //            force: true
-                  //        }))
-        .pipe(publisher.sync(thePrefix))
-        .pipe(awspublish.reporter({
-            states: ['create', 'update', 'delete']
-        }));
+  console.log("Finding files at:- " + paths.src)
+  console.log("Sending files to bucket:- " + creds.bucket + "/" + paths.src)
+
+  return gulp.src(paths.src)
+    .pipe(rename(function (path) {
+      path.dirname = thePrefix + path.dirname;
+    }))
+    .pipe(awspublish.gzip())
+    .pipe(parallelize(publisher.publish(headers, {
+      force: true
+    })), 10)
+    //        .pipe(publisher.publish(headers, {
+    //            force: true
+    //        }))
+    .pipe(publisher.sync(thePrefix))
+    .pipe(awspublish.reporter({
+      states: ['create', 'update', 'delete']
+    }));
 
 });
