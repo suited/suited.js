@@ -1,0 +1,118 @@
+.slide-backdrop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    z-index: 1;
+    opacity: 0.5;
+  }
+  .slide-holder {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 3;
+    display: inline-block;
+    /*shrink to fit */
+  }
+ .slide-box {
+    margin: 0 auto;
+    /*width: 100%;*/
+    background: #fff;
+    width: 95%;
+    height: 95%;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    z-index: 3;
+    top: 30px;
+    right: 0;
+    left: 0;
+    font-size: 2em;
+    font-family: $font-family-sans-serif;
+    text-align: left;
+    @media (max-width: $screen-md-max) {
+      top: 20px;
+      font-size: 1.8em;
+    }
+    ;
+    @media (max-width: $screen-sm-max) {
+      top: 10px;
+      height: 95%;
+      font-size: 1em;
+    }
+    ;
+    @media (max-width: $screen-xs-max) {
+      top: 0px;
+      height: 100%;
+      width: 100%;
+      font-size: 0.8em;
+    }
+  }
+  .slide-box h1 {
+    font-weight: $h-font-weight;
+    text-align: center;
+    font-size: 3em;
+  }
+  .slide-box h1:first-child {
+    text-transform: uppercase;
+  }
+  .slide-box h2 {
+    font-weight: $h-font-weight;
+    word-wrap: break-word;
+    text-align: center;
+    font-size: 2.5em;
+  }
+  .slide-box h3 {
+    font-weight: $h-font-weight;
+    text-align: center;
+    font-size: 2em;
+  }
+  .slide-box h4 {
+    font-weight: $h-font-weight;
+    text-align: center;
+    font-size: 1.7em;
+  }
+  .slide-box h5 {
+    font-weight: $h-font-weight;
+    text-align: center;
+    font-size: 1.5em;
+  }
+  .slide-box h6 {
+    font-weight: $h-font-weight;
+    text-align: center;
+    font-size: 1.2em;
+  }
+  .slide-box.scrollable {
+    overflow-y: scroll;
+  }
+  .slide-box li {
+    line-height: 1.1;
+    //Want to reduce space between list items
+  }
+  .slide-box pre {
+    //    font-size: 1em;
+    width: 100%;
+    font-variant: normal;
+    font-family: monospace;
+    @media (min-width: $screen-md-max) {
+      font-size: 1em;
+    }
+    ;
+    @media (max-width: $screen-md-max) {
+      font-size: 0.9em;
+    }
+    ;
+    @media (max-width: $screen-sm-max) {
+      font-size: 0.8em;
+    }
+    ;
+    @media (max-width: $screen-xs-max) {
+      font-size: 0.7em;
+    }
+  }

@@ -1,0 +1,23 @@
+@import "_base.scss";
+
+.slide-backdrop {
+    background: #000000;
+}
+.slide-highlight {
+    background: #ff0;
+}
+.slide-highlight.muted {
+    background: #20f0fd;
+}
+.slide-box {
+    background: #f5f4e9;
+    color: #332727;
+    text-align: left;
+
+    h1 { color: #332727; }
+    h2 { color: #332727; }
+    h3 { color: #332727; }
+    h4 { color: #332727; }
+    h5 { color: #332727; }
+    h6 { color: #332727; }    
+}
