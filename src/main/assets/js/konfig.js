@@ -22,6 +22,7 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 */
 
 var konstants = require('./konstantes.js');
+
 var k = konstants;
 
 var c = {};
@@ -37,7 +38,5 @@ c.transitions = {};
 c.transitions["jump"] = k.defaultTransitions.jump;
 c.transitions["scrollzoom"] = k.defaultTransitions.scrollzoom;
 c.transitions["scroll"] = k.defaultTransitions.scroll;
-
-
 
 module.exports = c;
