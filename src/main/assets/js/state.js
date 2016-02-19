@@ -26,12 +26,11 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 var konstants = require('./konstantes.js');
 var utils = require('./utils.js');
 
-var modes = konstants.modes;
 var k = konstants;
 
 var Nav = require("./nav.js");
 
-var State = function (desiredPos, desiredMode) {
+var State = function (desiredPos, modeObjectsArr, desiredMode) {
 
 
     var self = this; //For the private methods
@@ -42,11 +41,20 @@ var State = function (desiredPos, desiredMode) {
     if (isNaN(currentNum)) {
       currentNum = 0
     };
+    
+    var modeNames = [];
+    var modes = {};
+    //Change the array into a name based map
+    for (var i=0; i < modeObjectsArr.length; i++) {
+        var modeName = modeObjectsArr[i].name;
+        modeNames.push(modeName);
+        modes[modeName] = modeObjectsArr[i];
+    }
 
-    var mode = (modes.indexOf(desiredMode) >= 0) ? desiredMode : modes[0]; //or deck
+    this.currentMode = (modeNames.indexOf(desiredMode) >= 0) ? desiredMode : modeNames[0]; //or deck
 
     this.mode = function () {
-      return mode;
+      return modes[this.currentMode];
     }
 
     var slidePrefix = k.idPrefix;
@@ -79,21 +87,9 @@ var State = function (desiredPos, desiredMode) {
       }
     }
 
-    var nav = new Nav(modes, magicModePosTest);
+    var nav = new Nav(modeNames, magicModePosTest);
 
-    //TODO FIXME bin these we need seperate functions for a pluging that gets attached to a mode
-    this.isDeck = function isDeck() {
-      return (mode === modes[1]);
-    }
-
-    this.isDoc = function isDoc() {
-      return (mode === modes[0]);
-    }
-
-    this.isWalkthrough = function isWalkthrough() {
-        return (mode === modes[2]);
-      }
-      //---------------
+    //---------------
 
     function makeSlideName(num) {
       //if (Number(num) < 0) return slidePrefix + "top";
@@ -105,16 +101,13 @@ var State = function (desiredPos, desiredMode) {
     }
 
     // private
-    function changeSlide(fnChange, fnBeforeStateChange, fnAfterStateChange) {
-      if (fnBeforeStateChange) {
-        fnBeforeStateChange(self.currentSlideName());
-      }
+    function changeSlide(fnChange) {
+      var modeObj = self.mode();    
+      modeObj.beforeSlideChange(self.currentSlideName());
 
       currentNum = fnChange(currentNum);
 
-      if (fnAfterStateChange) {
-        fnAfterStateChange(self.currentSlideName());
-      }
+      modeObj.afterSlideChange(self.currentSlideName());
 
       return self.currentSlideName();
     }
@@ -124,7 +117,7 @@ var State = function (desiredPos, desiredMode) {
      * @returns new currentID name.
      **/
     this.next = function next() {
-      return makeSlideName(nav.calcNextNum(currentNum, mode));
+      return makeSlideName(nav.calcNextNum(currentNum, modeName));
     };
 
     /**
@@ -132,58 +125,55 @@ var State = function (desiredPos, desiredMode) {
      * @returns new currentID name.
      **/
     this.previous = function previous() {
-      return makeSlideName(nav.calcPrevNum(currentNum, mode));
+      return makeSlideName(nav.calcPrevNum(currentNum, modeName));
     };
 
-    this.changeMode = function (newMode, fnBeforeModeChange, fnAfterModeChange) {
-      var bMode = mode;
+    this.changeMode = function (newMode) {
 
-      if (k.modes.indexOf(newMode) < 0) {
-        newMode = k.modes[0];
+      if (modeNames.indexOf(newMode) < 0) {
+        newMode = modeNames[0];
       }
+        
+      //Clean up on current mode
+      this.mode().cleanUp();
 
-      if (fnBeforeModeChange) {
-        fnBeforeModeChange(bMode, newMode);
-      }
+      var modeObj = modes[newMode];
+      modeObj.beforeModeChange();
 
       // NB this is the real state change
-      mode = newMode;
-      console.debug("slide=" + this.currentSlideName() + " state.mode is " + mode);
+      this.currentMode = newMode;
+      console.debug("slide=" + this.currentSlideName() + " state.mode is " + this.currentMode);
 
-      if (fnAfterModeChange) {
-        fnAfterModeChange(bMode, mode);
-      }
+      modeObj.afterModeChange();
 
-      return mode;
+      return newMode;
     }
 
     //TODO refactor to listen for mode chage event
     /**
       switches mode, and applied lifcycle function before and after.
-      @param fnBeforeModeChange(previousMode, nextMode)
-      @param fnAfterModeChange(previousMode, nextMode)
     **/
-    this.toggleMode = function toggleMode(fnBeforeModeChange, fnAfterModeChange) {
+    this.toggleMode = function toggleMode() {
 
-      var modeNum = modes.indexOf(mode) + 1;
-      if (modeNum >= modes.length) {
+      var modeNum = modeNames.indexOf(this.currentMode) + 1;
+      if (modeNum >= modeNames.length) {
         modeNum = 0;
       }
 
-      return this.changeMode(modes[modeNum], fnBeforeModeChange, fnAfterModeChange);
+      return this.changeMode(modeNames[modeNum]);
     };
 
-    this.changeState = function (newSlideNumber, newMode, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange) {
+    this.changeState = function (newSlideNumber, newMode) {
 
       if (currentNum != newSlideNumber) {
 
         changeSlide(function () {
           return newSlideNumber;
-        }, fnBeforeSlideChange, fnAfterSlideChange);
+        });
       }
 
-      if (mode != newMode) {
-        this.changeMode(newMode, fnBeforeModeChange, fnAfterModeChange);
+      if (newMode && this.currentMode != newMode) {
+        this.changeMode(newMode);
       }
 
     };
