@@ -32,7 +32,7 @@ var c = konfig;
  * Nav constructor
  @param modePosTester {Function (int, mode) => boolean} 
  **/
-function Nav(modes, modePosTester) {
+function Nav(modePosTester) {
 
   var self = this; //For the private methods
 
@@ -40,7 +40,10 @@ function Nav(modes, modePosTester) {
   var nav = {
     calcNextNum: function (start, mode) {
       start = Number(start);
-      if (start < 0) start = 0; //fuck me
+      
+      //Just to be safe  
+      if (start < 0) start = 0; 
+        
       var next = start + 1;
 
       // test we are not past the end of this mode
@@ -73,19 +76,9 @@ function Nav(modes, modePosTester) {
     }
   };
 
-  // initialise the nav structure
-  //  initNav(nav, modes);
-
-  // populate the nav structure
-  //  populateNavs(nav, navigableNodes)
-
-
   //Expose the API
   this.calcNextNum = nav.calcNextNum;
   this.calcPrevNum = nav.calcPrevNum;
-
-  //for debugging
-  this._nav = nav;
 }
 
 
