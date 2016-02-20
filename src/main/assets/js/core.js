@@ -23,8 +23,6 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 */
 
 
-
-
 /* Core features and management - eg finds and tags all slide elements */
 
 
@@ -33,106 +31,13 @@ var konfig = require('./konfig.js')
 var utils = require('./utils.js');
 var State = require('./state.js');
 var modeList = require('./modes.js');
+
 var modes = modeList.modes;
-
-//    var konstants = {
-//        slideAttr: "data-slide",
-//        modalBackdrop: "slideWall",
-//        slideHolder: "slideHolder",
-//        modal: "modal",
-//        mode: ["doc", "deck", "walkthrough"]
-//    }
 var k = konstants;
-//    var config = {
-//        modalBackdropOpacity: 0.5
-//    };
-
 var c = konfig;
-
 var state = {};
 
-
-
 var core = function () {};
-
-core.maxModalWidth = 0;
-core.maxModalHeight = 0;
-
-//core.defaultBefore = function (slideId) {
-//
-//    var currentNode = document.getElementById(state.currentSlideName());
-//
-//    utils.classed(currentNode, "slide-highlight", false);
-//    utils.classed(currentNode, "muted", false);
-//
-//};
-//
-//core.defaultAfter = function (slideId) {
-//    var isDoc = state.isDoc();
-//    var isDeck = state.isDeck();
-//    var isWalk = state.isWalkthrough();
-//
-//    var currentNode = document.getElementById(state.currentSlideName());
-//
-//    utils.classed(currentNode, "slide-highlight", isDeck || isWalk);
-//    utils.classed(currentNode, "muted", isDeck || isWalk);
-//
-//    if (isDeck) {
-//        var modal = document.getElementById("modal");
-//
-//        //Need to copy - otherwise it is removed from the main document.
-//        var copy = document.createElement("div");
-//        copy.innerHTML = currentNode.innerHTML;
-//        
-//        utils.placeIn(modal, copy);
-//    }
-//};
-//
-//core.defaultBeforeModeChange = function (oldmode, newmode) {
-//
-//    var isDoc = (oldmode === "doc");
-//    var isDeck = (oldmode === "deck");
-//    var isWalk = (oldmode === "walkthrough");
-//
-//    //tidy away old changes
-//    var slideWall = document.getElementById("slideWall");
-//    utils.classed(slideWall, "slide-backdrop", false);
-//
-//    var slideHolder = document.getElementById("slideHolder");
-//    utils.classed(slideHolder, "slide-holder", false);
-//
-//
-//    var modal = document.getElementById("modal");
-//    utils.classed(modal, "slide-box", false);
-//    utils.classed(modal, "not-displayed", true);
-//
-//};
-//
-//core.defaultAfterModeChange = function (oldmode, newmode) {
-//    var isDoc = (newmode === "doc");
-//    var isDeck = (newmode === "deck");
-//    var isWalk = (newmode === "walkthrough");
-//
-//    //hide or reveal all slides as required
-//    var slides = utils.selects("section[data-slide]");
-//    for (var i = 0; i < slides.length; ++i) {
-//        utils.classed(slides[i], "not-displayed", isDoc || isWalk);
-//    }
-//
-//    var slideWall = document.getElementById("slideWall");
-//    utils.classed(slideWall, "slide-backdrop", isDeck);
-//    utils.classed(slideWall, "container", isDeck);
-//    slideWall.setAttribute("style", "opacity: " + c.modalBackdropOpacity);
-//
-//    var slideHolder = document.getElementById("slideHolder");
-//    utils.classed(slideHolder, "slide-holder", isDeck);
-//
-//
-//    var modal = document.getElementById("modal");
-//    utils.classed(modal, "slide-box", isDeck);
-//    utils.classed(modal, "not-displayed", !isDeck);
-//
-//};
 
 /**
  * Toggle the presentation mode. If newMode is provided then set mode to that, else get state to switch to the next mode
@@ -160,8 +65,6 @@ core.hashChanged = function (location) {
     var queryParams = utils.parseParams(window.location.search);
     if (!state.changeState) {
         state = new State(theSlideNum, modes, queryParams["mode"]);
-        //TODO pos move to contructor
-    //        state.populateNavs(utils.selects(selectString));
     } else {
         state.changeState(theSlideNum, queryParams["mode"]);
     }
@@ -175,10 +78,6 @@ core.hashChanged = function (location) {
  * keycodes are: left = 37, up = 38, right = 39, down = 40
  */
 core.addKeyListeners = function () {
-
-  //    window.onscroll = function () {
-         //        console.debug("scrolling event ... " + window.scrollY);
-         //    }
 
     document.onkeyup = function (evt) {
         var kc = evt.keyCode;

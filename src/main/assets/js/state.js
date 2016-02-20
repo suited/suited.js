@@ -87,7 +87,7 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
       }
     }
 
-    var nav = new Nav(modeNames, magicModePosTest);
+    var nav = new Nav(magicModePosTest);
 
     //---------------
 
@@ -117,7 +117,7 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
      * @returns new currentID name.
      **/
     this.next = function next() {
-      return makeSlideName(nav.calcNextNum(currentNum, modeName));
+      return makeSlideName(nav.calcNextNum(currentNum, this.currentMode));
     };
 
     /**
@@ -125,7 +125,7 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
      * @returns new currentID name.
      **/
     this.previous = function previous() {
-      return makeSlideName(nav.calcPrevNum(currentNum, modeName));
+      return makeSlideName(nav.calcPrevNum(currentNum, this.currentMode));
     };
 
     this.changeMode = function (newMode) {
