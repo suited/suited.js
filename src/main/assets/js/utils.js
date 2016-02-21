@@ -138,12 +138,9 @@ NB state requires utils... so state is passed into this func as it is called to 
 utils.number = function (nodeList) {
     var numSlides = nodeList.length - 1;
 
-    //TODO FIXME ther is an error here I thing wrapping moves nodes so children slides are not wrapped...
-    // ... perhaps wrap in reverse order?
-    //        for (var i = 0; i < state.numSlides; ++i) {
     for (var i = (numSlides); i >= 0; i--) {
         var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
-    utils.wrapDiv(item, "slide-" + (i), "slide");
+        utils.wrapDiv(item, "slide-" + (i), "slide");
         var childSlides = utils.selects("section[data-slide]", item);
         utils.tag(childSlides, "data-sub-slide");
     }

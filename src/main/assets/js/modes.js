@@ -40,9 +40,6 @@ function deckMode(enable) {
         utils.classed(slides[i], "not-displayed", !enable);
     }
     
-//    utils.classed(currentNode, "slide-highlight", enable);
-//    utils.classed(currentNode, "muted", enable);
-    
     var slideWall = document.getElementById("slideWall");
     utils.classed(slideWall, "slide-backdrop", enable);
     utils.classed(slideWall, "container", enable);
@@ -78,9 +75,6 @@ function walkMode(enable) {
     for (var i = 0; i < slides.length; ++i) {
         utils.classed(slides[i], "not-displayed", enable);
     }
-    
-//    utils.classed(currentNode, "slide-highlight", enable);
-//    utils.classed(currentNode, "muted", enable);    
 }
 
 function walkBeforeModeChange() {
@@ -94,7 +88,7 @@ function walkCleanUp() {
 var ml = {};
 ml.modes = [];
 ml.modes.push(new Mode("doc", defaultBeforeSlide, docAfterSlide, docBeforeModeChange));
-ml.modes.push(new Mode("walkthrough", defaultBeforeSlide, walkAfterSlide, walkBeforeModeChange, null, walkCleanUp));
 ml.modes.push(new Mode("deck", defaultBeforeSlide, deckAfterSlide, deckBeforeModeChange, null, deckCleanUp));
+ml.modes.push(new Mode("walkthrough", defaultBeforeSlide, walkAfterSlide, walkBeforeModeChange, null, walkCleanUp));
 
 module.exports = ml;

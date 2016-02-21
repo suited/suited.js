@@ -44,6 +44,11 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
     
     var modeNames = [];
     var modes = {};
+    
+    this.mode = function () {
+      return modes[this.currentMode];
+    }
+    
     //Change the array into a name based map
     for (var i=0; i < modeObjectsArr.length; i++) {
         var modeName = modeObjectsArr[i].name;
@@ -51,11 +56,36 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
         modes[modeName] = modeObjectsArr[i];
     }
 
-    this.currentMode = (modeNames.indexOf(desiredMode) >= 0) ? desiredMode : modeNames[0]; //or deck
+    this.currentMode = modeNames[0]; //or deck
 
-    this.mode = function () {
-      return modes[this.currentMode];
+    this.changeMode = function (newMode) {
+     
+      if (!newMode) {
+          newMode = modeNames[0];
+      }    
+        
+      if (modeNames.indexOf(newMode) < 0) {
+        newMode = modeNames[0];
+      }
+        
+      //Clean up on current mode
+      this.mode().cleanUp();
+
+      var modeObj = modes[newMode];
+      modeObj.beforeModeChange();
+
+      // NB this is the real state change
+      this.currentMode = newMode;
+
+      modeObj.afterModeChange();
+
+      return newMode;
     }
+    
+    //Now change the mode to the provided start mode
+    this.changeMode(desiredMode);
+    
+    
 
     var slidePrefix = k.idPrefix;
 
@@ -128,26 +158,7 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
       return makeSlideName(nav.calcPrevNum(currentNum, this.currentMode));
     };
 
-    this.changeMode = function (newMode) {
 
-      if (modeNames.indexOf(newMode) < 0) {
-        newMode = modeNames[0];
-      }
-        
-      //Clean up on current mode
-      this.mode().cleanUp();
-
-      var modeObj = modes[newMode];
-      modeObj.beforeModeChange();
-
-      // NB this is the real state change
-      this.currentMode = newMode;
-      console.debug("slide=" + this.currentSlideName() + " state.mode is " + this.currentMode);
-
-      modeObj.afterModeChange();
-
-      return newMode;
-    }
 
     //TODO refactor to listen for mode chage event
     /**
