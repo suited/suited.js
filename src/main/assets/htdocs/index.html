@@ -7,20 +7,63 @@
 </head>
 
 <body>
-  <h3>some heading</h3> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et dignissim sem. Sed eu justo turpis. Aliquam id diam nulla. Praesent vel ex ac diam convallis gravida eget ut orci. Vivamus tortor lacus, tincidunt id ultrices vitae, viverra id justo. Aenean vitae pharetra diam. Nam tempus tincidunt urna ut aliquet. Curabitur arcu lorem, vulputate vel arcu vel, feugiat pellentesque lorem. Aenean a libero enim.
+  <h1 align="center">Suited</h1> 
+    <p>
+        Suited is a JavaScript library that enables you to turn documents into presentations. It allows you to present the document so that the presentation and full article is the same thing.
+        Lecturers can use slides to teach the class and distribute the slide and the details at the same time. Your next business presentation can be published on the intranet, so that colleagues 
+        can read the detail in the form of an article and re-present it at the click of a button!
+    </p>
+    <p>
+        Suited gives you the ability to make slide presentations and have something useful to distribute. Traditional presentations have slides with more details embedded as speaker notes. Suited
+        takes the opposite approach - a full document with embedded presentation slides. The slides can either be invisible in the final document or be parts of the final document
+    </p>
+    
 
-  <section>
-    <h4>First section</h4>
-    <pre>
-              
-              def someFunc(a: A, b: B, f: (A,B) => C) = {
-                f(a, b)
-              }
-              
-            </pre>
+
+  <h3>Embedded (Invisible) Slides</h3>
+    <h4>Use 'data-figure'</h4>
+  <p>
+    Slides can be embedded in the document so that it is only visible when in <code>deck</code> mode. This means you can summarize a particular paragraph by embedding a slide in the document.
+    To do that you add a <code>section</code> right after the paragraph with the slide details. To hide it you add the <code>data-slide</code>. This puts the section into 'slide only' mode 
+    which hides it when viewing the full document. 
+   </p>      
+    <p>
+        The slide becomes visible when the document is placed in deck mode. There is two ways to do this. 
+        <ul>
+            <li>press SHIFT+S (to make a captial S)</li>
+            <ul>
+                <li> This cycles through all the modes</li>
+            </ul>
+            <li>Change mode in URL to be mode=deck</li>
+        </ul>
+    </p>
+    <section data-slide>
+      <h3>Feature</h3>
+      <h4>Embedded slides</h4>
+      <ul>
+        <li>This</li>
+        <li>slide is only visible</li>
+        <li>in</li>
+        <li>deck mode</li>  
+      </ul>
   </section>
-
-  Morbi vehicula quis tortor cursus aliquam. Donec fringilla neque ut posuere imperdiet. Vestibulum auctor sapien sed hendrerit eleifend. Phasellus lorem nulla, mattis in faucibus sed, porttitor vel turpis. Nunc odio lectus, ultrices id feugiat ac, porta dictum lacus. Vestibulum turpis massa, luctus convallis facilisis quis, convallis eget mauris. Nulla id dui sem. Quisque feugiat arcu non odio fermentum, vitae elementum magna consequat.
+    
+    <section data-figure>
+        <h4> Code for embedded slide </h4>
+        <pre>
+            &lt;section data-slide>
+              &lt;h3>Feature</h3>
+              &lt;h4>Embedded slides</h4>
+              &lt;ul>
+                &lt;li>This</li>
+                &lt;li>slide is only visible</li>
+                &lt;li>in</li>
+                &lt;li>deck mode</li>  
+              &lt;/ul>
+            &lt;/section>
+        </pre>
+    </section>    
+    
 
   <section data-figure>
     <h1>First H1</h1>
