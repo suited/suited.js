@@ -164,28 +164,32 @@ utils.placeIn = function (container, child) {
     
     var elems = Array.prototype.slice.call(child.childNodes);
     
-  for (var i = 0; i < elems.length; i++) {
-        var elem = elems[i];       
+    var wrapper = document.createElement("div");
+    utils.classed(wrapper, "slide-root", true);    
+    
+      for (var i = 0; i < elems.length; i++) {
+            var elem = elems[i];       
 
-        if (!elem.tagName && elem.textContent.trim().length > 0) {
-            var txtWrapper = document.createElement("div");
-            txtWrapper.appendChild(elem);
-            elem = txtWrapper;
+            //Support free floating text in a slide section by wrapping it in a P
+            if (!elem.tagName && elem.textContent.trim().length > 0) {
+                var txtWrapper = document.createElement("p");
+                txtWrapper.appendChild(elem);
+                elem = txtWrapper;
+            }
+            
+            if (elem.tagName) {
+                var tag = elem.tagName.toUpperCase();
+                wrapper.appendChild(elem);
+
+                //var indent = (tag != "PRE" && tag != "BLOCKQUOTE" && !(tag.length == 2 && tag.charAt(0) == "H"))
+                var indent = (tag == "UL" || tag == "OL" || tag == "P")
+
+                utils.classed(elem, "col-md-offset-3", indent);
+                utils.classed(elem, "col-md-offset-0", !indent);
+
+                container.appendChild(wrapper);        
+            }
         }
-        
-        if (elem.tagName) {
-            var tag = elem.tagName.toUpperCase();
-            var wrapper = document.createElement("div");
-            wrapper.appendChild(elem);
-
-      var indent = (tag != "PRE" && !(tag.length == 2 && tag.charAt(0) == "H"))
-
-      utils.classed(elem, "col-md-offset-3", indent);
-      utils.classed(elem, "col-md-offset-0", !indent);
-
-            container.appendChild(wrapper);        
-        }
-    }
 }
 
 utils.placeInZoom = function (container, child) {
