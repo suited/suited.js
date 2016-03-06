@@ -7,21 +7,95 @@
 </head>
 
 <body>
-  <h1 align="center">Suited</h1> 
+    <a href="https://github.com/suited">
+        <a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    </a>
+    <h1 align="center">Suited</h1> 
+    <section data-slide>
+        <a href="https://github.com/suited">
+        <a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+        </a>
+        <div class="title">
+            <h2>Introducing</h2>
+            <h1>Suited</h1>
+        </div>
+    </section>
+    
+    <section data-slide>
+        <blockquote>Turn any document into a stylish presentation</blockquote>
+    </section>
+    
     <p>
-        Suited is a JavaScript library that enables you to turn documents into presentations. It allows you to present the document so that the presentation and full article is the same thing.
-        Lecturers can use slides to teach the class and distribute the slide and the details at the same time. Your next business presentation can be published on the intranet, so that colleagues 
-        can read the detail in the form of an article and re-present it at the click of a button!
+        Suited is a JavaScript library which turns documents into presentations! No longer do you have to separate the detailed information from the presentation. The article becomes 
+        the presentation.
+    </p>    
+    <section data-figure>
+        <blockquote>The article is a presentation and the presentation is the article!</blockquote>
+    </section>        
+    <p>
+        Lecturers can use slides to teach the class and distribute the slides and the details at the same time in one document. Business presentations can now be detailed documents, 
+        which can be published and colleagues can see the slides at the click of a button!
     </p>
     <p>
-        Suited gives you the ability to make slide presentations and have something useful to distribute. Traditional presentations have slides with more details embedded as speaker notes. Suited
-        takes the opposite approach - a full document with embedded presentation slides. The slides can either be invisible in the final document or be parts of the final document
+        Traditional presentations have slides with more details embedded as speaker notes. Suited takes the opposite approach - a full document with embedded presentation slides. The slides 
+        can either be existing figures, graphs or quotes in the document, or hidden slides only visible in presentation mode.
     </p>
     
+    <section data-slide>
+        <h4>Example</h4>
+        <blockquote>Lecturers can distribute slides and notes in one document</blockquote>
+    </section>
 
+    <section data-slide>
+        <h4>Example</h4>        
+        <blockquote>Colleagues can read the document and reuse the presentation</blockquote>
+    </section>
+            
+    <h3>Modes</h3>
+    <p>
+        Suited has three built in modes:
+    </p>
+    <section data-figure>
+        <h4>Built-in modes</h4>
+        <br/>
+        <ul>
+            <li>Document - <small>Normal reading mode</small></li>
+            <li>Presentation - <small>Slides for presenting the information</small></li>
+            <li>Walkthrough - <small>Highlight sections on navigation</small></li>
+        </ul>
+    </section>
+    
+    <section data-figure>
+        <blockquote> Give it a go! Press 'SHIFT+S' now to cycle through the modes</blockquote>
+    </section>
 
+    <section data-figure>
+        <blockquote> Press 'Esc' to jump directly to document mode</blockquote>
+    </section>
+
+    
+    <p>
+        There is no need to start with the presentation in mind, any document can be transformed into a presentation by adding slides, or marking sections that should be displayed in 
+        slide mode.
+    </p>
+    
+    <h2>Figures, graphs, quotes and things</h2>
+    <p>
+        Articles often have sections that is perfect for displaying as a slide. These can be images, graphs, tables, code sections etc.
+        
+        The following image illustrates an image in the document and on a presentation slide.    
+    </p>
+    
+    <div style="border: 2px solid rgba(0, 0, 0, 0.27);">
+    <section data-figure>
+            <img src="images/jackOfSpades.png" width="60%" />
+    </section>
+    </div>
+    <div>Suited logo</div>
+    
+    
   <h3>Embedded (Invisible) Slides</h3>
-    <h4>Use 'data-figure'</h4>
+    <h4>Use <pre>data-figure</pre></h4>
   <p>
     Slides can be embedded in the document so that it is only visible when in <code>deck</code> mode. This means you can summarize a particular paragraph by embedding a slide in the document.
     To do that you add a <code>section</code> right after the paragraph with the slide details. To hide it you add the <code>data-slide</code>. This puts the section into 'slide only' mode 
@@ -36,6 +110,7 @@
             </ul>
             <li>Change mode in URL to be mode=deck</li>
         </ul>
+    
     </p>
     <section data-slide>
       <h3>Feature</h3>
@@ -51,16 +126,9 @@
     <section data-figure>
         <h4> Code for embedded slide </h4>
         <pre>
-            &lt;section data-slide>
-              &lt;h3>Feature</h3>
-              &lt;h4>Embedded slides</h4>
-              &lt;ul>
-                &lt;li>This</li>
-                &lt;li>slide is only visible</li>
-                &lt;li>in</li>
-                &lt;li>deck mode</li>  
-              &lt;/ul>
-            &lt;/section>
+            <code>
+                function Test1234()
+            </code>
         </pre>
     </section>    
     
@@ -128,13 +196,13 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
 
   <section data-slide>
     <h1>Second slide</h1> There are unordered lists:
-    <div>
       <ul>
         <li>Some thing </li>
         <li>Some other thing</li>
       </ul>
 
       <p>There are ordered lists:</p>
+      
       <ol>
         <li>Some thing </li>
         <ul>
@@ -142,8 +210,6 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
         </ul>
         <li>Some other thing</li>
       </ol>
-    </div>
-
   </section>
 
   Sed non interdum ligula. Ut vel viverra lectus. In hac habitasse platea dictumst. Suspendisse nec elementum eros. Vivamus et luctus sem. Vivamus egestas, leo non pharetra hendrerit, nisl dui lacinia massa, ac viverra ante tellus quis lectus. Morbi erat mi, tincidunt in magna a, fermentum rhoncus mauris. Aenean dignissim, turpis ac ultricies lobortis, erat ligula ullamcorper magna, volutpat vulputate urna felis vitae erat. In aliquet tellus et tristique placerat. Suspendisse potenti. Etiam tortor ex, scelerisque id dolor a, lacinia dapibus neque. Aenean tortor neque, placerat in consequat vitae, varius ut justo. Sed vestibulum a arcu id fringilla. Donec leo libero, rhoncus non auctor vitae, porttitor vitae augue. Mauris quis est ut elit feugiat iaculis sed eu sapien. Maecenas lobortis tortor velit, ac rutrum orci scelerisque ac. In vel lorem tincidunt, porttitor enim at, consectetur tellus. In fermentum magna felis, et faucibus turpis auctor sed. Cras quis purus sollicitudin, molestie tellus vitae, venenatis justo.
