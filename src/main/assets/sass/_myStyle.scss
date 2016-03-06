@@ -31,6 +31,24 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
     background: #20f0fd;
   }
  
+
+body { 
+    margin:0 auto;
+    
+    @media (min-width: $screen-lg-min) {
+        width:1000px; 
+    }
+    @media (max-width: $screen-md-max) {
+        width:800px; 
+    }    
+    @media (max-width: $screen-sm-max) {
+        width:600px; 
+    }    
+    @media (max-width: $screen-xs-max) {
+        width: 400px; 
+    }    
+}
+
   /* zoom */
   .zoom {
     /*            zoom: 2;*/

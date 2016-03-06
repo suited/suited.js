@@ -1,3 +1,10 @@
+.slide-root{
+    height: 100%;
+    widht: 100%;
+//    position: relative;
+    top: 10%;
+}
+
 .slide-backdrop {
     position: fixed;
     top: 0px;
@@ -28,7 +35,7 @@
     padding: 15px;
     border-radius: 4px;
     box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
-    position: absolute;
+    position: relative;
     z-index: 3;
     top: 30px;
     right: 0;
@@ -92,8 +99,7 @@
     overflow-y: scroll;
   }
   .slide-box li {
-    line-height: 1.1;
-    //Want to reduce space between list items
+    line-height: 1.3;
   }
   .slide-box pre {
     //    font-size: 1em;
@@ -116,3 +122,34 @@
       font-size: 0.7em;
     }
   }
+
+  .slide-box blockquote {
+    //    font-size: 1em;
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    border-left: none;
+    width: 90%;
+      
+    @media (min-width: $screen-md-max) {
+      font-size: 1.8em;
+    }
+    ;
+    @media (max-width: $screen-md-max) {
+        font-size: 1.5em;
+    }
+    ;
+    @media (max-width: $screen-sm-max) {
+        font-size: 1.2em;
+    }
+    ;
+    @media (max-width: $screen-xs-max) {
+        font-size: 1em;
+    }
+  }
+
+.slide-box .title {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+}
