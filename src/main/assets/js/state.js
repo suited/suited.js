@@ -32,31 +32,29 @@ var Nav = require("./nav.js");
 
 var State = function (desiredPos, modeObjectsArr, desiredMode) {
 
+    //Sanity check, fix input to defaults if invalid
+    
+    if (!desiredPos) {
+        desiredPos = 0;
+    }
+    
+    if (!desiredMode) {
+        desiredMode = modeObjectsArr[0];
+    }
+    
 
     var self = this; //For the private methods
 
     //sanity
     /* Initialise states */
-    var currentNum = (desiredPos >= 0) ? Number(desiredPos) : 0;
-    if (isNaN(currentNum)) {
-      currentNum = 0
-    };
-    
+    var currentNum =  0;    
     var modeNames = [];
     var modes = {};
+    this.currentMode = null;
     
     this.mode = function () {
       return modes[this.currentMode];
     }
-    
-    //Change the array into a name based map
-    for (var i=0; i < modeObjectsArr.length; i++) {
-        var modeName = modeObjectsArr[i].name;
-        modeNames.push(modeName);
-        modes[modeName] = modeObjectsArr[i];
-    }
-
-    this.currentMode = modeNames[0]; //or deck
 
     this.changeMode = function (newMode) {
      
@@ -69,8 +67,10 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
       }
         
       //Clean up on current mode
-      this.mode().cleanUp();
-
+      if (this.mode()) {
+        this.mode().cleanUp();
+      }
+        
       var modeObj = modes[newMode];
       modeObj.beforeModeChange();
 
@@ -81,11 +81,6 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
 
       return newMode;
     }
-    
-    //Now change the mode to the provided start mode
-    this.changeMode(desiredMode);
-    
-    
 
     var slidePrefix = k.idPrefix;
 
@@ -176,19 +171,30 @@ var State = function (desiredPos, modeObjectsArr, desiredMode) {
 
     this.changeState = function (newSlideNumber, newMode) {
 
+      if (newMode && this.currentMode != newMode) {
+        this.changeMode(newMode);
+      }
+       
+      //Do slide change after mode change to draw slides properly
       if (currentNum != newSlideNumber) {
 
         changeSlide(function () {
           return newSlideNumber;
         });
-      }
-
-      if (newMode && this.currentMode != newMode) {
-        this.changeMode(newMode);
-      }
+      }        
 
     };
 
+    
+    //Change the array into a name based map
+    for (var i=0; i < modeObjectsArr.length; i++) {
+        var modeName = modeObjectsArr[i].name;
+        modeNames.push(modeName);
+        modes[modeName] = modeObjectsArr[i];
+    }
+    
+    //Now that all is defined set the state and fire appropriate mode and slide change handlers
+    this.changeState(desiredPos, desiredMode);
   } // end constructor
 
 
