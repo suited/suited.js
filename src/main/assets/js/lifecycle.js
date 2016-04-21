@@ -126,6 +126,14 @@ var LifeCycle = function () {
 
   this.events = Array.prototype.slice.call(lifecycleEvents);
 
+  this.fireEvent = function (eventName) {
+    var handlers = eventHandlersLookup[eventName];
+    handlers.forEach(function (d, i, a) {
+      var x = d.callback(i);
+      console.log("running callback " + i + " whose id is " + d.id + " where ret = " + x);
+    });
+  }
+
 }
 
 //return the contructor function
