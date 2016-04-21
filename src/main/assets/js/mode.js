@@ -24,54 +24,53 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 */
 var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange, fnCleanUp) {
 
-    var self = this;
+  var self = this;
 
-    if (!modeName) {
-        throw "Could not instansiate mode. Mode name is not optional."
+  if (!modeName) {
+    throw "Could not instansiate mode. Mode name is not optional."
+  }
+
+  this.name = modeName;
+
+  this.beforeSlideChange = function (slideId) {
+    if (fnBeforeSlideChange) {
+      return fnBeforeSlideChange(slideId);
+    } else {
+      console.debug("No before slide change function defined for mode: " + name);
     }
+  };
 
-    this.name = modeName;
+  this.afterSlideChange = function (slideId) {
+    if (fnAfterSlideChange) {
+      return fnAfterSlideChange(slideId);
+    } else {
+      console.debug("No after slide change function defined for mode: " + name);
+    }
+  };
 
-    this.beforeSlideChange = function (slideId) {
-        if (fnBeforeSlideChange) {
-            return fnBeforeSlideChange(slideId);
-        } else {
-            console.debug("No before slide change function defined for mode: " + name);
-        }
-    };
+  this.beforeModeChange = function (oldmode, newmode) {
+    if (fnBeforeModeChange) {
+      return fnBeforeModeChange(oldmode, newmode);
+    } else {
+      console.debug("No after mode change function defined for mode: " + name);
+    }
+  };
 
-    this.afterSlideChange = function (slideId) {
-        if (fnAfterSlideChange) {
-            return fnAfterSlideChange(slideId);
-        } else {
-            console.debug("No after slide change function defined for mode: " + name);
-        }
-    };
+  this.afterModeChange = function (oldmode, newmode) {
+    if (fnAfterModeChange) {
+      return fnAfterModeChange(oldmode, newmode);
+    } else {
+      console.debug("No after mmode change function defined for mode: " + name);
+    }
+  };
 
-    this.beforeModeChange = function (oldmode, newmode) {
-        if (fnBeforeModeChange) {
-            return fnBeforeModeChange(oldmode, newmode);
-        } else {
-            console.debug("No after mode change function defined for mode: " + name);
-        }
-    };
-
-    this.afterModeChange = function (oldmode, newmode) {
-        if (fnAfterModeChange) {
-            return fnAfterModeChange(oldmode, newmode);
-        } else {
-            console.debug("No after mmode change function defined for mode: " + name);
-        }
-    };
-    
-    this.cleanUp = function () {
-        if (fnCleanUp) {
-            return fnCleanUp();
-        }
-        else {
-            console.debug("No clean up function defined for mode: " + name);
-        }
-    };
+  this.cleanUp = function () {
+    if (fnCleanUp) {
+      return fnCleanUp();
+    } else {
+      console.debug("No clean up function defined for mode: " + name);
+    }
+  };
 
 };
 

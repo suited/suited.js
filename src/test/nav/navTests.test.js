@@ -20,7 +20,7 @@ describe("Tests to confirm that state navigation works correctly in different mo
     return foo;
   }
 
-  it("can't initialise state so that minimum slide is less than slide-0", function () {
+ /* it("can't initialise state so that minimum slide is less than slide-0", function () {
     var minus10State = new State(-10, "fony"); // fony mode should revert to default... should probably test that in a State test
     var currentId = minus10State.previous();
     expect(currentId).toEqual("slide-0");
@@ -60,7 +60,7 @@ describe("Tests to confirm that state navigation works correctly in different mo
       expect(nextMode0).toEqual(1);
     }
   });
-
+*/
   //    it("decrementing always ends at slide-0 and goes no further.", function () {
   //        val deckSize = 10;
   //        val badDeclSize = 20;
@@ -74,4 +74,10 @@ describe("Tests to confirm that state navigation works correctly in different mo
            expect(url.split('#')[1]).toBe('/main');
          });
      });*/
+  
+  
+  it("Nav tests all commented", function () {
+    expect("fixme").to.equal("muppet!");
+  });
+  
 });

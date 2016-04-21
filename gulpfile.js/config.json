@@ -1,7 +1,8 @@
 {
   "root": {
     "src": "./src/main/assets",
-    "dest": "./public"
+    "dest": "./public",
+    "tests": "./src/test"
   },
 
   "node_modules": {
