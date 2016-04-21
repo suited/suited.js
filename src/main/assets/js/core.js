@@ -40,34 +40,36 @@ var state = {};
 var core = function () {};
 
 /**
- * Toggle the presentation mode. If newMode is provided then set mode to that, else get state to switch to the next mode
- * @param {String} newMode (Optional) The mode to switch to. If left out then next mode is selected
+ * Toggle the presentation mode. If newMode is provided then set mode to that, 
+ * else get state to switch to the next mode
+ * @param {String} newMode (Optional) The mode to switch to.
+ *   - If left out then next mode is selected
  */
 core.toggleMode = function (newMode) {
-    if (newMode) {
-        state.changeMode(newMode);
-    } else {
-        state.toggleMode();
-    }
+  if (newMode) {
+    state.changeMode(newMode);
+  } else {
+    state.toggleMode();
+  }
 
-    //We need to do this because going into deck, we need to do the slide stuff.
-    state.mode().afterSlideChange(state.currentSlideName());
+  //We need to do this because going into deck, we need to do the slide stuff.
+  state.mode().afterSlideChange(state.currentSlideName());
 
-    //fix location bar
-    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
+  //fix location bar
+  window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
 }
 
 core.hashChanged = function (location) {
-    console.log("Location changed!" + location);
-    var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
+  console.log("Location changed!" + location);
+  var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
 
-    var theSlideNum = utils.parseSlideNum(window.location.hash);
-    var queryParams = utils.parseParams(window.location.search);
-    if (!state.changeState) {
-        state = new State(theSlideNum, modes, queryParams["mode"]);
-    } else {
-        state.changeState(theSlideNum, queryParams["mode"]);
-    }
+  var theSlideNum = utils.parseSlideNum(window.location.hash);
+  var queryParams = utils.parseParams(window.location.search);
+  if (!state.changeState) {
+    state = new State(theSlideNum, modes, queryParams["mode"]);
+  } else {
+    state.changeState(theSlideNum, queryParams["mode"]);
+  }
 
 };
 
@@ -79,99 +81,98 @@ core.hashChanged = function (location) {
  */
 core.addKeyListeners = function () {
 
-    document.onkeyup = function (evt) {
-        var kc = evt.keyCode;
-        switch (kc) {
-            case 27: //escape
-                core.toggleMode(modes[0]);
-                console.log("Mode reset to doc");
+  document.onkeyup = function (evt) {
+    var kc = evt.keyCode;
+    switch (kc) {
+      case 27: //escape
+        core.toggleMode(modes[0]);
+        console.log("Mode reset to doc");
 
-                break;
-            case 37: // Left arrow
-                console.log("Previous " + evt.keyCode);
+        break;
+      case 37: // Left arrow
+        console.log("Previous " + evt.keyCode);
 
-                //handle state change and transition
-                var currentSlide = state.currentSlideName();
-                var elId = state.previous(); //side effect on state.mode
-                if (currentSlide === elId) {
-                    var transitionFunc = utils.findTransition("top", elId, state.currentMode);
-                    transitionFunc(elId);
-                    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
-                }
-                else {
-                    var slideNum = utils.parseSlideNum("#" + elId);
-                    var transitionFunc = utils.findTransition("left", elId, state.currentMode);
-                    transitionFunc(elId);
-                    state.changeState(slideNum);
+        //handle state change and transition
+        var currentSlide = state.currentSlideName();
+        var elId = state.previous(); //side effect on state.mode
+        if (currentSlide === elId) {
+          var transitionFunc = utils.findTransition("top", elId, state.currentMode);
+          transitionFunc(elId);
+          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
+        } else {
+          var slideNum = utils.parseSlideNum("#" + elId);
+          var transitionFunc = utils.findTransition("left", elId, state.currentMode);
+          transitionFunc(elId);
+          state.changeState(slideNum);
 
-                    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
+          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
 
-                    console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
-                }
-                break;
-            case 39: // Right arrow
-                console.log("Next " + evt.keyCode);
+          console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
+        }
+        break;
+      case 39: // Right arrow
+        console.log("Next " + evt.keyCode);
 
-                //handle state change and transition
-                var elId = state.next(); // side effect on state
-                var slideNum = utils.parseSlideNum("#" + elId);
-                var transitionFunc = utils.findTransition("right", elId, state.currentMode);
-                transitionFunc(elId);
-                state.changeState(slideNum);
-                window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
+        //handle state change and transition
+        var elId = state.next(); // side effect on state
+        var slideNum = utils.parseSlideNum("#" + elId);
+        var transitionFunc = utils.findTransition("right", elId, state.currentMode);
+        transitionFunc(elId);
+        state.changeState(slideNum);
+        window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
 
-                console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
-                break;
-            case 83: //s
-                if (evt.shiftKey) {
-                    core.toggleMode(); //side effect on state.mode
-                    console.log("current mode: " + state.currentMode);
-                }
-                break;
-            case 84: //t
-                if (evt.shiftKey) {
-                    var transitionFunc = utils.findTransition("top", elId, state.currentMode);
-                    transitionFunc(elId);
-                    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
+        console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
+        break;
+      case 83: //s
+        if (evt.shiftKey) {
+          core.toggleMode(); //side effect on state.mode
+          console.log("current mode: " + state.currentMode);
+        }
+        break;
+      case 84: //t
+        if (evt.shiftKey) {
+          var transitionFunc = utils.findTransition("top", elId, state.currentMode);
+          transitionFunc(elId);
+          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
 
-                    console.log("current mode: " + state.currentMode);
-                }
-                break;
-        };
-
+          console.log("current mode: " + state.currentMode);
+        }
+        break;
     };
+
+  };
 };
 
 
 core.init = function () {
-    var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
-    utils.number(utils.selects(selectString));
+  var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
+  utils.number(utils.selects(selectString));
 
-    // add placeholder for Modal backdrop
-    var b = document.body;
+  // add placeholder for Modal backdrop
+  var b = document.body;
 
-    //pimp body to add our slide modals
-    var slideWall = document.createElement("div");
-    slideWall.setAttribute("id", k.modalBackdrop);
-    b.appendChild(slideWall);
+  //pimp body to add our slide modals
+  var slideWall = document.createElement("div");
+  slideWall.setAttribute("id", k.modalBackdrop);
+  b.appendChild(slideWall);
 
-    var slideHolder = document.createElement("div");
-    slideHolder.setAttribute("id", k.slideHolder);
-    b.appendChild(slideHolder);
+  var slideHolder = document.createElement("div");
+  slideHolder.setAttribute("id", k.slideHolder);
+  b.appendChild(slideHolder);
 
-    //Add the modal backdrop element TODO template layouty stuff should do this
-    //slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
-    slideHolder.innerHTML = '<div id="' + k.modal + '"></div>';
+  //Add the modal backdrop element TODO template layouty stuff should do this
+  //slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
+  slideHolder.innerHTML = '<div id="' + k.modal + '"></div>';
 
-    //Create new state object and put everything in the right state 
+  //Create new state object and put everything in the right state 
+  core.hashChanged(window.location);
+
+  //interactivity
+  core.addKeyListeners();
+
+  window.addEventListener("hashchange", function (e) {
     core.hashChanged(window.location);
-
-    //interactivity
-    core.addKeyListeners();
-
-    window.addEventListener("hashchange", function (e) {
-        core.hashChanged(window.location);
-    });
+  });
 };
 
 
