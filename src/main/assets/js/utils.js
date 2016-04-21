@@ -37,12 +37,12 @@ var c = konfig;
  * @returns {Array}    Of Strings. The class names applied to the element
  */
 var classList = function (element) {
-    if (!element) return [];
+  if (!element) return [];
 
-    var classes = element.getAttribute("class");
-    if (!classes) return [];
+  var classes = element.getAttribute("class");
+  if (!classes) return [];
 
-    return classes.split(" "); //Array of Strings
+  return classes.split(" "); //Array of Strings
 }
 
 var utils = {};
@@ -58,15 +58,15 @@ var utils = {};
  * @returns {void} Side effecting. Changes the supplied element in place
  */
 utils.toggleClass = function (element, clazz1, clazz2) {
-    if (!element) return;
+  if (!element) return;
 
-    var oldclasses = Array.prototype.slice.call(classList(element));
+  var oldclasses = Array.prototype.slice.call(classList(element));
 
-    var newclasses = oldclasses.map(function (i) {
-        return (i === clazz1) ? clazz2 : i;
-    });
+  var newclasses = oldclasses.map(function (i) {
+    return (i === clazz1) ? clazz2 : i;
+  });
 
-    element.setAttribute("class", newclasses.join(" "));
+  element.setAttribute("class", newclasses.join(" "));
 };
 
 
@@ -79,18 +79,18 @@ utils.toggleClass = function (element, clazz1, clazz2) {
  * @returns {void}  Side affecting. Changes the clases of the element in place
  */
 utils.classed = function (element, clazzname, addit) {
-    if (!element) return;
-    var oldclasses = Array.prototype.slice.call(classList(element));
+  if (!element) return;
+  var oldclasses = Array.prototype.slice.call(classList(element));
 
-    var index = oldclasses.indexOf(clazzname);
-    if (index >= 0 && !addit) {
-        oldclasses.splice(index, 1);
-    }
-    if (index < 0 && addit) {
-        oldclasses.push(clazzname);
-    }
+  var index = oldclasses.indexOf(clazzname);
+  if (index >= 0 && !addit) {
+    oldclasses.splice(index, 1);
+  }
+  if (index < 0 && addit) {
+    oldclasses.push(clazzname);
+  }
 
-    element.setAttribute("class", oldclasses.join(" "));
+  element.setAttribute("class", oldclasses.join(" "));
 
 };
 
@@ -102,31 +102,31 @@ utils.classed = function (element, clazzname, addit) {
  * @returns {NodeList} The list of nodes matching the query. Empty list of nothing is found
  */
 utils.selects = function (selection, parent) {
-    if (!parent) parent = document;
-    return parent.querySelectorAll(selection);
+  if (!parent) parent = document;
+  return parent.querySelectorAll(selection);
 };
 
 //TODO check if attr Values is an array or a function(dia) and call it to set the values
 /* attValues is an array of values or a function(index, origArray) that returns the value for each item in the array */
 utils.tag = function (nodeList, attrName, attrValues) {
-    for (var i = 0; i < nodeList.length; ++i) {
-        var theValue = (!attrValues) ? '' : attrValues(i);
-        nodeList[i].setAttribute(attrName, theValue);
+  for (var i = 0; i < nodeList.length; ++i) {
+    var theValue = (!attrValues) ? '' : attrValues(i);
+    nodeList[i].setAttribute(attrName, theValue);
 
-    }
+  }
 };
 
 utils.wrapDiv = function (element, id, clazz) {
-    
-    var innerHtml = element.innerHTML;
-    element.innerHTML = "";
-    
-    var wrapper = document.createElement("div");
-    utils.classed(wrapper, clazz, true);
-    wrapper.setAttribute("id", id);
-    element.appendChild(wrapper);
-    
-    wrapper.innerHTML = innerHtml;
+
+  var innerHtml = element.innerHTML;
+  element.innerHTML = "";
+
+  var wrapper = document.createElement("div");
+  utils.classed(wrapper, clazz, true);
+  wrapper.setAttribute("id", id);
+  element.appendChild(wrapper);
+
+  wrapper.innerHTML = innerHtml;
 }
 
 /** walk the sections tag/wrap nodes in a div with attr slide-<num>, tag child data-slides with data-sub-slide. and populate the state.nav structure
@@ -136,75 +136,75 @@ NB state requires utils... so state is passed into this func as it is called to 
 @return number of slides
 **/
 utils.number = function (nodeList) {
-    var numSlides = nodeList.length - 1;
+  var numSlides = nodeList.length - 1;
 
-    for (var i = (numSlides); i >= 0; i--) {
-        var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
-        utils.wrapDiv(item, "slide-" + (i), "slide");
-        var childSlides = utils.selects("section[data-slide]", item);
-        utils.tag(childSlides, "data-sub-slide");
-    }
-    return;
+  for (var i = (numSlides); i >= 0; i--) {
+    var item = nodeList[i]; // Calling myNodeList.item(i) isn't necessary in JavaScript
+    utils.wrapDiv(item, "slide-" + (i), "slide");
+    var childSlides = utils.selects("section[data-slide]", item);
+    utils.tag(childSlides, "data-sub-slide");
+  }
+  return;
 };
 
 utils.typeSlide = function (slideEl) {
-    var ret = "section"; //belt and braces
-    if (slideEl.hasAttribute("data-figure")) {
-        ret = k.slideTypes["data-figure"];
-    } else if (slideEl.hasAttribute("data-slide")) {
-        ret = k.slideTypes["data-slide"]; //expected default
-    }
-    return ret;
+  var ret = "section"; //belt and braces
+  if (slideEl.hasAttribute("data-figure")) {
+    ret = k.slideTypes["data-figure"];
+  } else if (slideEl.hasAttribute("data-slide")) {
+    ret = k.slideTypes["data-slide"]; //expected default
+  }
+  return ret;
 }
 
 
 
 utils.placeIn = function (container, child) {
-    container.innerHTML = "";
-    
-    var elems = Array.prototype.slice.call(child.childNodes);
-    
-    var wrapper = document.createElement("div");
-    utils.classed(wrapper, "slide-root", true);    
-    
-      for (var i = 0; i < elems.length; i++) {
-            var elem = elems[i];       
+  container.innerHTML = "";
 
-            //Support free floating text in a slide section by wrapping it in a P
-            if (!elem.tagName && elem.textContent.trim().length > 0) {
-                var txtWrapper = document.createElement("p");
-                txtWrapper.appendChild(elem);
-                elem = txtWrapper;
-            }
-            
-            if (elem.tagName) {
-                var tag = elem.tagName.toUpperCase();
-                wrapper.appendChild(elem);
+  var elems = Array.prototype.slice.call(child.childNodes);
 
-                //var indent = (tag != "PRE" && tag != "BLOCKQUOTE" && !(tag.length == 2 && tag.charAt(0) == "H"))
-                var indent = (tag == "UL" || tag == "OL" || tag == "P")
+  var wrapper = document.createElement("div");
+  utils.classed(wrapper, "slide-root", true);
 
-                utils.classed(elem, "col-md-offset-3", indent);
-                utils.classed(elem, "col-md-offset-0", !indent);
+  for (var i = 0; i < elems.length; i++) {
+    var elem = elems[i];
 
-                container.appendChild(wrapper);        
-            }
-        }
+    //Support free floating text in a slide section by wrapping it in a P
+    if (!elem.tagName && elem.textContent.trim().length > 0) {
+      var txtWrapper = document.createElement("p");
+      txtWrapper.appendChild(elem);
+      elem = txtWrapper;
+    }
+
+    if (elem.tagName) {
+      var tag = elem.tagName.toUpperCase();
+      wrapper.appendChild(elem);
+
+      //var indent = (tag != "PRE" && tag != "BLOCKQUOTE" && !(tag.length == 2 && tag.charAt(0) == "H"))
+      var indent = (tag == "UL" || tag == "OL" || tag == "P")
+
+      utils.classed(elem, "col-md-offset-3", indent);
+      utils.classed(elem, "col-md-offset-0", !indent);
+
+      container.appendChild(wrapper);
+    }
+  }
 }
 
 utils.placeInZoom = function (container, child) {
-    var width = child.clientWidth;
-    var height = child.clientHeight;
+  var width = child.clientWidth;
+  var height = child.clientHeight;
 
-    var wRatio = container.clientWidth / width;
-    var hRatio = container.clientHeight / height;
+  var wRatio = container.clientWidth / width;
+  var hRatio = container.clientHeight / height;
 
-    var ratio = Math.min(wRatio, hRatio);
-    ratio = ratio * 0.95;
+  var ratio = Math.min(wRatio, hRatio);
+  ratio = ratio * 0.95;
 
-    container.innerHTML = ""
-    container.appendChild(child);
-    child.setAttribute("style", "float: left; transform: scale(" + ratio + "); transform-origin: 0 0;");
+  container.innerHTML = ""
+  container.appendChild(child);
+  child.setAttribute("style", "float: left; transform: scale(" + ratio + "); transform-origin: 0 0;");
 }
 
 
@@ -215,41 +215,41 @@ returns a param Map object leyed on param name and value is param value.
 */
 utils.parseParams = function (searchStr) {
 
-    if (!searchStr || searchStr.charAt(0) != "?") return {
-        mode: "doc"
-    };
+  if (!searchStr || searchStr.charAt(0) != "?") return {
+    mode: "doc"
+  };
 
-    var paramList = searchStr.substring(1); //Remove the ?
-    var params = paramList.split("&");
+  var paramList = searchStr.substring(1); //Remove the ?
+  var params = paramList.split("&");
 
-    var paramMap = {};
-    for (var i = 0; i < params.length; i++) {
-        var kv = params[i].split("=");
-        paramMap[kv[0]] = kv[1];
-    }
+  var paramMap = {};
+  for (var i = 0; i < params.length; i++) {
+    var kv = params[i].split("=");
+    paramMap[kv[0]] = kv[1];
+  }
 
-    return paramMap;
+  return paramMap;
 }
 
 /**
   extract slide number from location.hash
   */
 utils.parseSlideNum = function (hash) {
-    if (!hash || hash.charAt(0) != "#") return 0;
+  if (!hash || hash.charAt(0) != "#") return 0;
 
-    return hash.substring(hash.indexOf("-") + 1);
+  return hash.substring(hash.indexOf("-") + 1);
 }
 
 /**
  * Scroll window to an elements y location
  **/
 utils.scrollToY = function (element) {
-    if (element.scrollIntoView) {
-        element.scrollIntoView();
-    } else {
-        var rect = element.getBoundingClientRect();
-        window.scrollTo(0, rect.top);
-    }
+  if (element.scrollIntoView) {
+    element.scrollIntoView();
+  } else {
+    var rect = element.getBoundingClientRect();
+    window.scrollTo(0, rect.top);
+  }
 }
 
 /**
@@ -262,28 +262,36 @@ utils.findTransition = function (direction, elId, mode) {
 
   // we need to hack a top for transitoion scroll or you can';t get to the top again
 
-    mode = (!!mode) ? mode : "doc";
-    var el = document.getElementById(elId);
-    var tname = "jump"; //default
-    var defaultModeTName = c.transitionName[mode];
-    defaultModeTName = (!!defaultModeTName) ? defaultModeTName : c.transitionName["doc"];
+  mode = (!!mode) ? mode : "doc";
+  var el = document.getElementById(elId);
+  var tname = "jump"; //default
+  var defaultModeTName = c.transitionName[mode];
+  defaultModeTName = (!!defaultModeTName) ? defaultModeTName : c.transitionName["doc"];
 
   if (el && el.hasAttribute("transition")) {
-        var attrV = el.getAttribute("transition");
-        tname = (!!attrV) ? attrV : defaultModeTName;
-    } else {
-        tname = defaultModeTName;
-    }
+    var attrV = el.getAttribute("transition");
+    tname = (!!attrV) ? attrV : defaultModeTName;
+  } else {
+    tname = defaultModeTName;
+  }
 
-    //we now know the tname so look it up
-    var transition = c.transitions[tname];
-    if (!transition) {
-        transition = c.transitions["jump"];
-    }
-    return transition[direction];
+  //we now know the tname so look it up
+  var transition = c.transitions[tname];
+  if (!transition) {
+    transition = c.transitions["jump"];
+  }
+  return transition[direction];
 
 }
 
-
+/**
+ * Return the array of unique values fron the xs array
+ *
+ **/
+utils.unique = function (xs) {
+  return xs.filter(function (x, i) {
+    return xs.indexOf(x) === i
+  });
+}
 
 module.exports = utils;
