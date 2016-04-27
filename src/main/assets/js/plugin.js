@@ -1,6 +1,30 @@
 'use strict';
 //plugin.js
 
+/**
+ * A plugin defines callbacks for events.
+ * Plugins must have a 'registerCallbacks(dispatch)' and a 'deregisterCallbacks(dispatch)' method or function.
+ * 
+ * When Suited adds a plugin it first tests that register adds callbacks and deregister
+ * compleatly removes them before allowing the plugin to be added.
+ *
+ * A Callback is a function(state, eventData). Both state and eventData are optional,
+ * But if the callback modifies the state (by using the State.api),
+ * then it must return an object that contains the new state,
+ * eg return {state: someNewState}
+ *
+ * Many callbacks may be called in turn for a particular event, The Dispatch makes sure that the state returned is 
+ * passed to the next callback.
+ * 
+ * In addition to returning state, a callback may return a value
+ * eg return {state: somestate, value: calculation }
+ *
+ * Normally nothing will be done withthat value, however if you wish to Handle It then you 
+ * can supply an optional 3rd parameter to Plugin.addCallback(). The 3rd parameter is a "valueHandler'
+ * function. It expects to be passed the callbacks return object and can then extract the .value and does stuff to it.
+ *
+ * TODO should I allow the valueHandler to modify state? to pass back up the chain too?
+ */
 function Plugin(name) {
   var self = this;
   this.name = "unnamed";
@@ -21,19 +45,21 @@ function Plugin(name) {
    *
    * @param 'eventname' is the name of the event that the callback will be called for, when that event fires.
    
-   * @param 'callbackFunc' is a function like this:- callback(state, eventdata)): {state: NewState, value: someValue}
-   *   where 'eventData' is some data passed to the callback when the event fires.
-   *   where 'state' is some value of the currentState object, usually passed in by the framework.
+   * @param 'callbackFunc' is a function like this:- callback(state, eventdata))
+   *   where 'eventData' : Optional. is some data passed to the callback when the event fires.
+   *   where 'state' : Optional. is some value of the currentState object, usually passed in by the framework.
    *   
-  *    The return object contains a new 'state' object if the callback changes the state, and a value if the callback produces a value.
-         - the new state is returned from using  the state's api
-   *   'valueHandler' is an optional param that can be used to deal with the return value of the callback if it has one.
-   *   it will be passed back in the result of running the callback if it was supplied.
+   *   The return object from the callback contains a new 'state' object
+   *   if the callback changes the state, and a value if the callback produces a value.
+   *     - the new state is returned from using  the state's api
+   *     - eg : {state: newState, value: someValue}
+   *    
+   * @param valueHandler  is an optional function that is passed the result of the callback.
+   *  - it can handle the resulting 'value' from a callback to do further handling,
+      - The Dispatch will force it to return the callbacks state value
+      TODO should the valueHandler be allowed to change state too? maybe? 
    *
-   * @param valueHandler  is an optional function that is passed the result of the callback, to do further handling,
-     - it should return an object that ??? what?
-   *
-   * @return {'state': newState, 'value': aValue, 'valueHandler', vhFunc}
+   * @return void
    *
    * the framework that calls callbacks will most likely call them one after each other, passing in state and returning it is a way to thread state changes though
    * the chain (like a State Monad). 
@@ -49,7 +75,7 @@ function Plugin(name) {
     if (!valueHandler) {
       cbs.push(callbackFunc);
     } else {
-      console.log("valueHandler::::::::: " + valueHandler);
+      //      console.log("valueHandler::::::::: " + valueHandler);
       var f = function (state, eventdata) {
         //        console.log("%%%%%%%%%%%  state" + JSON.stringify(state));
         var v = callbackFunc(state, eventdata);
@@ -69,14 +95,7 @@ function Plugin(name) {
 
       cbs.push(f);
     }
-    /*console.log("zzzzzz1 theeventCallbacks are" + JSON.stringify(theeventCallbacks))
-console.log("zzzzzz11 handlers.length are " + handlers.length)
 
-var testmyhandlers = theeventCallbacks[eventname]
-console.log("testmyhandlers.length is:- " + testmyhandlers.length);
-testmyhandlers.forEach(function (d, i) {
-  console.log("zzzzzz1a cb " + i + " fun is" + d)
-})*/
   }
 
   this.eventcallbacks = function () {
