@@ -59,8 +59,10 @@ var Suited = function suited(adispatcher) {
 
   //lowdash would be useful here to merge the objects, this is a temp hack
   /** plugins simply have a function called fireEvent(eventName) */
-  this.addPlugins = function (pluginsArray) {
+  this.verifyPlugins = function (pluginsArray) {
     pluginsArray = Array.prototype.slice.call(pluginsArray);
+
+    var retArray = [];
 
     //test that it can register and deregister correctly else don't add it
     var allGood = pluginsArray.every(function (p, i, a) {
@@ -92,11 +94,12 @@ var Suited = function suited(adispatcher) {
 
       var removedListeners = !stillGotListeners;
 
+      //finally after testing we add the plugin to the plugins[]
       if (hasListeners && removedListeners) {
-        console.log("Adding Plugin '" + p.name + "' ");
-        plugins.push(p);
+        console.log("Verified Plugin '" + p.name + "' ");
+        retArray.push(p);
       } else {
-        console.log("Not adding Plugin '" + p.name + "' ");
+        console.log("Unverified Plugin '" + p.name + "' ");
         ret = false;
       }
 
@@ -104,23 +107,38 @@ var Suited = function suited(adispatcher) {
     });
 
     if (allGood) {
-      console.log("All Plugins were good.")
-      console.log("Plugins are . " + JSON.stringify(plugins))
-
-      //register the good plugins with the dispatch
-      //TODO should plugins be in an unregistered array first then add them to registered?
-      plugins.forEach(function (p, i, a) {
-        console.log(",.,,.. regestering " + JSON.stringify(p))
-        p.registerCallbacks(dispatch);
-      })
-
-      return true;
+      console.log("All Plugins verified OK")
     } else {
-      console.log("Did not add all Plugins.")
-      return false;
+      console.log("Not all Plugins were OK")
     }
 
+    return retArray;
 
+  }
+
+  //test all plugins and add the good ones and register them
+  this.addPlugins = function (wantedPluginsArray) {
+    var goodPlugins = self.verifyPlugins(wantedPluginsArray);
+
+    //register the good plugins with the dispatch
+    //TODO should plugins be in an unregistered array first then add them to registered?
+    goodPlugins.forEach(function (p, i, a) {
+      console.log(",.,,.. adding " + JSON.stringify(p))
+      plugins.push(p);
+      console.log(",.,,.. regestering " + JSON.stringify(p))
+      p.registerCallbacks(dispatch);
+    })
+
+    var allGood = (goodPlugins.length === wantedPluginsArray.length)
+    if (allGood) {
+      console.log("All Plugins were good.")
+      console.log("Plugins are . " + JSON.stringify(plugins))
+      return true;
+    } else {
+      console.log("Did not add all Plugins. Some failed verification")
+      console.log("Plugins are . " + JSON.stringify(plugins))
+      return false;
+    }
 
   }
 
