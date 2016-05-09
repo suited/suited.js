@@ -31,6 +31,8 @@ var konfig = require('./konfig.js')
 var utils = require('./utils.js');
 var State = require('./state.js');
 var modeList = require('./modes.js');
+var Dispatch = require('./dispatch.js');
+var Plugin = require('./plugin.js');
 var Suited = require('./suited.js');
 var LifeCycle = require('./lifecycle.js');
 
@@ -110,7 +112,7 @@ core.addKeyListeners = function () {
       case 37: // Left arrow
         console.log("Previous " + evt.keyCode);
 
-        window.suited.fireEvent("BeforeStateChange");
+        window.suited.fireEvent("BeforeStateChange", state);
 
         //handle state change and transition
         var currentSlide = state.currentSlideName();
@@ -129,11 +131,11 @@ core.addKeyListeners = function () {
 
           console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
         }
-        window.suited.fireEvent("AfterStateChange");
+        window.suited.fireEvent("AfterStateChange",state);
         break;
       case 39: // Right arrow
         console.log("Next " + evt.keyCode);
-        window.suited.fireEvent("BeforeStateChange");
+        window.suited.fireEvent("BeforeStateChange",state);
 
         //handle state change and transition
         var elId = state.next(); // side effect on state
@@ -144,7 +146,7 @@ core.addKeyListeners = function () {
         window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
 
         console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
-        window.suited.fireEvent("AfterStateChange");
+        window.suited.fireEvent("AfterStateChange",state);
         break;
       case 83: //s
         if (evt.shiftKey) {
@@ -175,21 +177,34 @@ core.addKeyListeners = function () {
 core.init = function () {
 
   //add a defaul
-  var pageLogger = new LifeCycle();
-  pageLogger.registerHandler("BeforeStateChange", function () {
+  var pageLogger = new Plugin("pageLogger");
+
+  var vHandler = function (v) {
+    console.log("VALUE HANDLER: v is " + JSON.stringify(v));
+  }
+
+  pageLogger.addCallback("BeforeStateChange", function (state, evData) {
     console.log("pageLogger: leaving state: " + state.currentSlideName())
-  });
-  pageLogger.registerHandler("AfterStateChange", function () {
+    return {
+      'state': state,
+      'value': "BeforeStateChange Magic Value1"
+    }
+  }, vHandler)
+
+  pageLogger.addCallback("AfterStateChange", function (state) {
     console.log("pageLogger: entered*** state: " + state.currentSlideName())
-  });
+    return {
+      'state': state
+    }
+  })
 
   var defaultPlugins = [
     pageLogger
   ];
 
 
-
-  window.suited = new Suited();
+  var theDispatch = new Dispatch();
+  window.suited = new Suited(theDispatch);
   suited.addPlugins(defaultPlugins);
 
   console.log("Suited is " + JSON.stringify(window.suited));
