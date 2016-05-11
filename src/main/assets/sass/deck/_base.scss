@@ -107,6 +107,8 @@
     width: 100%;
     font-variant: normal;
     font-family: monospace;
+    font-weight: 200;
+      
     @media (min-width: $screen-md-max) {
       font-size: 1em;
     }

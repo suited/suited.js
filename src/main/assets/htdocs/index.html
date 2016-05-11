@@ -51,7 +51,7 @@
         <blockquote>Colleagues can read the document and reuse the presentation</blockquote>
     </section>
             
-    <h3>Modes</h3>
+    <h2>Modes</h2>
     <p>
         Suited has three built in modes:
     </p>
@@ -72,27 +72,53 @@
     <section data-slide>
         <blockquote> Press 'Esc' to jump directly to document mode</blockquote>
     </section>
-
     
     <p>
         There is no need to start with the presentation in mind, any document can be transformed into a presentation by adding slides, or marking sections that should be displayed in 
-        slide mode.
+        slide mode. Slides can be added in one of two ways:        
     </p>
+    <section data-figure>
+        <ol>
+            <li>Put an existing portion of the document on a slide</li>
+            <li>Embed a slide so that it is only visible in deck mode</li>    
+        </ol>
+    </section>
     
-    <h2>Figures, graphs, quotes and things</h2>
+    <h2>Put an existing portion of the document on a slide</h2>
     <p>
-        Articles often have sections that is perfect for displaying as a slide. These can be images, graphs, tables, code sections etc.
-        
-        The following image illustrates an image in the document and on a presentation slide.    
+        Documents often have sections that is perfect for displaying as a slide such as images, graphs, tables and code snippets. The following image 
+        illustrates an image in the document and on a presentation slide.    
     </p>
     
     <div style="border: 2px solid rgba(0, 0, 0, 0.27);">
     <section data-figure>
-            <img src="images/jackOfSpades.png" width="60%" />
+            <h4>An image</h4>
+            <div style="width: 100%; text-align: center;">
+            <img src="images/jackOfSpades.png"  width="60%" />
+            </div>    
     </section>
-    </div>
-    <div>Suited logo</div>
+    </div>    
     
+    <section data-figure>
+        <p> A code snippet </p>
+        <pre>
+            /**
+             * Recursively calculate X to the power Y 
+             */
+            function power(x, y) {
+                if (y === 0) {
+                    return 1;
+                }
+                else {
+                    return x * power(x, y - 1);
+                }
+            }
+        </pre>
+    </section>    
+    
+  <p>
+      TODO: Explain how an existing piece of the document is added to a slide
+  </p>
     
   <h3>Embedded (Invisible) Slides</h3>
     <h4>Use <pre>data-figure</pre></h4>
