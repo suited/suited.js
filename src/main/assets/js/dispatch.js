@@ -38,9 +38,9 @@ var Dispatch1 = function () {
     //PRECONDITION
     if (!eventName || !handlerCallback) return; // do nothing
     if (!!callbackid) createId = false;
-//    if (!createId) {
-//      console.log("<><><>< hahah callbackid = " + callbackid);
-//    }
+    //    if (!createId) {
+    //      console.log("<><><>< hahah callbackid = " + callbackid);
+    //    }
 
     //we made sure the event exists in our supported event list
     var ehanders = eventListenersMap[eventName];
@@ -57,14 +57,14 @@ var Dispatch1 = function () {
     // if we need a new name than we are always appending
     // only check if we have a name
     if (createId) {
-//      console.log(">>>>>>>>>>>>>>   must createId");
-//      console.log("aaaaaaaaaaaaaaa   appending id: " + theId + " func with  " + handlerCallback);
+      //      console.log(">>>>>>>>>>>>>>   must createId");
+      //      console.log("aaaaaaaaaaaaaaa   appending id: " + theId + " func with  " + handlerCallback);
       ehanders.push({
         "id": theId,
         "listener": handlerCallback
       })
     } else {
-//      console.log(">>>>>>>>>>>>>>   must NOT createId");
+      //      console.log(">>>>>>>>>>>>>>   must NOT createId");
       // see if append or replace
       var cbIndex = ehanders.map(function (d, i, a) {
         return d.id;
@@ -72,14 +72,14 @@ var Dispatch1 = function () {
 
       if (cbIndex === -1) {
         //doesn't exist so append
-//        console.log("aaaaaaaaaaaaaaa   appending id: " + theId + " func with  " + handlerCallback);
+        //        console.log("aaaaaaaaaaaaaaa   appending id: " + theId + " func with  " + handlerCallback);
         ehanders.push({
           "id": theId,
           "listener": handlerCallback
         })
       } else {
         // replace it
-//        console.log("rrrrrrrrrrrrr   replacing id: " + theId + " func with  " + handlerCallback);
+        //        console.log("rrrrrrrrrrrrr   replacing id: " + theId + " func with  " + handlerCallback);
         ehanders[cbIndex] = {
           "id": theId,
           "listener": handlerCallback
@@ -182,7 +182,7 @@ var Dispatch1 = function () {
         //        console.log("[[[[[[[[[[[[  " + whatIsIt(f));
 
 
-        var answer = f(state, eventData);
+        var answer = f(theState, eventData); //pass in threaded state
 
         console.log("seen answer: " + JSON.stringify(answer));
         //        var answer = "foo" //l.listener(state, eventData);
@@ -192,7 +192,7 @@ var Dispatch1 = function () {
           //handle the result ??? should I? its a callback should be void really.
           console.log("seen answer.value: " + JSON.stringify(answer.value));
         }
-        theState = (!!answer.state) ? answer.state : theState;
+        theState = (!!answer.state) ? answer.state : theState; //use new state if it is returned else use existing state
       });
 
     } else {

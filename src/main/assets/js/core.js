@@ -35,6 +35,7 @@ var Dispatch = require('./dispatch.js');
 var Plugin = require('./plugin.js');
 var Suited = require('./suited.js');
 var LifeCycle = require('./lifecycle.js');
+var builtins = require('./builtins.js');
 
 var modes = modeList.modes;
 var k = konstants;
@@ -112,41 +113,15 @@ core.addKeyListeners = function () {
       case 37: // Left arrow
         console.log("Previous " + evt.keyCode);
 
-        window.suited.fireEvent("BeforeStateChange", state);
-
-        //handle state change and transition
-        var currentSlide = state.currentSlideName();
-        var elId = state.previous(); //side effect on state.mode
-        if (currentSlide === elId) {
-          var transitionFunc = utils.findTransition("top", elId, state.currentMode);
-          transitionFunc(elId);
-          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
-        } else {
-          var slideNum = utils.parseSlideNum("#" + elId);
-          var transitionFunc = utils.findTransition("left", elId, state.currentMode);
-          transitionFunc(elId);
-          state.changeState(slideNum);
-
-          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
-
-          console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
-        }
-        window.suited.fireEvent("AfterStateChange",state);
+        window.suited.fireEvent("BeforeSlideChange", state);
+        window.suited.fireEvent("GoBack", state);
+        window.suited.fireEvent("AfterSlideChange", state);
         break;
       case 39: // Right arrow
         console.log("Next " + evt.keyCode);
-        window.suited.fireEvent("BeforeStateChange",state);
-
-        //handle state change and transition
-        var elId = state.next(); // side effect on state
-        var slideNum = utils.parseSlideNum("#" + elId);
-        var transitionFunc = utils.findTransition("right", elId, state.currentMode);
-        transitionFunc(elId);
-        state.changeState(slideNum);
-        window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
-
-        console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
-        window.suited.fireEvent("AfterStateChange",state);
+        window.suited.fireEvent("BeforeSlideChange", state);
+        window.suited.fireEvent("GoForward", state);
+        window.suited.fireEvent("AfterSlideChange", state);
         break;
       case 83: //s
         if (evt.shiftKey) {
@@ -171,7 +146,6 @@ core.addKeyListeners = function () {
   };
 
 
-
 };
 
 core.init = function () {
@@ -183,7 +157,7 @@ core.init = function () {
     console.log("VALUE HANDLER: v is " + JSON.stringify(v));
   }
 
-  pageLogger.addCallback("BeforeStateChange", function (state, evData) {
+  pageLogger.addCallback("BeforeSlideChange", function (state, evData) {
     console.log("pageLogger: leaving state: " + state.currentSlideName())
     return {
       'state': state,
@@ -191,16 +165,15 @@ core.init = function () {
     }
   }, vHandler)
 
-  pageLogger.addCallback("AfterStateChange", function (state) {
+  pageLogger.addCallback("AfterSlideChange", function (state) {
     console.log("pageLogger: entered*** state: " + state.currentSlideName())
     return {
       'state': state
     }
   })
 
-  var defaultPlugins = [
-    pageLogger
-  ];
+  var defaultPlugins = builtins;
+  defaultPlugins.push(pageLogger);
 
 
   var theDispatch = new Dispatch();
