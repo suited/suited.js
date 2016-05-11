@@ -25,12 +25,17 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
 
 /* Core features and management - eg finds and tags all slide elements */
 
-
+var polyfils = require('./polyfills.js');
 var konstants = require('./konstantes.js')
 var konfig = require('./konfig.js')
 var utils = require('./utils.js');
 var State = require('./state.js');
 var modeList = require('./modes.js');
+var Dispatch = require('./dispatch.js');
+var Plugin = require('./plugin.js');
+var Suited = require('./suited.js');
+var LifeCycle = require('./lifecycle.js');
+var builtins = require('./builtins.js');
 
 var modes = modeList.modes;
 var k = konstants;
@@ -42,8 +47,8 @@ var core = function () {};
 /**
  * Toggle the presentation mode. If newMode is provided then set mode to that, 
  * else get state to switch to the next mode
- * @param {String} newMode (Optional) The mode to switch to.
  *   - If left out then next mode is selected
+ * @param {String} newMode (Optional) The mode to switch to.
  */
 core.toggleMode = function (newMode) {
   if (newMode) {
@@ -73,6 +78,18 @@ core.hashChanged = function (location) {
 
 };
 
+core.processEventQueueBeforeAction = function () {
+  //if I'm gonna handle the queue, maybe need to lock it?
+  //TODO am I gonna do it all or as much as I can within a timeout? and leave a high water mark?
+  console.log("pre-process Queue");
+}
+
+core.processEventQueueAfterAction = function () {
+  //TODO do i need to lock the queue?
+  console.log("post-process Queue");
+  //TODO should I process the queue to the end, or just within a timeout, and have a reeper thread running to keep emptying the queue? while the user does nothing?
+}
+
 
 /**
  * Handle the shortcuts and arrow navigation
@@ -82,6 +99,10 @@ core.hashChanged = function (location) {
 core.addKeyListeners = function () {
 
   document.onkeyup = function (evt) {
+    //do anything that needs to be done..
+    core.processEventQueueBeforeAction();
+
+    //TODO Do I just make the keypress fire the appropriate events an run all the correct handlers in post processing?
     var kc = evt.keyCode;
     switch (kc) {
       case 27: //escape
@@ -92,36 +113,15 @@ core.addKeyListeners = function () {
       case 37: // Left arrow
         console.log("Previous " + evt.keyCode);
 
-        //handle state change and transition
-        var currentSlide = state.currentSlideName();
-        var elId = state.previous(); //side effect on state.mode
-        if (currentSlide === elId) {
-          var transitionFunc = utils.findTransition("top", elId, state.currentMode);
-          transitionFunc(elId);
-          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
-        } else {
-          var slideNum = utils.parseSlideNum("#" + elId);
-          var transitionFunc = utils.findTransition("left", elId, state.currentMode);
-          transitionFunc(elId);
-          state.changeState(slideNum);
-
-          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
-
-          console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
-        }
+        window.suited.fireEvent("BeforeSlideChange", state);
+        window.suited.fireEvent("GoBack", state);
+        window.suited.fireEvent("AfterSlideChange", state);
         break;
       case 39: // Right arrow
         console.log("Next " + evt.keyCode);
-
-        //handle state change and transition
-        var elId = state.next(); // side effect on state
-        var slideNum = utils.parseSlideNum("#" + elId);
-        var transitionFunc = utils.findTransition("right", elId, state.currentMode);
-        transitionFunc(elId);
-        state.changeState(slideNum);
-        window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
-
-        console.log("slide=" + state.currentSlideName() + " state.mode is " + state.currentMode);
+        window.suited.fireEvent("BeforeSlideChange", state);
+        window.suited.fireEvent("GoForward", state);
+        window.suited.fireEvent("AfterSlideChange", state);
         break;
       case 83: //s
         if (evt.shiftKey) {
@@ -140,11 +140,48 @@ core.addKeyListeners = function () {
         break;
     };
 
+    //do anything that needs to be done..
+    core.processEventQueueAfterAction();
+
   };
+
+
 };
 
-
 core.init = function () {
+
+  //add a defaul
+  var pageLogger = new Plugin("pageLogger");
+
+  var vHandler = function (v) {
+    console.log("VALUE HANDLER: v is " + JSON.stringify(v));
+  }
+
+  pageLogger.addCallback("BeforeSlideChange", function (state, evData) {
+    console.log("pageLogger: leaving state: " + state.currentSlideName())
+    return {
+      'state': state,
+      'value': "BeforeStateChange Magic Value1"
+    }
+  }, vHandler)
+
+  pageLogger.addCallback("AfterSlideChange", function (state) {
+    console.log("pageLogger: entered*** state: " + state.currentSlideName())
+    return {
+      'state': state
+    }
+  })
+
+  var defaultPlugins = builtins;
+  defaultPlugins.push(pageLogger);
+
+
+  var theDispatch = new Dispatch();
+  window.suited = new Suited(theDispatch);
+  suited.addPlugins(defaultPlugins);
+
+  console.log("Suited is " + JSON.stringify(window.suited));
+
   var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
   utils.number(utils.selects(selectString));
 

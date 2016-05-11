@@ -4,6 +4,8 @@ var webpackConfig = require('./gulpfile.js/lib/webpack-multi-config')
 var path = require('path')
 
 var testSrc = path.join(config.root.tests, '/**/*.test.js')
+  //var testSrc = path.join(config.root.tests, '/**/dispatch-api.test.js')
+  //var testSrc = path.join(config.root.tests, '/**/suited-api.test.js')
 
 var karmaConfig = {
   frameworks: ['mocha', 'sinon-chai'],
