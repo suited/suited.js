@@ -146,6 +146,10 @@ var Dispatch1 = function () {
 
     var ls = self.listeners(eventName);
     //    console.log("<><><><><>< ls.length is = " + ls.length);
+    if (!ls) {
+      console.error("Event has no listener: " + eventName);
+      ls = [];
+    }
 
     if (true) {
       ls.forEach(function (l, i, a) {
