@@ -35,7 +35,7 @@ var Dispatch = require('./dispatch.js');
 var Plugin = require('./plugin.js');
 var Suited = require('./suited.js');
 var LifeCycle = require('./lifecycle.js');
-var builtins = require('./builtins.js');
+var builtins = require('./plugins').builtins;
 
 var modes = modeList.modes;
 var k = konstants;
@@ -179,6 +179,9 @@ core.init = function () {
   var theDispatch = new Dispatch();
   window.suited = new Suited(theDispatch);
   suited.addPlugins(defaultPlugins);
+
+  window.suited.fireEvent("PluginsLoaded", state);
+
 
   console.log("Suited is " + JSON.stringify(window.suited));
 
