@@ -6,7 +6,7 @@
         "/node_modules/",
         ".sass-cache/"
     ],
-    "hirse.beautify.onSave": true,
+    "hirse.beautify.onSave": false,
     "path": {
         "thirdparty/**.js": {
             "hirse.beautify.onSave": false
