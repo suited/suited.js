@@ -1,3 +1,5 @@
+var md = require('markdown-it');
+
 describe("Dummy Test so Karma has at least one test pass to prevent Error.", function () {
   it("contains spec with an expectation", function () {
     var foo = true;

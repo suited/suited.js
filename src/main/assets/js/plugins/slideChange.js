@@ -1,14 +1,11 @@
 'use strict';
 
-var konfig = require('./konfig.js')
-var utils = require('./utils.js');
-var State = require('./state.js');
-var modeList = require('./modes.js');
-var Dispatch = require('./dispatch.js');
-var Plugin = require('./plugin.js');
-
-//array of plugins
-var builtins = [];
+var konfig = require('../konfig.js')
+var utils = require('../utils.js');
+var State = require('../state.js');
+var modeList = require('../modes.js');
+var Dispatch = require('../dispatch.js');
+var Plugin = require('../plugin.js');
 
 var slideChangePlugin = new Plugin("slideChangePlugin");
 
@@ -54,7 +51,5 @@ slideChangePlugin.addCallback("GoForward", function (state, evData) {
       //,'value': "BeforeStateChange Magic Value1"
   }
 })
-builtins.push(slideChangePlugin)
 
-
-module.exports = builtins;
+module.exports = slideChangePlugin;
