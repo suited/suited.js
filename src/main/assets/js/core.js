@@ -52,13 +52,15 @@ var core = function () {};
  */
 core.toggleMode = function (newMode) {
   if (newMode) {
-    state.changeMode(newMode);
+    window.suited.fireEvent("SetMode", state, {modeName: newMode})
+    //@@@state.changeMode(newMode);
   } else {
-    state.toggleMode();
+    window.suited.fireEvent("NextMode", state)
+    //@@@state.toggleMode();
   }
 
   //We need to do this because going into deck, we need to do the slide stuff.
-  state.mode().afterSlideChange(state.currentSlideName());
+  //@@@state.mode().afterSlideChange(state.currentSlideName());
 
   //fix location bar
   window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
@@ -70,6 +72,11 @@ core.hashChanged = function (location) {
 
   var theSlideNum = utils.parseSlideNum(window.location.hash);
   var queryParams = utils.parseParams(window.location.search);
+  var mode = queryParams['mode'];    
+    
+  core.toggleMode(mode);  
+    
+  //@@@ Keep on doing this for now...    
   if (!state.changeState) {
     state = new State(theSlideNum, modes, queryParams["mode"]);
   } else {
