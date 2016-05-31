@@ -17,28 +17,19 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    limitations under the License.
 */
 
-
-var konstants = require('./konstantes.js');
-var konfig = require('./konfig.js');
 var utils = require('./utils.js');
-
-var k = konstants;
-var c = konfig;
-
-
-
 
 /**
  * Nav constructor
  @param modePosTester {Function (int, mode) => boolean} 
  **/
-function Nav(modePosTester) {
+function Nav(modePosTester, navigableNodes) {
 
   var self = this; //For the private methods
 
   // the nav structure
   var nav = {
-    calcNextNum: function (start, mode) {
+    calcNextNum: function (start) {
       start = Number(start);
       
       //Just to be safe  
@@ -46,31 +37,36 @@ function Nav(modePosTester) {
         
       var next = start + 1;
 
-      // test we are not past the end of this mode
-      if (modePosTester(start, mode) === undefined) {
-        return nav.calcPrevNum(start, mode);
+      if (next >= navigableNodes.length) {
+        return nav.calcPrevNum(start);          
       }
+        
+      var el = navigableNodes.item(next);
+      var slideType = utils.typeSlide(el);        
 
-      if (modePosTester(next, mode)) {
+      if (modePosTester(slideType)) {
         return next;
       } else {
-        return nav.calcNextNum(next, mode);
+        return nav.calcNextNum(next);
       }
     },
     /** recurs becwards loolin for a valid value for mode.
     @param start = starting num, usually s.currentNum */
-    calcPrevNum: function (start, mode) {
+    calcPrevNum: function (start) {
       start = Number(start);
       var prev = start - 1;
 
       if (start <= 0) {
         return 0;
       } else {
-        if (modePosTester(prev, mode)) {
+        var el = navigableNodes.item(prev);
+        var slideType = utils.typeSlide(el);        
+          
+        if (modePosTester(slideType)) {
           return prev;
         } else {
           //recurse
-          return nav.calcPrevNum(prev, mode);
+          return nav.calcPrevNum(prev);
         }
       }
     }

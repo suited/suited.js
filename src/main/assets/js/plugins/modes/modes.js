@@ -1,7 +1,7 @@
 'use strict';
 
 var Mode = require('./mode.js');
-var utils = require('./utils.js');
+var utils = require('../../utils.js');
 
 function defaultBeforeSlide(slideId) {
     var currentNode = document.getElementById(slideId);
@@ -85,10 +85,20 @@ function walkCleanUp() {
     walkMode(false);
 }
 
+
+function getShouldShowSlideFunction(mode) {
+    if (mode === "deck") {
+        return function (slideType) {return slideType === "figure" || slideType === "slide";}
+    }
+    else {
+        return function (slideType) {return slideType === "figure";}
+    }
+}
+
 var ml = {};
 ml.modes = [];
-ml.modes.push(new Mode("doc", defaultBeforeSlide, docAfterSlide, docBeforeModeChange));
-ml.modes.push(new Mode("deck", defaultBeforeSlide, deckAfterSlide, deckBeforeModeChange, null, deckCleanUp));
-ml.modes.push(new Mode("walkthrough", defaultBeforeSlide, walkAfterSlide, walkBeforeModeChange, null, walkCleanUp));
+ml.modes.push(new Mode("doc", defaultBeforeSlide, docAfterSlide, docBeforeModeChange, null, null, getShouldShowSlideFunction("doc")));
+ml.modes.push(new Mode("deck", defaultBeforeSlide, deckAfterSlide, deckBeforeModeChange, null, deckCleanUp, getShouldShowSlideFunction("deck")));
+ml.modes.push(new Mode("walkthrough", defaultBeforeSlide, walkAfterSlide, walkBeforeModeChange, null, walkCleanUp, getShouldShowSlideFunction("walkthrough")));
 
 module.exports = ml;

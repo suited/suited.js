@@ -30,14 +30,14 @@ var konstants = require('./konstantes.js')
 var konfig = require('./konfig.js')
 var utils = require('./utils.js');
 var State = require('./state.js');
-var modeList = require('./modes.js');
+//var modeList = require('./modes.js');
 var Dispatch = require('./dispatch.js');
 var Plugin = require('./plugin.js');
 var Suited = require('./suited.js');
 var LifeCycle = require('./lifecycle.js');
 var builtins = require('./plugins').builtins;
 
-var modes = modeList.modes;
+
 var k = konstants;
 var c = konfig;
 var state = {};
@@ -52,30 +52,32 @@ var core = function () {};
  */
 core.toggleMode = function (newMode) {
   if (newMode) {
-    state.changeMode(newMode);
+    window.suited.fireEvent("SetMode", state, {modeName: newMode})
+    //@@@state.changeMode(newMode);
   } else {
-    state.toggleMode();
+    window.suited.fireEvent("NextMode", state)
+    //@@@state.toggleMode();
   }
 
   //We need to do this because going into deck, we need to do the slide stuff.
-  state.mode().afterSlideChange(state.currentSlideName());
+  //@@@state.mode().afterSlideChange(state.currentSlideName());
 
   //fix location bar
-  window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#" + state.currentSlideName());
+  window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
 }
 
 core.hashChanged = function (location) {
+ // window.suited.fireEvent("LocationChange", state, {location: location});
   console.log("Location changed!" + location);
   var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
 
   var theSlideNum = utils.parseSlideNum(window.location.hash);
   var queryParams = utils.parseParams(window.location.search);
-  if (!state.changeState) {
-    state = new State(theSlideNum, modes, queryParams["mode"]);
-  } else {
-    state.changeState(theSlideNum, queryParams["mode"]);
-  }
-
+  var mode = queryParams['mode'];    
+    
+  core.toggleMode(mode);  
+    
+  state.setSlideNumber(theSlideNum);
 };
 
 core.processEventQueueBeforeAction = function () {
@@ -106,7 +108,7 @@ core.addKeyListeners = function () {
     var kc = evt.keyCode;
     switch (kc) {
       case 27: //escape
-        core.toggleMode(modes[0]);
+        core.toggleMode();
         console.log("Mode reset to doc");
 
         break;
@@ -186,8 +188,12 @@ core.init = function () {
   console.log("Suited is " + JSON.stringify(window.suited));
 
   var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
-  utils.number(utils.selects(selectString));
+  var navigableSlides = utils.selects(selectString) 
+  utils.number(navigableSlides);
 
+  state = new State(0, navigableSlides);
+
+    
   // add placeholder for Modal backdrop
   var b = document.body;
 
