@@ -8,8 +8,6 @@ module.exports = function suitedfigure_plugin(md) {
   var endToken = ":~~";
 
   function tokenize(state, silent) {
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
     var token,
       max = state.posMax,
       start = state.pos,
