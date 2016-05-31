@@ -23,7 +23,7 @@ var utils = require('./utils.js');
  * Nav constructor
  @param modePosTester {Function (int, mode) => boolean} 
  **/
-function Nav(modePosTester) {
+function Nav(modePosTester, navigableNodes) {
 
   var self = this; //For the private methods
 
@@ -37,12 +37,14 @@ function Nav(modePosTester) {
         
       var next = start + 1;
 
-      // test we are not past the end of this mode
-      if (modePosTester(start) === undefined) {
-        return nav.calcPrevNum(start);
+      if (next >= navigableNodes.length) {
+        return nav.calcPrevNum(start);          
       }
+        
+      var el = navigableNodes.item(next);
+      var slideType = utils.typeSlide(el);        
 
-      if (modePosTester(next)) {
+      if (modePosTester(slideType)) {
         return next;
       } else {
         return nav.calcNextNum(next);
@@ -57,7 +59,10 @@ function Nav(modePosTester) {
       if (start <= 0) {
         return 0;
       } else {
-        if (modePosTester(prev)) {
+        var el = navigableNodes.item(prev);
+        var slideType = utils.typeSlide(el);        
+          
+        if (modePosTester(slideType)) {
           return prev;
         } else {
           //recurse

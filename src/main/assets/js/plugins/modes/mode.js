@@ -22,7 +22,7 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange, fnCleanUp) {
+var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange, fnCleanUp, fnShouldShowslide) {
 
   var self = this;
 
@@ -71,6 +71,16 @@ var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBefore
       console.debug("No clean up function defined for mode: " + name);
     }
   };
+    
+  this.shouldShowSlide = function (slideType) {
+      if (fnShouldShowslide) {
+          return fnShouldShowslide(slideType);
+      }
+      else {
+          console.debug("No slide type selection function. Showing all slides.");
+          return true;
+      }
+  }
 
 };
 

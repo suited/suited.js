@@ -22,111 +22,139 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-var modePlugin = new Plugin("ModePlugin");
-
+var Plugin = require('../../plugin.js');
 var modeList = require('./modes.js');
+var Mode = require('./mode.js');
+var modePlugin = new Plugin("ModePlugin");
 
 
 modePlugin.modeNames = [];
 modePlugin.modes = {};
 modePlugin.currentMode = 0;
 
-modePlugin.addMode(mode) {
+modePlugin.addMode = function(mode) {
+    console.debug("Adding mode: " + mode);
     if (mode instanceof Mode) {
         var modeName = mode.name;
-        modePlugin.modeNames.push(modeName);
-        modePlugin.modes[modeName] = mode;
+        this.modeNames.push(modeName);
+        this.modes[modeName] = mode;
     }
     else {
         console.error("Failed to add mode. Is not instanceof Mode. Received: " + mode);
     }
 };
 
-modePlugin.removeMode(modeName) {
-    var count = modePlugin.modeNames.length;
-    var modes = modePlugin.modeNames.map(function(i, e){
+modePlugin.removeMode = function(modeName) {
+    var count = this.modeNames.length;
+    var modes = this.modeNames.map(function(i, e){
        if (e.modeName != modeName) {
            return e;
        } 
     });
     
-    if (count == modePlugin.modes.length) {
+    if (count == this.modes.length) {
         console.warn("No mode removed. Mode: " + modeName + " not found");
     }
 };
 
-modePluging.getCurrentMode() {
-    return modePlugin.modes[modePlugin.currentMode];
+modePlugin.getCurrentModeName = function() {
+    return this.modeNames[this.currentMode];
 }
 
-modePluging.setMode(modeName) {
-    
+modePlugin.getCurrentMode = function() {
+    return this.modes[this.getCurrentModeName()];
+}
+
+modePlugin.setMode = function(modeName, state) {
+    console.debug("New mode is: " + modeName);
     if (!modeName) {
         console.warn("ModeName is empty changing to mode 0");
-        modeName = modePlugin.modeNames[0];
+        modeName = this.modeNames[0];
     }
     
-    if (modeNames.indexOf(modeName) < 0) {
-        console.warn("ModeName (" + modeName + ") is invalid. Changing to mode 0");        
-        modeName = modePlugin.modeNames[0];
+    if (this.modeNames.indexOf(modeName) < 0) {
+        console.warn("ModeName (" + modeName + ") is invalid. Valid modes(" + this.modeNames + ") Changing to mode 0");        
+        modeName = this.modeNames[0];
     }
     
-    var oldMode = modePlugin.getCurrentMode();
+    var oldMode = this.getCurrentMode();
     if (!!oldMode) {
         oldMode.cleanUp();    
     }
        
-    var newMode = modePlugin.modes[modeName];
-    var currentMode = modePlugin.modeNames.indexOf(modeName);
+    var newMode = this.modes[modeName];
+    this.currentMode = this.modeNames.indexOf(modeName);
+
+    state.setMode(modeName, newMode.shouldShowSlide);
     
     newMode.beforeModeChange();
-    
+    newMode.beforeSlideChange(state.currentSlideName());
+    newMode.afterSlideChange(state.currentSlideName());
+        
     return newMode;
 }
 
 
 
 modePlugin.addCallback("NextMode", function(state, evData){
-    var pos = currentMode + 1;
+    console.debug("Next mode...");
+    var pos = modePlugin.currentMode + 1;
     var modeName = "";
+    
     if (pos > 0 && pos < modePlugin.modeNames.length) {
         modeName = modePlugin.modeNames[pos];    
     }
     else {
         modeName = modePlugin.modeNames[0];   
     }
-    modePlugin.setMode(modeName);
+    modePlugin.setMode(modeName, state);
+    
+    return {
+    'state': state
+    };
 });
 
 modePlugin.addCallback("PrevMode", function(state, evData){
-    var pos = currentMode - 1;
+    var pos = modePlugin.currentMode - 1;
     if (pos >= 0 && pos < modePlugin.modeNames.length) {
         modeName = modePlugin.modeNames[pos];    
     }
     else {
         modeName = modePlugin.modeNames[modeNames.length - 1];   
     }
-    modePlugin.setMode(modeName);
+    modePlugin.setMode(modeName, state);
+    
+    return {
+        'state': state
+    };    
 });
 
-modePlugin.addCallback("SetMode", function(state, evData){
-    modePlugin.setMode(evData.modeName);
+modePlugin.addCallback("SetMode", function(state, evData) {
+    modePlugin.setMode(evData.modeName, state);
+    
+    return {
+        'state': state
+    };    
 });
 
 modePlugin.addCallback("BeforeSlideChange", function(state, evData){
-    var slideId = state.currentSlideName();
+    var slideId = state.currentSlideName();    
     modePlugin.getCurrentMode().beforeSlideChange(slideId);
+    
+    return state;
 });
 
 modePlugin.addCallback("AfterSlideChange", function(state, evData){
     var slideId = state.currentSlideName();
     modePlugin.getCurrentMode().afterSlideChange(slideId);    
+    
+    return state;
 });
 
 /**
  * Add all the modes here. We may want to externalise this.....
  */
-modeList.forEach(function(v){
+modeList.modes.forEach(function(v){
     modePlugin.addMode(v);
 })
 

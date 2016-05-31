@@ -46,22 +46,18 @@ var State = function (desiredPos, navigableNodes) {
         desiredPos = 0;
     }
     
-    if (!desiredMode) {
-        desiredMode = modeObjectsArr[desiredPos];
-    }
-    
     if (!navigableNodes || navigableNodes.length == 0) {
-        log.error("Navigation will not work. Navigablenodes is null or empty");
+        console.error("Navigation will not work. Navigablenodes is null or empty");
     }
 
     var self = this; //For the private methods
-
+    var slidePrefix = "slide-";
     var nav = null;    
     var currentModeName = null;
     var currentSlide = desiredPos;
     
     var shoudShowSlide = function(slideIndex) {
-        log.warn("Using default show slide function, which shows everything");
+        console.warn("Using default show slide function, which shows everything");
         
         if (slideIndex >= navigableNodes.length) {
             return undefined;
@@ -71,20 +67,32 @@ var State = function (desiredPos, navigableNodes) {
         }
     };    
     
+    self.getCurrentModeName = function() {
+        return currentModeName;
+    }
+    
     /**
      * Set the mode and the function to use during navigation when checking if a slide should
      * be visible or not
      * @param {String}                  modeName The name of the current mode
      * @param {(slideIndex) => boolean} fnShouldShowSlide Function returns true if slide should be visible
      */
-    self.setMode(modeName, fnShouldShowSlide) {
+    self.setMode = function(modeName, fnShouldShowSlide) {
         currentModeName = modeName;
-        nav = new Nav(fnShouldShowSlide);
+        nav = new Nav(fnShouldShowSlide, navigableNodes);
     }
     
     function makeSlideName(num) {
         return slidePrefix + num;
     }    
+    
+    this.setSlideNumber = function (slideNum) {
+        currentSlide = slideNum;
+    } 
+    
+    this.currentSlideName = function currentSlideName() {
+        return makeSlideName(currentSlide);
+    };
     
     /**
      * modifies state to change current. 
@@ -99,7 +107,7 @@ var State = function (desiredPos, navigableNodes) {
      * @returns new currentID name.
      **/
     this.previous = function previous() {
-      return makeSlideName(nav.calcPrevNum(currentNum));
+      return makeSlideName(nav.calcPrevNum(currentSlide));
     };
     
   } // end constructor
