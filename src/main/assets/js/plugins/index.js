@@ -5,7 +5,7 @@ var builtins = [];
 builtins.push(require("./markdown").plugin);
 builtins.push(require("./slideChange"));
 
-modePlugin = require("./modes").plugin;
+var modePlugin = require("./modes").plugin;
 builtins.push(modePlugin);
 
 module.exports = {
