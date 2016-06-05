@@ -25,49 +25,67 @@ var utils = require('./utils.js');
  **/
 function Nav(modePosTester, navigableNodes) {
 
+  if (!modePosTester) {
+    throw new Error("Cannot initialise Navigation without a mode position test function");
+  }
+
+  if (!navigableNodes || navigableNodes.length == 0) {
+    throw new Error("No navigation is possible. No navigable nodes provided");
+  }
+
   var self = this; //For the private methods
 
   // the nav structure
   var nav = {
     calcNextNum: function (start) {
       start = Number(start);
-      
+
       //Just to be safe  
-      if (start < 0) start = 0; 
-        
+      if (start < 0) return 0;
+
       var next = start + 1;
+      for (; next < navigableNodes.length; next++) {
+        var el = navigableNodes.item(next);
+        var slideType = utils.typeSlide(el);
+
+        if (modePosTester(slideType)) {
+          break;
+        }
+      }
 
       if (next >= navigableNodes.length) {
-        return nav.calcPrevNum(start);          
-      }
-        
-      var el = navigableNodes.item(next);
-      var slideType = utils.typeSlide(el);        
-
-      if (modePosTester(slideType)) {
-        return next;
+        return nav.calcPrevNum(next);
       } else {
-        return nav.calcNextNum(next);
+        return next;
       }
     },
     /** recurs becwards loolin for a valid value for mode.
     @param start = starting num, usually s.currentNum */
     calcPrevNum: function (start) {
       start = Number(start);
-      var prev = start - 1;
 
       if (start <= 0) {
         return 0;
-      } else {
+      }
+      
+      if (start >= navigableNodes.length) {
+        start = navigableNodes.length;
+      }
+
+      var prev = start - 1;
+      for (; prev >= 0; prev--) {
         var el = navigableNodes.item(prev);
-        var slideType = utils.typeSlide(el);        
-          
+        var slideType = utils.typeSlide(el);
+
         if (modePosTester(slideType)) {
-          return prev;
-        } else {
-          //recurse
-          return nav.calcPrevNum(prev);
+          break;
         }
+      }
+
+      if (prev >= 0) {
+        return prev;
+      } else {
+        return start;
       }
     }
   };
