@@ -1,83 +1,157 @@
 'use strict';
 
-var State = require('../../main/assets/js/state.js');
 var Nav = require('../../main/assets/js/nav.js');
 var k = require('../../main/assets/js/konstantes.js');
 
 describe("Tests to confirm that state navigation works correctly in different modes.", function () {
 
 
-  //Stub magic pos function just taks array of bools to fake it.
-  function magicPos(arrBools) {
-    arrBools = Array.prototype.slice.call(arrBools);
-
-    function foo(pos, mode) {
-      if (pos >= arrBools.length) return undefined;
-      else {
-        return arrBools[pos];
-      }
-    };
-    return foo;
+  //Stub magic pos functions
+  function showAll(slideType) {
+    return true;
+  }
+  
+  function showSlidesOnly(slideType) {
+    return slideType === 'slide';
+  }
+  
+  function showFiguresOnly(slideType) {
+    return slideType === 'figure';
   }
 
- /* it("can't initialise state so that minimum slide is less than slide-0", function () {
-    var minus10State = new State(-10, "fony"); // fony mode should revert to default... should probably test that in a State test
-    var currentId = minus10State.previous();
-    expect(currentId).toEqual("slide-0");
-  });
-
-
-  it("Nav can't find previous Num < 0 for all modes", function () {
-    var modes = k.modes;
-    var nav = new Nav(modes, magicPos([true]));
-
-    //search for previoous num from zero assert zero for each mode
-    for (var i = 0; i < modes.length; i++) {
-      var prevMode0 = nav.calcPrevNum(0, modes[i]);
-      expect(prevMode0).toEqual(0);
+  function getNode(slideType) {
+    var node = {}
+    
+    node.hasAttribute = function(attr) {
+      return slideType === attr
     }
-  });
-
-  it("Nav says that previous Num to 1 === 0 for all modes", function () {
-    var modes = k.modes;
-    var nav = new Nav(modes, magicPos([true]));
-
-    //search for previoous num from zero assert zero for each mode
-    for (var i = 0; i < modes.length; i++) {
-      var prevMode0 = nav.calcPrevNum(1, modes[i]);
-      expect(prevMode0).toEqual(0);
+    
+    return node;
+  }
+  
+  function everySecondIsASlide(numSlides) {
+    var result = [];
+    
+    for (var i=0; i < numSlides; i++) {
+      var slideType = (i % 2 == 0) ? 'data-slide' : 'data-figure';
+      
+      result.push(getNode(slideType));
     }
-  });
-
-  it("Nav says that next Num to 0 === value defined by nextPos Func for that mode", function () {
-    var modes = k.modes;
-    var nav = new Nav(modes, magicPos([true, true]));
-
-    //search for previoous num from zero assert zero for each mode
-    for (var i = 0; i < modes.length; i++) {
-      var nextMode0 = nav.calcNextNum(0, modes[i]);
-      console.log("NEXT:- mode = " + modes[i] + " next=" + nextMode0);
-      expect(nextMode0).toEqual(1);
+    
+    result.item = function(a) {
+      return result[a];
     }
-  });
-*/
-  //    it("decrementing always ends at slide-0 and goes no further.", function () {
-  //        val deckSize = 10;
-  //        val badDeclSize = 20;
-  //        expect(true).toBe(true);
-  //    });
-
-
-  /* it('should redirect index.html to index.html#/phones', function() {
-       browser.get('/index.html');
-       browser.getLocationAbsUrl().then(function(url) {
-           expect(url.split('#')[1]).toBe('/main');
-         });
-     });*/
+    
+    return result;
+  }
   
   
-  it("Nav tests all commented", function () {
-    expect("fixme").to.equal("muppet!");
+  it("CalcNext only shows slides of the right type", function() {
+    var lastSlideNum = 9
+    var nodes = everySecondIsASlide(lastSlideNum + 1);
+    var nav = new Nav(showSlidesOnly, nodes);
+    
+    expect(nav.calcNextNum(0)).to.equal(2);
+    expect(nav.calcNextNum(1)).to.equal(2);
+    expect(nav.calcNextNum(2)).to.equal(4);
+    
+    expect(nav.calcNextNum(7)).to.equal(8);
+    //Last valid slide is 8
+    expect(nav.calcNextNum(8)).to.equal(8);
+    
+  });
+
+  it("Initialisation fails for no mode position test function", function (){
+    var nodes = everySecondIsASlide(10);
+    
+    var f = function(){new Nav(null, nodes);} 
+    expect(f).to.throw("Cannot initialise Navigation without a mode position test function");
+  });
+
+  it("Initialisation fails for no navigable nodes", function (){
+    var nodes = everySecondIsASlide(10);
+    
+    var f = function(){new Nav(function(x){return true;},null);} 
+    expect(f).to.throw("No navigation is possible. No navigable nodes provided");
+  });  
+  
+  it ("CalcNext works if starting slide number is less than 0", function() {
+    var nodes = everySecondIsASlide(10);
+    var nav = new Nav(showAll, nodes);
+    
+    expect(nav.calcNextNum(-10)).to.equal(0);    
+  });
+  
+  it ("CalcNext works if starting slide number is less greater than list length", function() {
+    var nodes = everySecondIsASlide(10);
+    var nav = new Nav(showAll, nodes);
+    
+    expect(nav.calcNextNum(100)).to.equal(9);    
+  });
+  
+  it("CalcNext can navigate to the last slide, if it is a valid according to the mode position function", function(){
+    var lastSlideNum = 9;
+    var nodes = everySecondIsASlide(lastSlideNum + 1);
+    
+    var nav = new Nav(showFiguresOnly, nodes);
+    
+    //Going to last slide 
+    expect(nav.calcNextNum(lastSlideNum - 1)).to.equal(lastSlideNum);
+    
+    //Can't go to last slide
+    nav = new Nav(showSlidesOnly, nodes);
+    expect(nav.calcNextNum(lastSlideNum - 1)).to.equal(lastSlideNum - 1);
+  });
+
+  it("Can navigating past last slide will result in last valid slide according to the mode position function", function(){
+    var lastSlideNum = 9;
+    var nodes = everySecondIsASlide(lastSlideNum + 1);
+    
+    var nav = new Nav(showSlidesOnly, nodes);
+    
+    expect(nav.calcNextNum(lastSlideNum + 1)).to.equal(lastSlideNum - 1);
+  });
+  
+  it("CalcPrev only shows slides of the right type", function() {
+    var lastSlideNum = 9
+    var nodes = everySecondIsASlide(lastSlideNum + 1);
+    var nav = new Nav(showSlidesOnly, nodes);
+    
+    expect(nav.calcPrevNum(0)).to.equal(0);
+    expect(nav.calcPrevNum(1)).to.equal(0);
+    expect(nav.calcPrevNum(2)).to.equal(0);
+    expect(nav.calcPrevNum(3)).to.equal(2);
+    expect(nav.calcPrevNum(5)).to.equal(4);
+    expect(nav.calcPrevNum(6)).to.equal(4);
+    expect(nav.calcPrevNum(lastSlideNum)).to.equal(lastSlideNum - 1);
+  });  
+  
+  it ("CalcPrev works if starting slide number is less than 0", function() {
+    var nodes = everySecondIsASlide(10);
+    var nav = new Nav(showAll, nodes);
+    
+    expect(nav.calcPrevNum(-10)).to.equal(0);    
+  });
+  
+  it ("CalcPrev works if starting slide number is less greater than list lenght", function() {
+    var nodes = everySecondIsASlide(10);
+    var nav = new Nav(showAll, nodes);
+    
+    expect(nav.calcPrevNum(100)).to.equal(9);    
+  });
+  
+  it("CalcPrev can navigate to the first slide if it is valid according to the mode position function", function(){
+    var lastSlideNum = 9;
+    var nodes = everySecondIsASlide(lastSlideNum + 1);
+    
+    var nav = new Nav(showSlidesOnly, nodes);
+    
+    //Going to last slide 
+    expect(nav.calcPrevNum(1)).to.equal(0);
+    
+    //Can't go to first slide
+    nav = new Nav(showFiguresOnly, nodes);
+    expect(nav.calcPrevNum(1)).to.equal(1);
   });
   
 });
