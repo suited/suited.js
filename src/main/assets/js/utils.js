@@ -93,6 +93,42 @@ utils.classed = function (element, clazzname, addit) {
   element.setAttribute("class", oldclasses.join(" "));
 
 };
+  
+/**
+ * Add the style to the element. if no stylePropertyValue is supplied remove that style from an element.
+ * 
+ * @param {Element} element   The element whose style to modify
+ * @param {String}  stylePropertyName The name of the style to add or remove
+ * @param {Boolean} addit     Indicates if class should exist. Will be added or removed where necessary 
+ * @returns {void}  Side affecting. Changes the clases of the element in place
+ */
+utils.styled = function (element, stylePropertyName, stylePropertyValue) {
+    var stylePropertyValid = function(name,value){
+                    //if valurundefined we should remove the property
+                    //checking that the value is not a object
+               return  typeof value !== 'object' &&
+                    //checking that the value is not a function
+                    typeof value !== 'function' &&
+                    //checking that we dosent have empty string
+                    value.length > 0 &&
+                    //checking that the property is not int index ( happens on some browser
+                    value != parseInt(value)
+
+        };
+     if(!!stylePropertyValue && !stylePropertyValid(stylePropertyName, stylePropertyValue)) {
+       console.error("styled(): Bad style: propname:"+ stylePropertyName + " value'" + stylePropertyValue + "'")
+       return;
+     }
+     
+     if(!!stylePropertyValue) {
+        //set the style
+        element.style[stylePropertyName] = stylePropertyValue;
+     } else {
+       // remove the style
+       delete element.style[stylePropertyName];
+     }
+    
+  }
 
 /**
  * Query using the selector within the scope of the provided parent node.
