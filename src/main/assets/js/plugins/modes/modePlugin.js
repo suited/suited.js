@@ -1,3 +1,4 @@
+
 'use strict';
 //state.js
 /**
@@ -23,9 +24,9 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    limitations under the License.
 */
 var Plugin = require('../../plugin.js');
-var modeList = require('./modes.js');
 var Mode = require('./mode.js');
 var modePlugin = new Plugin("ModePlugin");
+import builtinModeList from './builtins';
 
 
 modePlugin.modeNames = [];
@@ -154,7 +155,7 @@ modePlugin.addCallback("AfterSlideChange", function(state, evData){
 /**
  * Add all the modes here. We may want to externalise this.....
  */
-modeList.modes.forEach(function(v){
+builtinModeList.forEach(function(v){
     modePlugin.addMode(v);
 })
 
