@@ -12,6 +12,7 @@ function afterSlide() {
 }
 
 function beforeModeChange() {
+  //add listeners
   
 }
 

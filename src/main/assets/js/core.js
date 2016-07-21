@@ -141,7 +141,9 @@ core.addKeyListeners = function () {
           console.log("current mode: " + state.currentMode);
         }
         break;
-      default
+      default: //anything else
+        window.suited.fireEvent("KEY_PRESSED_" + kc, state);
+        break;
     };
 
     //do anything that needs to be done..
