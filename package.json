@@ -10,7 +10,8 @@
     "gulp": "gulp",
     "development": "gulp",
     "test": "gulp production && karma start --single-run",
-    "test-debug": "karma start"
+    "test-debug": "karma start",
+    "release": "gulp release"
   },
   "repository": {
     "type": "git",
