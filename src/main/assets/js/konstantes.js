@@ -93,7 +93,8 @@ var k = {
         "scroll": "scroll",
         "jump": "jump",
         "scrollzoom": "scrollzoom"
-    }
+    },
+    ZOOM_DURATION: 800
 };
 
 k.defaultTransitions = {};

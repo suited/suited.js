@@ -107,9 +107,10 @@ core.addKeyListeners = function () {
     //TODO Do I just make the keypress fire the appropriate events an run all the correct handlers in post processing?
     var kc = evt.keyCode;
     switch (kc) {
-      case 27: //escape
-        core.toggleMode();
-        console.log("Mode reset to doc");
+      case 27: //escape just let the world know with special ESC Event, modes can do what is appropriate
+//        core.toggleMode('doc');
+//        console.log("Mode reset to doc");
+        window.suited.fireEvent("ESC", state);
 
         break;
       case 37: // Left arrow
@@ -140,6 +141,7 @@ core.addKeyListeners = function () {
           console.log("current mode: " + state.currentMode);
         }
         break;
+      default
     };
 
     //do anything that needs to be done..
