@@ -158,12 +158,13 @@ var Suited = function suited(adispatcher) {
     });
   }
 
-  //lowdash would be useful here to merge the objects, this is a temp hack
-  /* modes are simply plugins but passed to the addModes function */
-  this.addModes = function (modesArray) {
-    modesArray = Array.prototype.slice.call(modesArray);
-    modes = modes.concat(modesArray);
-  }
+  // deprecated by ModePlugin
+//  //lowdash would be useful here to merge the objects, this is a temp hack
+//  /* modes are simply plugins but passed to the addModes function */
+//  this.addModes = function (modesArray) {
+//    modesArray = Array.prototype.slice.call(modesArray);
+//    modes = modes.concat(modesArray);
+//  }
 
 
   this.fireEvent = function (eventName, state, eventData) {
