@@ -73,6 +73,7 @@ function tween(startnum, endnum, durationMs, doFn, interpolator, delay) {
 
 
 var k = {
+    "version": "0.0.1",
     idPrefix: "slide-",
     slideAttr: "data-slide",
     slideTypes: {

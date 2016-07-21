@@ -80,7 +80,7 @@ modePlugin.setMode = function(modeName, state) {
     
     var oldMode = this.getCurrentMode();
     if (!!oldMode) {
-        oldMode.cleanUp();    
+        oldMode.cleanUp(); // this can fix the display, and kills the mode specific listeners    
     }
        
     var newMode = this.modes[modeName];
@@ -88,7 +88,7 @@ modePlugin.setMode = function(modeName, state) {
 
     state.setMode(modeName, newMode.shouldShowSlide);
     
-    newMode.beforeModeChange();
+    newMode.beforeModeChange(); // can be used by a mode to start its own special event listeners eg to set a page specific transition
     newMode.beforeSlideChange(state.currentSlideName());
     newMode.afterSlideChange(state.currentSlideName());
         

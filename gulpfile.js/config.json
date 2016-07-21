@@ -89,6 +89,14 @@
       "creds": {},
       "s3Prefix": "suited/"
 
+    },
+    
+    "release": {
+      "src": ".",
+      "dest": ".",
+      "versionFiles": ["package.json"],
+      "promulgateVersionFiles": ["./src/javascripts/config/constants.js"],
+      "excludeFolders": ["layouts", "shared", "macros", "data"]
     }
   }
 
