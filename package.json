@@ -97,6 +97,7 @@
     "object-assign": "^3.0.0",
     "open": "0.0.5",
     "pretty-hrtime": "~1.0.0",
+    "q": "^1.4.1",
     "require-dir": "^0.3.0",
     "through2": "^2.0.1",
     "vinyl-source-stream": "~1.1.0",
