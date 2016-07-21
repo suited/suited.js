@@ -1,6 +1,6 @@
 {
   "name": "suited.js",
-  "version": "0.0.1",
+  "version": "0.0.1+bd.2016-7-21-113911-000.commitish.58f9be6e6e28bb6a4ad0325332707d7ed597c544",
   "description": "driver app using angular.",
   "main": "gulpfile.js",
   "scripts": {
