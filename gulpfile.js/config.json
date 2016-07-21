@@ -1,8 +1,10 @@
 {
   "root": {
+    "project": "./",
     "src": "./src/main/assets",
     "dest": "./public",
-    "tests": "./src/test"
+    "tests": "./src/test",
+    "dist": "./dist"
   },
 
   "node_modules": {
@@ -95,7 +97,7 @@
       "src": ".",
       "dest": ".",
       "versionFiles": ["package.json"],
-      "promulgateVersionFiles": ["./src/javascripts/config/constants.js"],
+      "promulgateVersionFiles": ["./src/main/assets/js/kontantes.js"],
       "excludeFolders": ["layouts", "shared", "macros", "data"]
     }
   }
