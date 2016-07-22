@@ -66,6 +66,28 @@ core.toggleMode = function (newMode) {
   window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
 }
 
+/**
+ * Set the mode by mode number. NB keyNumber is the value written on the keyboard number key eg 1. However Modes are numbered from zero so always subtract 1
+ * this is safe because I am only allowing keys 1-9 to be Modes
+**/
+core.toggleModeByNum = function (keyNumber) {
+  //prevent empty or 0 from doing anything
+  console.debug("toggleModeByNum " + keyNumber);
+  if (!!keyNumber) {
+    var num = (parseInt(keyNumber) - 1);
+    window.suited.fireEvent("SetModeNum", state, {modeNum: num})
+    //@@@state.changeMode(newMode);
+  } else {
+   //ignore
+  }
+  
+  //We need to do this because going into deck, we need to do the slide stuff.
+  //@@@state.mode().afterSlideChange(state.currentSlideName());
+
+  //fix location bar
+  window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
+}
+
 core.hashChanged = function (location) {
  // window.suited.fireEvent("LocationChange", state, {location: location});
   console.log("Location changed!" + location);
@@ -132,6 +154,21 @@ core.addKeyListeners = function () {
           console.log("current mode: " + state.currentMode);
         }
         break;
+      case 49: // '1'
+      case 50: // '2'
+      case 51: // '3'
+      case 52: // '4'
+      case 53: // '5'
+      case 54: // '6'
+      case 55: // '7'
+      case 56: // '8'
+      case 57: // '9'
+        if(evt.shiftKey) {
+          var keyNum = parseInt(kc);
+          core.toggleModeByNum((keyNum - 48)); //map 49 ->1 ... 57 -> 9
+        }
+        break;
+      
       case 84: //t
         if (evt.shiftKey) {
           var transitionFunc = utils.findTransition("top", elId, state.currentMode);

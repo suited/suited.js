@@ -138,6 +138,21 @@ modePlugin.addCallback("SetMode", function(state, evData) {
     };    
 });
 
+modePlugin.addCallback("SetModeNum", function(state, evData) {
+    var modeNum = parseInt(evData.modeNum);
+    var modeName = modePlugin.modeNames[modeNum];
+    if(!!modeName){
+      //only change mode if there is one
+      modePlugin.setMode(modeName, state);
+    }
+    
+    return {
+        'state': state
+    };    
+});
+
+
+
 modePlugin.addCallback("BeforeSlideChange", function(state, evData){
     var slideId = state.currentSlideName();    
     modePlugin.getCurrentMode().beforeSlideChange(slideId);
