@@ -171,6 +171,7 @@ core.addKeyListeners = function () {
       
       case 84: //t
         if (evt.shiftKey) {
+          //TODO FIXME WTF is elid here? - karl
           var transitionFunc = utils.findTransition("top", elId, state.currentMode);
           transitionFunc(elId);
           window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
@@ -190,6 +191,25 @@ core.addKeyListeners = function () {
 
 
 };
+
+// just know where the mouse is.
+core.addMouseListeners = function() {
+  // Monitor mouse movement for panning
+	document.addEventListener( 'mousemove', function( event ) {
+		
+			window.suited.mouseX = event.clientX;
+			window.suited.mouseY = event.clientY;
+		
+	} );
+}
+
+// just track clicks in thesuited event system
+core.addClickListeners = function() {
+  // Monitor mouse movement for panning
+	document.addEventListener( 'click', function( event ) {
+			window.suited.fireEvent("CLICK", state, event);
+	} );
+}
 
 core.init = function () {
 
@@ -221,7 +241,7 @@ core.init = function () {
 
   var theDispatch = new Dispatch();
   window.suited = new Suited(theDispatch);
-  suited.addPlugins(defaultPlugins);
+  window.suited.addPlugins(defaultPlugins);
 
   window.suited.fireEvent("PluginsLoaded", state);
 
@@ -260,6 +280,9 @@ core.init = function () {
   window.addEventListener("hashchange", function (e) {
     core.hashChanged(window.location);
   });
+  
+  core.addMouseListeners();
+  core.addClickListeners();
 };
 
 
