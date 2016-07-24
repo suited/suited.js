@@ -47,13 +47,15 @@ modePlugin.addMode = function(mode) {
 
 modePlugin.removeMode = function(modeName) {
     var count = this.modeNames.length;
-    var modes = this.modeNames.map(function(i, e){
+    this.modeNames = this.modeNames.map(function(i, e){
        if (e.modeName != modeName) {
            return e;
        } 
     });
+  
+    delete this.modes[modeName];
     
-    if (count == this.modes.length) {
+    if (count == this.modesNames.length) {
         console.warn("No mode removed. Mode: " + modeName + " not found");
     }
 };
