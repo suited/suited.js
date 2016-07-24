@@ -114,7 +114,7 @@ utils.styled = function (element, stylePropertyName, stylePropertyValue) {
                     //checking that the property is not int index ( happens on some browser
                     value != parseInt(value)
 
-        };
+    };
      if(!!stylePropertyValue && !stylePropertyValid(stylePropertyName, stylePropertyValue)) {
        console.error("styled(): Bad style: propname:"+ stylePropertyName + " value'" + stylePropertyValue + "'")
        return;
@@ -125,7 +125,8 @@ utils.styled = function (element, stylePropertyName, stylePropertyValue) {
         element.style[stylePropertyName] = stylePropertyValue;
      } else {
        // remove the style
-       delete element.style[stylePropertyName];
+       console.log("deleteing style "+stylePropertyName+ " for element "+element)
+       element.style.removeProperty(stylePropertyName);
      }
     
   }

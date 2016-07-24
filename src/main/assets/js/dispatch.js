@@ -188,15 +188,15 @@ var Dispatch1 = function () {
 
         var answer = f(theState, eventData); //pass in threaded state
 
-        console.log("seen answer: " + JSON.stringify(answer));
+        if(!!answer) { console.log("seen answer: " + JSON.stringify(answer)); }
         //        var answer = "foo" //l.listener(state, eventData);
         //TODO FIXME should I build a result array and pass it back to suited to rub
         // valueHandlers? or do it here?
-        if (!!answer.value) {
+        if (!!answer && !!answer.value) {
           //handle the result ??? should I? its a callback should be void really.
           console.log("seen answer.value: " + JSON.stringify(answer.value));
         }
-        theState = (!!answer.state) ? answer.state : theState; //use new state if it is returned else use existing state
+        theState = (!!answer && !!answer.state) ? answer.state : theState; //use new state if it is returned else use existing state
       });
 
     } else {

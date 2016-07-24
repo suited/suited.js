@@ -27,6 +27,10 @@ var Suited = function suited(adispatcher) {
   var plugins = [];
 
   var modes = [];
+  
+  //just know where the mouse is.
+  var mouseX = 0;
+  var mouseY = 0;
 
   this.getPluginsByName = function (pluginName) {
     var ret = plugins.filter(function (p) {
@@ -99,7 +103,7 @@ var Suited = function suited(adispatcher) {
         console.log("Verified Plugin '" + p.name + "' ");
         retArray.push(p);
       } else {
-        console.log("Unverified Plugin '" + p.name + "' ");
+        console.log("Unverified Plugin '" + p.name + "' hasListeners="+hasListeners + "  removedListenrs="+removedListeners);
         ret = false;
       }
 
@@ -157,15 +161,6 @@ var Suited = function suited(adispatcher) {
       }
     });
   }
-
-  // deprecated by ModePlugin
-//  //lowdash would be useful here to merge the objects, this is a temp hack
-//  /* modes are simply plugins but passed to the addModes function */
-//  this.addModes = function (modesArray) {
-//    modesArray = Array.prototype.slice.call(modesArray);
-//    modes = modes.concat(modesArray);
-//  }
-
 
   this.fireEvent = function (eventName, state, eventData) {
     dispatch(eventName, state, eventData);
