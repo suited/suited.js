@@ -47,17 +47,19 @@ modePlugin.addMode = function(mode) {
 
 modePlugin.removeMode = function(modeName) {
     var count = this.modeNames.length;
-    this.modeNames = this.modeNames.map(function(i, e){
-       if (e.modeName != modeName) {
-           return e;
+
+    this.modeNames = this.modeNames.filter(function(e, i){
+       if (e !== modeName) {
+         return e;
        } 
     });
   
-    delete this.modes[modeName];
-    
-    if (count == this.modesNames.length) {
+    delete this.modes[modeName];  
+
+    if (count == this.modeNames.length) {
         console.warn("No mode removed. Mode: " + modeName + " not found");
     }
+
 };
 
 modePlugin.getCurrentModeName = function() {
@@ -99,7 +101,6 @@ modePlugin.setMode = function(modeName, state) {
         
     return newMode;
 }
-
 
 
 modePlugin.addCallback("NextMode", function(state, evData){
