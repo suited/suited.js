@@ -48,18 +48,20 @@ mode.addCallback("KEY_PRESSED_40", function() {
   }
 });
 
-mode.addCallback("CLICK", function() {
+mode.addCallback("CLICK", function(state, event) {
   console.log("lecture mode seen CLICK event");
   event.preventDefault();
 	zoom.to({ element: event.target, pan: false });
 });
 
-mode.addCallback("KEY_PRESSED_38", function() {
+mode.addCallback("KEY_PRESSED_38", function(state, event) {
   // up arrow pressed
   console.log("lecture mode seen up arrow event");
   event.preventDefault();
   //TODO need to look up state currentSlide() to pass as target
-	zoom.to({ element: event.target, pan: false });
+  var elId = state.currentSlideName()
+  var target = document.getElementById(elId);
+	zoom.to({ element: target, pan: false });
 });
 
 

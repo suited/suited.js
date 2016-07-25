@@ -180,7 +180,7 @@ core.addKeyListeners = function () {
         }
         break;
       default: //anything else
-        window.suited.fireEvent("KEY_PRESSED_" + kc, state);
+        window.suited.fireEvent("KEY_PRESSED_" + kc, state, event);
         break;
     };
 

@@ -2,7 +2,7 @@
 
 var konfig = require('../konfig.js')
 var utils = require('../utils.js');
-var State = require('../state.js');
+//var State = require('../state.js');
 var Dispatch = require('../dispatch.js');
 var Plugin = require('../plugin.js');
 
