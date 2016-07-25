@@ -46,8 +46,8 @@ function Plugin(name) {
    * @param 'eventname' is the name of the event that the callback will be called for, when that event fires.
    
    * @param 'callbackFunc' is a function like this:- callback(state, eventdata))
-   *   where 'eventData' : Optional. is some data passed to the callback when the event fires.
    *   where 'state' : Optional. is some value of the currentState object, usually passed in by the framework.
+   *   where 'eventData' : Optional. is some data passed to the callback when the event fires.
    *   
    *   The return object from the callback contains a new 'state' object
    *   if the callback changes the state, and a value if the callback produces a value.
