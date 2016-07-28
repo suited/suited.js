@@ -4,12 +4,12 @@
 /**
  * The state of the system. Supports the Suited framework and keep track of the current slide and mode
  * and allos the state to be manipulated.
- * 
+ *
  * @returns {Object}   Containing the functions necessary to check and manipulate the state
  */
 
 /*
-Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com> 
+Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,10 +51,10 @@ modePlugin.removeMode = function(modeName) {
     this.modeNames = this.modeNames.filter(function(e, i){
        if (e !== modeName) {
          return e;
-       } 
+       }
     });
-  
-    delete this.modes[modeName];  
+
+    delete this.modes[modeName];
 
     if (count == this.modeNames.length) {
         console.warn("No mode removed. Mode: " + modeName + " not found");
@@ -76,29 +76,36 @@ modePlugin.setMode = function(modeName, state) {
         console.warn("ModeName is empty changing to mode 0");
         modeName = this.modeNames[0];
     }
-    
+
     if (this.modeNames.indexOf(modeName) < 0) {
-        console.warn("ModeName (" + modeName + ") is invalid. Valid modes(" + this.modeNames + ") Changing to mode 0");        
+        console.warn("ModeName (" + modeName + ") is invalid. Valid modes(" + this.modeNames + ") Changing to mode 0");
         modeName = this.modeNames[0];
     }
-    
+
     var oldMode = this.getCurrentMode();
     if (!!oldMode) {
-        oldMode.cleanUp(); // this can fix the display, and kills the mode specific listeners    
+        //TODO should I fire MODECLEANUP event here and have modes listen for it? or just call the cleanup function?
+        oldMode.cleanUp(); // this can fix the display, and kills the mode specific listeners
         //dregister the mode as a plugin
         window.suited.removePlugin(oldMode.name)
     }
-       
+
     var newMode = this.modes[modeName];
     this.currentMode = this.modeNames.indexOf(modeName);
 
-    state.setMode(modeName, newMode.shouldShowSlide);
     window.suited.addPlugins([newMode]);
-    
-    newMode.beforeModeChange(); // can be used by a mode to start its own special event listeners eg to set a page specific transition
-    newMode.beforeSlideChange(state.currentSlideName());
-    newMode.afterSlideChange(state.currentSlideName());
-        
+    state.setMode(newMode, newMode.shouldShowSlide);
+
+    //fire mode change lifecycle event
+    window.suited.fireEvent("BeforeModeChange", state, {"oldMode": oldMode, "newMode": newMode});
+
+    // refire lifecycle events to get next mode to behave as if it was already seleted and moved to this point.
+    window.suited.fireEvent("BeforeSlideChange", state);
+    window.suited.fireEvent("AfterSlideChange", state);
+
+    //fire mode change lifecycle event
+    window.suited.fireEvent("AfterModeChange", state, {"oldMode": oldMode, "newMode": newMode});
+
     return newMode;
 }
 
@@ -107,15 +114,15 @@ modePlugin.addCallback("NextMode", function(state, evData){
     console.debug("Next mode...");
     var pos = modePlugin.currentMode + 1;
     var modeName = "";
-    
+
     if (pos > 0 && pos < modePlugin.modeNames.length) {
-        modeName = modePlugin.modeNames[pos];    
+        modeName = modePlugin.modeNames[pos];
     }
     else {
-        modeName = modePlugin.modeNames[0];   
+        modeName = modePlugin.modeNames[0];
     }
     modePlugin.setMode(modeName, state);
-    
+
     return {
     'state': state
     };
@@ -124,24 +131,24 @@ modePlugin.addCallback("NextMode", function(state, evData){
 modePlugin.addCallback("PrevMode", function(state, evData){
     var pos = modePlugin.currentMode - 1;
     if (pos >= 0 && pos < modePlugin.modeNames.length) {
-        modeName = modePlugin.modeNames[pos];    
+        modeName = modePlugin.modeNames[pos];
     }
     else {
-        modeName = modePlugin.modeNames[modeNames.length - 1];   
+        modeName = modePlugin.modeNames[modeNames.length - 1];
     }
     modePlugin.setMode(modeName, state);
-    
+
     return {
         'state': state
-    };    
+    };
 });
 
 modePlugin.addCallback("SetMode", function(state, evData) {
     modePlugin.setMode(evData.modeName, state);
-    
+
     return {
         'state': state
-    };    
+    };
 });
 
 modePlugin.addCallback("SetModeNum", function(state, evData) {
@@ -151,27 +158,27 @@ modePlugin.addCallback("SetModeNum", function(state, evData) {
       //only change mode if there is one
       modePlugin.setMode(modeName, state);
     }
-    
+
     return {
         'state': state
-    };    
+    };
 });
 
 
 
-modePlugin.addCallback("BeforeSlideChange", function(state, evData){
-    var slideId = state.currentSlideName();    
-    modePlugin.getCurrentMode().beforeSlideChange(slideId);
-    
-    return state;
-});
+// modePlugin.addCallback("BeforeSlideChange", function(state, evData){
+//     var slideId = state.currentSlideName();
+//     modePlugin.getCurrentMode().beforeSlideChange(slideId);
+//
+//     return state;
+// });
 
-modePlugin.addCallback("AfterSlideChange", function(state, evData){
-    var slideId = state.currentSlideName();
-    modePlugin.getCurrentMode().afterSlideChange(slideId);    
-    
-    return state;
-});
+// modePlugin.addCallback("AfterSlideChange", function(state, evData){
+//     var slideId = state.currentSlideName();
+//     modePlugin.getCurrentMode().afterSlideChange(slideId);
+//
+//     return state;
+// });
 
 /**
  * Add all the modes here. We may want to externalise this.....

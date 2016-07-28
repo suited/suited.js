@@ -289,37 +289,6 @@ utils.scrollToY = function (element) {
   }
 }
 
-/**
- * find the correct transition function for the direction elementId and mode
- * first check the element for a clue ie look for attribute transition
- * then look at the config to find the one for the mode (it may have been overidden)
- * once we have a name, look it up then return the direction for that transition.
- **/
-utils.findTransition = function (direction, elId, mode) {
-
-  // we need to hack a top for transitoion scroll or you can';t get to the top again
-
-  mode = (!!mode) ? mode : "doc";
-  var el = document.getElementById(elId);
-  var tname = "jump"; //default
-  var defaultModeTName = c.transitionName[mode];
-  defaultModeTName = (!!defaultModeTName) ? defaultModeTName : c.transitionName["doc"];
-
-  if (el && el.hasAttribute("transition")) {
-    var attrV = el.getAttribute("transition");
-    tname = (!!attrV) ? attrV : defaultModeTName;
-  } else {
-    tname = defaultModeTName;
-  }
-
-  //we now know the tname so look it up
-  var transition = c.transitions[tname];
-  if (!transition) {
-    transition = c.transitions["jump"];
-  }
-  return transition[direction];
-
-}
 
 /**
  * Return the array of unique values fron the xs array

@@ -4,7 +4,7 @@
  * Internal variables and constants. Should not normally be overwritten as it may affect functionality.
  **/
 /*
-Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com> 
+Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ function linearnterpolateNumber(a, b) {
 
 function tween(startnum, endnum, durationMs, doFn, interpolator, delay) {
 
-    //close over these 
+    //close over these
     var ease = interpolator(startnum, endnum);
     var startTime = (new Date()).getTime();
     var duration = durationMs;
@@ -92,19 +92,20 @@ var k = {
     defaultTnames: {
         "scroll": "scroll",
         "jump": "jump",
-        "scrollzoom": "scrollzoom"
     },
-    ZOOM_DURATION: 800
+    ZOOM_DURATION: 800,
+    SCROLL_DURATION: 400,
+    SCROLL_DELAY_DURATION: 15
 };
 
 k.defaultTransitions = {};
-k.defaultTransitions.jump = {};
+k.defaultTransitions.jump = {name:"jump"};
 
 k.defaultTransitions.jump.top = function (elId) {
     window.location.hash = "#";
 }
 k.defaultTransitions.jump.default = function (elId) {
-    window.location.hash = elId; //side effect on state            
+    window.location.hash = elId; //side effect on state
 };
 
 k.defaultTransitions.jump.left = k.defaultTransitions.jump.default;
@@ -112,7 +113,8 @@ k.defaultTransitions.jump.right = k.defaultTransitions.jump.default;
 k.defaultTransitions.jump.up = k.defaultTransitions.jump.left;
 k.defaultTransitions.jump.down = k.defaultTransitions.jump.right;
 
-k.defaultTransitions.scroll = {};
+k.defaultTransitions.scroll = {name:"scroll"};
+
 
 
 k.defaultTransitions.scroll.top = function (elId) {
@@ -121,9 +123,9 @@ k.defaultTransitions.scroll.top = function (elId) {
     var yPos = -window.scrollY;
 
     //calc relative tweens and scrollTo so start at 0 go to start + ypos
-    tween(0, yPos, 400, function (y) {
+    tween(0, yPos, k.SCROLL_DURATION, function (y) {
         window.scrollTo(0, startPos + y);
-    }, linearnterpolateNumber, 15)
+    }, linearnterpolateNumber, k.SCROLL_DELAY_DURATION)
 };
 
 
@@ -139,9 +141,9 @@ k.defaultTransitions.scroll.left = function (elId) {
 
 
     //calc relative tweens and scrollTo so start at 0 go to start + ypos
-    tween(0, yPos, 400, function (y) {
+    tween(0, yPos, k.SCROLL_DURATION, function (y) {
         window.scrollTo(0, startPos + y);
-    }, linearnterpolateNumber, 15)
+    }, linearnterpolateNumber, k.SCROLL_DELAY_DURATION)
 
 
 
@@ -152,7 +154,6 @@ k.defaultTransitions.scroll.up = k.defaultTransitions.scroll.left;
 k.defaultTransitions.scroll.down = k.defaultTransitions.scroll.left;
 
 
-k.defaultTransitions.scrollzoom = k.defaultTransitions.jump; //TODO fixme when scrollzoom implemented
 
 //k.test = tween;
 //k.ease = linearnterpolateNumber;

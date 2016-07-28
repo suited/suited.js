@@ -29,14 +29,8 @@ var c = {};
 
 c.modalBackdropOpacity = 0.8;
 
-c.transitionName = {};
-c.transitionName.doc = k.defaultTnames["scroll"];
-c.transitionName.deck = k.defaultTnames["jump"];
-c.transitionName.walkthrough = k.defaultTnames["scrollzoom"];
-
 c.transitions = {};
 c.transitions["jump"] = k.defaultTransitions.jump;
-c.transitions["scrollzoom"] = k.defaultTransitions.scrollzoom;
 c.transitions["scroll"] = k.defaultTransitions.scroll;
 
 module.exports = c;
