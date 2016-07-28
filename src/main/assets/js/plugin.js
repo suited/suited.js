@@ -4,7 +4,7 @@
 /**
  * A plugin defines callbacks for events.
  * Plugins must have a 'registerCallbacks(dispatch)' and a 'deregisterCallbacks(dispatch)' method or function.
- * 
+ *
  * When Suited adds a plugin it first tests that register adds callbacks and deregister
  * compleatly removes them before allowing the plugin to be added.
  *
@@ -13,13 +13,13 @@
  * then it must return an object that contains the new state,
  * eg return {state: someNewState}
  *
- * Many callbacks may be called in turn for a particular event, The Dispatch makes sure that the state returned is 
+ * Many callbacks may be called in turn for a particular event, The Dispatch makes sure that the state returned is
  * passed to the next callback.
- * 
+ *
  * In addition to returning state, a callback may return a value
  * eg return {state: somestate, value: calculation }
  *
- * Normally nothing will be done withthat value, however if you wish to Handle It then you 
+ * Normally nothing will be done withthat value, however if you wish to Handle It then you
  * can supply an optional 3rd parameter to Plugin.addCallback(). The 3rd parameter is a "valueHandler'
  * function. It expects to be passed the callbacks return object and can then extract the .value and does stuff to it.
  *
@@ -44,25 +44,25 @@ function Plugin(name) {
    * Add a callback to the plugin.
    *
    * @param 'eventname' is the name of the event that the callback will be called for, when that event fires.
-   
+
    * @param 'callbackFunc' is a function like this:- callback(state, eventdata))
    *   where 'state' : Optional. is some value of the currentState object, usually passed in by the framework.
    *   where 'eventData' : Optional. is some data passed to the callback when the event fires.
-   *   
+   *
    *   The return object from the callback contains a new 'state' object
    *   if the callback changes the state, and a value if the callback produces a value.
    *     - the new state is returned from using  the state's api
    *     - eg : {state: newState, value: someValue}
-   *    
+   *
    * @param valueHandler  is an optional function that is passed the result of the callback.
    *  - it can handle the resulting 'value' from a callback to do further handling,
       - The Dispatch will force it to return the callbacks state value
-      TODO should the valueHandler be allowed to change state too? maybe? 
+      TODO should the valueHandler be allowed to change state too? maybe?
    *
    * @return void
    *
    * the framework that calls callbacks will most likely call them one after each other, passing in state and returning it is a way to thread state changes though
-   * the chain (like a State Monad). 
+   * the chain (like a State Monad).
   **/
   this.addCallback = function addCB(eventname, callbackFunc, valueHandler) {
     var cbs = theeventCallbacks[eventname];
@@ -125,7 +125,7 @@ function Plugin(name) {
       //      console.log("hhhhhhhhhhhhh  theeventCallbacks[" + e + "] = " + theeventCallbacks[e]);
       var cbs = theeventCallbacks[e];
       cbs.forEach(function (cb) {
-        var cbHandle = dispatch.on(e, cb); //dispatch.on(eventname, callback, callbackId) 
+        var cbHandle = dispatch.on(e, cb); //dispatch.on(eventname, callback, callbackId)
         handlerIds.push(cbHandle);
       })
 
@@ -133,11 +133,14 @@ function Plugin(name) {
   }
 
   this.deregisterCallbacks = function (dispatch) {
+    console.log("Plugin.deregisterCallbacks for "+ self.name);
     var events = Object.keys(theeventCallbacks);
     events.forEach(function (e, i, a) {
+      // console.log("Plugin.deregisterCallbacks for event "+ e + "  for "+ self.name);
       //setup placeholder for handlerIds
       var handlerIds = theeventCallbackHandles[e]
       handlerIds.forEach(function (h, i, a) {
+        // console.log("Plugin.deregisterCallbacks removing handler "+ h + " for event "+ e + "  for "+ self.name);
         dispatch.off(h);
       });
 

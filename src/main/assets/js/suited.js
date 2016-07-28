@@ -5,7 +5,7 @@ var Dispatch = require('./dispatch.js');
 
 var utils = require('./utils.js');
 
-//Suited is the Object to put on Window so 
+//Suited is the Object to put on Window so
 //TODO FIXME make suited itself extend Plugin just needs a plugins[] and fireEvent(eventName)
 
 // plugins are objects that have a fireEvent(eventName) function. they can add new avent names by also having events.
@@ -21,13 +21,14 @@ var Suited = function suited(adispatcher) {
   var dispatch = adispatcher;
 
   var myrunconfig = {
-    log: true
+    log: true,
+    transition: undefined // name of default transition... TODO should add this to Mode - Plugin config
   };
 
   var plugins = [];
 
   var modes = [];
-  
+
   //just know where the mouse is.
   var mouseX = 0;
   var mouseY = 0;
@@ -41,7 +42,7 @@ var Suited = function suited(adispatcher) {
 
   };
 
-  /** 
+  /**
    * Return list of unique plugin names
    **/
   this.getPluginNames = function () {
@@ -53,7 +54,7 @@ var Suited = function suited(adispatcher) {
   };
 
   /**
-   * runconfig sets properties of suited run, eg turns on an of logging for all built in plugins 
+   * runconfig sets properties of suited run, eg turns on an of logging for all built in plugins
    **/
   this.config = function (runconfig) {
     if (!!runconfig) {
@@ -127,9 +128,9 @@ var Suited = function suited(adispatcher) {
     //register the good plugins with the dispatch
     //TODO should plugins be in an unregistered array first then add them to registered?
     goodPlugins.forEach(function (p, i, a) {
-      console.log(",.,,.. adding " + JSON.stringify(p))
+      console.log("Suited: adding Plugin: " + p.name)
       plugins.push(p);
-      console.log(",.,,.. regestering " + JSON.stringify(p))
+      console.log("Suited: registering Plugin: " + p.name)
       p.registerCallbacks(dispatch);
     })
 
@@ -157,6 +158,8 @@ var Suited = function suited(adispatcher) {
     //now remove em from the back
     indexes.forEach(function (d) {
       if (d > -1) {
+        console.log("Suited: Deregistering Plugin: "+plugins[d].name);
+        plugins[d].deregisterCallbacks(dispatch);
         plugins.splice(d, 1);
       }
     });

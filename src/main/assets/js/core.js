@@ -7,7 +7,7 @@
  **/
 
 /*
-Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com> 
+Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ var state = {};
 var core = function () {};
 
 /**
- * Toggle the presentation mode. If newMode is provided then set mode to that, 
+ * Toggle the presentation mode. If newMode is provided then set mode to that,
  * else get state to switch to the next mode
  *   - If left out then next mode is selected
  * @param {String} newMode (Optional) The mode to switch to.
@@ -80,7 +80,7 @@ core.toggleModeByNum = function (keyNumber) {
   } else {
    //ignore
   }
-  
+
   //We need to do this because going into deck, we need to do the slide stuff.
   //@@@state.mode().afterSlideChange(state.currentSlideName());
 
@@ -95,10 +95,10 @@ core.hashChanged = function (location) {
 
   var theSlideNum = utils.parseSlideNum(window.location.hash);
   var queryParams = utils.parseParams(window.location.search);
-  var mode = queryParams['mode'];    
-    
-  core.toggleMode(mode);  
-    
+  var mode = queryParams['mode'];
+
+  core.toggleMode(mode);
+
   state.setSlideNumber(theSlideNum);
 };
 
@@ -117,7 +117,7 @@ core.processEventQueueAfterAction = function () {
 
 /**
  * Handle the shortcuts and arrow navigation
- * 
+ *
  * keycodes are: left = 37, up = 38, right = 39, down = 40
  */
 core.addKeyListeners = function () {
@@ -129,10 +129,13 @@ core.addKeyListeners = function () {
     //TODO Do I just make the keypress fire the appropriate events an run all the correct handlers in post processing?
     var kc = evt.keyCode;
     switch (kc) {
+      case 13: //Enter clicked
+        window.suited.fireEvent("ENTER", state, evt);
+        break;
       case 27: //escape just let the world know with special ESC Event, modes can do what is appropriate
 //        core.toggleMode('doc');
 //        console.log("Mode reset to doc");
-        window.suited.fireEvent("ESC", state);
+        window.suited.fireEvent("ESC", state, evt);
 
         break;
       case 37: // Left arrow
@@ -168,19 +171,18 @@ core.addKeyListeners = function () {
           core.toggleModeByNum((keyNum - 48)); //map 49 ->1 ... 57 -> 9
         }
         break;
-      
+
       case 84: //t
         if (evt.shiftKey) {
-          //TODO FIXME WTF is elid here? - karl
-          var transitionFunc = utils.findTransition("top", elId, state.currentMode);
-          transitionFunc(elId);
+          var transitionFunc = state.findTransition("top", null);
+          transitionFunc(null);
           window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
 
           console.log("current mode: " + state.currentMode);
         }
         break;
       default: //anything else
-        window.suited.fireEvent("KEY_PRESSED_" + kc, state, event);
+        window.suited.fireEvent("KEY_PRESSED_" + kc, state, evt);
         break;
     };
 
@@ -196,10 +198,10 @@ core.addKeyListeners = function () {
 core.addMouseListeners = function() {
   // Monitor mouse movement for panning
 	document.addEventListener( 'mousemove', function( event ) {
-		
+
 			window.suited.mouseX = event.clientX;
 			window.suited.mouseY = event.clientY;
-		
+
 	} );
 }
 
@@ -249,12 +251,12 @@ core.init = function () {
   console.log("Suited is " + JSON.stringify(window.suited));
 
   var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
-  var navigableSlides = utils.selects(selectString) 
+  var navigableSlides = utils.selects(selectString)
   utils.number(navigableSlides);
 
   state = new State(0, navigableSlides);
 
-    
+
   // add placeholder for Modal backdrop
   var b = document.body;
 
@@ -271,7 +273,7 @@ core.init = function () {
   //slideHolder.innerHTML = '<div style="float: left; width: 20%;">&nbsp;</div><div id="' + k.modal + '" style="float: left; width:60%">&nbsp;</div><div style="float: left; width: 20%;">&nbsp;</div>';
   slideHolder.innerHTML = '<div id="' + k.modal + '"></div>';
 
-  //Create new state object and put everything in the right state 
+  //Create new state object and put everything in the right state
   core.hashChanged(window.location);
 
   //interactivity
@@ -280,7 +282,7 @@ core.init = function () {
   window.addEventListener("hashchange", function (e) {
     core.hashChanged(window.location);
   });
-  
+
   core.addMouseListeners();
   core.addClickListeners();
 };

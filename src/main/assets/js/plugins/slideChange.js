@@ -14,12 +14,14 @@ slideChangePlugin.addCallback("GoBack", function (state, evData) {
   var currentSlide = state.currentSlideName();
   var elId = state.previous(); //side effect on state.mode
   if (currentSlide === elId) {
-    var transitionFunc = utils.findTransition("top", elId, state.getCurrentModeName());
+    var theMode = state.getCurrentMode();
+    var transitionFunc = theMode.findTransition("top", elId);
     transitionFunc(elId);
     window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#");
   } else {
     var slideNum = utils.parseSlideNum("#" + elId);
-    var transitionFunc = utils.findTransition("left", elId, state.getCurrentModeName());
+    var theMode = state.getCurrentMode();
+    var transitionFunc = theMode.findTransition("left", elId);
     transitionFunc(elId);
     state.setSlideNumber(slideNum); // side effect on state mode and currentSlide ie state is modified too as it contains that
 
@@ -39,7 +41,8 @@ slideChangePlugin.addCallback("GoForward", function (state, evData) {
   //handle state change and transition
   var elId = state.next(); // side effect on state
   var slideNum = utils.parseSlideNum("#" + elId);
-  var transitionFunc = utils.findTransition("right", elId, state.getCurrentModeName());
+  var theMode = state.getCurrentMode();
+  var transitionFunc = theMode.findTransition("right", elId);
   transitionFunc(elId);
   state.setSlideNumber(slideNum);
   window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
