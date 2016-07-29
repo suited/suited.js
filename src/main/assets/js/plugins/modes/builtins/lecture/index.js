@@ -105,7 +105,8 @@ mode.addCallback("ENTER", function(state, event) {
 });
 
 mode.addCallback("CLICK", function(state, event) {
-  console.log("lecture mode seen CLICK event");
+
+  console.log("+++++++++++++ lecture mode seen CLICK event: "+ JSON.stringify(event));
   event.preventDefault();
 	zoom.to({ element: event.target, pan: false });
 });
@@ -117,6 +118,37 @@ mode.addCallback("KEY_PRESSED_90", function(state, event) {
     event.preventDefault();
     autozoom = !autozoom;
   }
+});
+
+//cycle transition
+mode.addCallback("KEY_PRESSED_89", function(state, event) {
+
+    console.log("lecture mode seen 'y' click event");
+    event.preventDefault();
+    var currentT = mode.selectedTransition;
+    console.log(" currentT "+ currentT);
+    var nextI = 0;
+    if(!!currentT) {
+      transitions.forEach(function (d,i,a){
+        if(d.name === currentT) {
+          // console.log("lecture mode selectedTransition: found " + currentT + " at i="+ i);
+          nextI = ++i;
+          // console.log("nextI: " + nextI);
+
+        }
+      })
+    }
+
+    if(nextI >= transitions.length) {
+      // console.log(" nexti "+ nextI +" >= "+ transitions.length);
+      mode.selectedTransition = transitions[0].name
+      // console.log("lecture mode selectedTransition: " + mode.selectedTransition);
+    } else {
+      // console.log(" nexti "+ nextI +" ! >= "+ transitions.length);
+        mode.selectedTransition = transitions[nextI].name
+        // console.log("lecture mode selectedTransition: " + mode.selectedTransition);
+    }
+
 });
 
 
