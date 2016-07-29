@@ -1,0 +1,7 @@
+site_name: Suited.js Documentation
+site_dir: doc_site
+pages:
+  - 'Home': 'index.md'
+  - 'Architecture': 'architecture.md'
+
+theme: readthedocs

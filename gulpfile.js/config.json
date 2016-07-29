@@ -4,7 +4,9 @@
     "src": "./src/main/assets",
     "dest": "./public",
     "tests": "./src/test",
-    "dist": "./dist"
+    "dist": "./dist",
+    "docs": "./docs",
+    "doc_site": "./doc_site"
   },
 
   "node_modules": {
@@ -92,7 +94,7 @@
       "s3Prefix": "suited/"
 
     },
-    
+
     "release": {
       "src": ".",
       "dest": ".",
