@@ -50,14 +50,14 @@ function magnify( rect, scale ) {
 			else {
 				var origin = scrollOffset.x +'px '+ scrollOffset.y +'px',
 					transform = 'translate('+ -rect.x +'px,'+ -rect.y +'px) scale('+ scale +')';
-        
+
         utils.styled(body, "transformOrigin", origin);
         utils.styled(body, "OTransformOrigin", origin);
         utils.styled(body, "msTransformOrigin", origin);
         utils.styled(body, "MozTransformOrigin", origin);
         utils.styled(body, "WebkitTransformOrigin", origin);
 
-        
+
         utils.styled(body, "transform", transform);
         utils.styled(body, "OTransform", transform);
         utils.styled(body, "msTransform", transform);
@@ -129,7 +129,7 @@ function magnify( rect, scale ) {
 let zoom = {
   "setup": function() {
     if( supportsTransforms ) {
-      // The easing that will be applied when we zoom in/out	
+      // The easing that will be applied when we zoom in/out
       utils.styled(body, "transition", 'transform '+ TRANSITION_DURATION +'ms ease');
       utils.styled(body, "OTransition", '-o-transform '+ TRANSITION_DURATION +'ms ease');
       utils.styled(body, "msTransition", '-ms-transform '+ TRANSITION_DURATION +'ms ease');
@@ -137,7 +137,7 @@ let zoom = {
       utils.styled(body, "WebkitTransition", '-webkit-transform '+ TRANSITION_DURATION +'ms ease');
     }
   },
-  
+
   "teardown": function() {
     if( supportsTransforms ) {
       // remove inline style
@@ -148,7 +148,7 @@ let zoom = {
       utils.styled(body, "WebkitTransition");
     }
   },
-  
+
   /**
 		 * Zooms in on either a rectangle or HTML element.
 		 *
@@ -166,6 +166,8 @@ let zoom = {
 		 *   - padding: spacing around the zoomed in element
 		 */
 		to: function( options ) {
+
+			console.log("++++++++++ options=" + JSON.stringify(options));
 
 			// Due to an implementation limitation we can't zoom in
 			// to another element without zooming out first

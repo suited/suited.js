@@ -53,6 +53,7 @@ var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBefore
 
   // Must be unique as it is the PluginName... this is not checked yet //TODO FIXME
   this.name = modeName;
+  this.selectedTransition = undefined;
 
   //internal map of transitions name -> transitionObject that this Mode supports
   var transitions = {};
@@ -155,7 +156,10 @@ var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBefore
     if (el && el.hasAttribute("transition")) {
       var attrV = el.getAttribute("transition");
       tname = (!!attrV) ? attrV : defaultModeTName;
-    } else if (window.suited.config.transition) {
+    } else if(!!self.selectedTransition){
+      tname = self.selectedTransition;
+    }
+    else if (window.suited.config.transition) {
       tname = window.suited.config.transition;
     }
 

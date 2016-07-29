@@ -209,6 +209,7 @@ core.addMouseListeners = function() {
 core.addClickListeners = function() {
   // Monitor mouse movement for panning
 	document.addEventListener( 'click', function( event ) {
+      console.log("+++++++++++++  first event = "+ event)
 			window.suited.fireEvent("CLICK", state, event);
 	} );
 }
