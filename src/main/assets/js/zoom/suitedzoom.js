@@ -27,6 +27,7 @@ let supportsTransforms = 	'WebkitTransform' in body.style ||
 
 function magnify( rect, scale ) {
 
+		// var scrollOffset = getScrollOffset(rect);
 		var scrollOffset = getScrollOffset();
 
 		// Ensure a width/height is set
@@ -34,8 +35,8 @@ function magnify( rect, scale ) {
 		rect.height = rect.height || 1;
 
 		// Center the rect within the zoomed viewport
-		rect.x -= ( window.innerWidth - ( rect.width * scale ) ) / 2;
-		rect.y -= ( window.innerHeight - ( rect.height * scale ) ) / 2;
+		rect.x -= ( window.innerWidth - ( (rect.width )  * scale ) ) / 2 ;
+		rect.y -= ( window.innerHeight - ( (rect.height) * scale ) ) / 2;
 
 		if( supportsTransforms ) {
 			// Reset
@@ -49,8 +50,7 @@ function magnify( rect, scale ) {
 			// Scale
 			else {
 				var origin = scrollOffset.x +'px '+ scrollOffset.y +'px',
-					transform = 'translate('+ -rect.x +'px,'+ -rect.y +'px) scale('+ scale +')';
-
+					  transform = 'translate('+ -rect.x +'px,'+ -rect.y +'px) scale('+ scale +')';
         utils.styled(body, "transformOrigin", origin);
         utils.styled(body, "OTransformOrigin", origin);
         utils.styled(body, "msTransformOrigin", origin);
@@ -94,7 +94,7 @@ function magnify( rect, scale ) {
 	 * of the window.
 	 */
 	function pan() {
-    console.log("IN PANNNNN!")
+    // console.log("IN PANNNNN!")
 		var range = 0.12,
 			rangeX = window.innerWidth * range,
 			rangeY = window.innerHeight * range,
@@ -119,11 +119,19 @@ function magnify( rect, scale ) {
 		}
 	}
 
-	function getScrollOffset() {
-		return {
-			x: window.scrollX !== undefined ? window.scrollX : window.pageXOffset,
-			y: window.scrollY !== undefined ? window.scrollY : window.pageYOffset
+	function getScrollOffset(rect) {
+		//allow for fact that body may be skewed relative to viewport
+		var bbounds = document.body.getBoundingClientRect();
+		var fixupX = bbounds.left;
+		var fixupY = bbounds.top;
+		var ret = {
+			x: -fixupX ,
+			y: -fixupY
+			// x: window.scrollX !== undefined ? (parseInt(window.scrollX) - fixupX) : (parseInt(window.pageXOffset) - parseInt(bbounds.left)),
+			// y: window.scrollY !== undefined ? (parseInt(window.scrollY) - fixupY) : (parseInt(window.pageYOffset) + parseInt(bbounds.top))
 		}
+
+		return ret;
 	}
 
 let zoom = {
@@ -167,8 +175,6 @@ let zoom = {
 		 */
 		to: function( options ) {
 
-			console.log("++++++++++ options=" + JSON.stringify(options));
-
 			// Due to an implementation limitation we can't zoom in
 			// to another element without zooming out first
 			if( level !== 1 ) {
@@ -183,6 +189,7 @@ let zoom = {
 					// Space around the zoomed in element to leave on screen
 					var padding = typeof options.padding === 'number' ? options.padding : 20;
 					var bounds = options.element.getBoundingClientRect();
+					var bbounds = document.body.getBoundingClientRect();
 
 					options.x = bounds.left - padding;
 					options.y = bounds.top - padding;
@@ -192,6 +199,7 @@ let zoom = {
 
 				// If width/height values are set, calculate scale from those values
 				if( options.width !== undefined && options.height !== undefined ) {
+					// options.scale = Math.max( Math.min( document.body.clientWidth / options.width, document.body.clientHeight / options.height ), 1 );
 					options.scale = Math.max( Math.min( window.innerWidth / options.width, window.innerHeight / options.height ), 1 );
 				}
 
