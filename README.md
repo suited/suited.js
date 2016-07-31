@@ -31,8 +31,8 @@ In Deck mode -> all slides included nested are flattened in the nav order eg lef
     # Node.js v0.12.2 using nvm
     # as per these instructins :- https://github.com/creationix/nvm/blob/master/README.markdown
     # If you alreeady have Node installed globbaly (you're crazy and headed for pain) then skip the next command
-    . ./setupnvm.sh 
-    
+    . ./setupnvm.sh
+
     # get the build dependencies
     npm install
 
@@ -40,21 +40,39 @@ In Deck mode -> all slides included nested are flattened in the nav order eg lef
       npm install -g gulp
       npm install -g karma-cli
 
-    
+
 
 #### run tests
 either
 
     gulp karma
-    
+
 or
 
     karma start
-    
+
 #### to develp
 run the build in a browser with browserify so you can see changes as you code
 
     gulp
+
+
+#### Generate documentation
+
+Make sure you have `mkdocs` installed.
+
+```
+  pip install mkdocs
+```
+
+Then generate the HTML documentation site using gulp
+
+```
+  gulp gendocs
+```
+
+This will use the files in the `docs` directory as source to generate the documentation
+site into the `doc_site` folder
 
 #### package up the production build
 
