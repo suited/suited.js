@@ -1,13 +1,13 @@
 'use strict';
 /**
- * Lifecycle events that get fired and the handlers and 
+ * Lifecycle events that get fired and the handlers and
  * mechanisms to register a new handlers or add new events into the lifecycle
  *
  * Also the overall event fireing mechanism. //TODO should that be in State?
  *
  * There are some default events that will be fired like before and after StateChange
  * or before and after Mode change.
- * 
+ *
  * There are some default handlers too
  */
 
@@ -19,7 +19,7 @@ var Dispatch1 = function () {
   //initialise event handlers array for each event
   var eventListenersMap = {};
 
-  //map 
+  //map
   this.listeners = function (eventName) {
     return eventListenersMap[eventName];
   }
@@ -27,7 +27,7 @@ var Dispatch1 = function () {
   /**
    * event name is a name in lifecycleEvents
    * handlerCallback is a function of the form???
-   
+
    * returns handlerID : NB you must remember the eventName (hint it's in the id for efficient removal)
    * if you supply an existing id it replaces the listener
    **/
@@ -188,7 +188,6 @@ var Dispatch1 = function () {
 
         var answer = f(theState, eventData); //pass in threaded state
 
-        if(!!answer) { console.log("seen answer: " + JSON.stringify(answer)); }
         //        var answer = "foo" //l.listener(state, eventData);
         //TODO FIXME should I build a result array and pass it back to suited to rub
         // valueHandlers? or do it here?
