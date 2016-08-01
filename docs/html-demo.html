@@ -71,7 +71,7 @@
   <section data-slide>
     <blockquote> Press 'Esc' to jump directly to document mode</blockquote>
   </section>
-  
+
   <section data-slide>
     <blockquote> Press 'SHIFT+1' to 'SHIFT+9' to jump directly mode 1 to 9</blockquote>
   </section>
@@ -87,10 +87,10 @@
   </p>
 
     <section data-slide>
-        <h4>Example</h4>        
+        <h4>Example</h4>
         <blockquote>Colleagues can read the document and reuse the presentation</blockquote>
     </section>
-            
+
     <h2>Modes</h2>
     <p>
         Suited has three built in modes:
@@ -101,35 +101,35 @@
   </div>
   <div>Suited logo</div>
 
-        slide mode. Slides can be added in one of two ways:        
+        slide mode. Slides can be added in one of two ways:
     </p>
     <section data-figure>
         <ol>
             <li>Put an existing portion of the document on a slide</li>
-            <li>Embed a slide so that it is only visible in deck mode</li>    
+            <li>Embed a slide so that it is only visible in deck mode</li>
         </ol>
     </section>
-    
+
     <h2>Put an existing portion of the document on a slide</h2>
     <p>
-        Documents often have sections that is perfect for displaying as a slide such as images, graphs, tables and code snippets. The following image 
-        illustrates an image in the document and on a presentation slide.    
+        Documents often have sections that is perfect for displaying as a slide such as images, graphs, tables and code snippets. The following image
+        illustrates an image in the document and on a presentation slide.
     </p>
-    
+
     <div style="border: 2px solid rgba(0, 0, 0, 0.27);">
     <section data-figure>
             <h4>An image</h4>
             <div style="width: 100%; text-align: center;">
             <img src="images/jackOfSpades.png"  width="60%" />
-            </div>    
+            </div>
     </section>
-    </div>    
-    
+    </div>
+
     <section data-figure>
         <p> A code snippet </p>
         <pre>
             /**
-             * Recursively calculate X to the power Y 
+             * Recursively calculate X to the power Y
              */
             function power(x, y) {
                 if (y === 0) {
@@ -140,8 +140,8 @@
                 }
             }
         </pre>
-    </section>    
-    
+    </section>
+
   <p>
       TODO: Explain how an existing piece of the document is added to a slide
   </p>
@@ -196,11 +196,11 @@
   <section data-slide>
     <h4>First slide A</h4>
     <pre>
-              
+
 def someFunc(a: A, b: B, f: (A,B) => C) = {
     f(a, b)
 }
-              
+
         </pre>
   </section>
 
@@ -212,7 +212,7 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
 //this should appear in doc and deck modes
 def someFunc(a: A, b: B, f: (A,B) => C) = {
     f(a, b)
-}  
+}
             </pre>
   </section>
 
@@ -232,11 +232,11 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
   <section data-slide>
     <h4>Fist slide C</h4>
     <pre>
-              
+
 def someFunc(a: A, b: B, f: (A,B) => C) = {
     f(a, b)
 }
-              
+
             </pre>
   </section>
 
@@ -279,11 +279,11 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
   <button id="nxtBtn">Next</button>
 
   <p data-markdown>
-**Boldmarkdown** is cool 
-    
+**Boldmarkdown** is cool
+
 * ggg
 * hhh
-    
+
 # Tables
 
 | Option | Description |
@@ -299,10 +299,10 @@ Right aligned columns
 | data   | path to data files to supply the data that will be passed into templates. |
 | engine | engine to be used for processing templates. Handlebars is the default. |
 | ext    | extension to be used for dest files. |
-    
+
 
   </p>
-  
+
 <div data-markdown>
 
 ---
@@ -551,15 +551,15 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 *here be dragons*
 :::
 
-  
+
 </div>
-  
+
 <div data-markdown>
 # Check out figures
  I kind of ~~:want a **figure** here:~~ so lets givre it a go
- 
-  
-  ~~:  
+
+
+  ~~:
     * l1
     * l2
       - l377777
@@ -567,40 +567,40 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
   :~~
 
   </div>
-  
+
   <div data-markdown>
   # nested inline figures
-  ~~:  
+  ~~:
     * fig1
     * fig2
       - ~~:fig2a nested:~~
     * l4
   :~~
   </div>
-  
+
   <div data-markdown>
   # nested block figures
-  ~~:  
+  ~~:
     * fig1
     * fig2
-    
+
       ~~:
         - fig2a nested1
         - fig2a nested2
       :~~
-    
+
     * l4
   :~~
   </div>
-  
-  
+
+
   <div data-markdown>
 # Check out  slides
  I kind of ~~*want a **inline** slide here*~~ so lets give it a go
   </div>
-  
+
   <div data-markdown>
-  ~~*  
+  ~~*
     * l1 in slide block
     * l2
       - l377777
@@ -608,53 +608,53 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
   *~~
 
   </div>
-  
+
   <div data-markdown>
   # Slide wide nested inline figure
-  ~~*  
+  ~~*
     * slide1
     * slide2
       - ~~:fig2a nested:~~
     * slide3
   *~~
   </div>
-  
+
   <div data-markdown>
   # Slide wide nested inline slide
-  ~~*  
+  ~~*
     * slide1
     * slide2
       - ~~*slide2a nested*~~
     * slide3
   *~~
   </div>
-  
+
   <div data-markdown>
   # block slide with nested block figures
-  ~~*  
+  ~~*
     * slide1
     * slide2
-    
+
       ~~:
         - block fig2a nested1
         - block fig2a nested2
       :~~
-    
+
     * slide3
   *~~
   </div>
 
   <div data-markdown>
   # block slide with nested block slide
-  ~~*  
+  ~~*
     * slide1
     * slide2
-    
+
       ~~*
         - block slide2a nested1
         - block slide2a nested2
       *~~
-    
+
     * slide3
   *~~
   </div>
@@ -664,8 +664,6 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 
 </body>
 
-<script type="text/javascript" src="js/shared.js"></script>
-<script type="text/javascript" src="js/bundle.js"></script>
-<!--<script type="text/javascript" src="js/startup.js"></script>-->
+<script type="text/javascript" src="js/suited.js"></script>
 
 </html>

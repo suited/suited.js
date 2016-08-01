@@ -28,9 +28,9 @@
     "js": {
       "src": "js",
       "dest": "js",
-      "extractSharedJs": true,
+      "extractSharedJs": false,
       "entries": {
-        "bundle": ["./startup.js"]
+        "suited": ["./startup.js"]
       },
       "extensions": ["js"]
     },
