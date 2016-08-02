@@ -1,3 +1,27 @@
+/**
+* @Author: Roberts Karl <Karl_Roberts>
+* @Date:   2016-Aug-02
+* @Project: suited
+* @Last modified by:   Karl_Roberts
+* @Last modified time: 2016-Aug-02
+* @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+*/
+
+
+
 'use strict';
 
 var MarkdownIt = require('markdown-it');
@@ -8,7 +32,7 @@ var Dispatch = require('../../dispatch.js');
 var Plugin = require('../../plugin.js');
 
 
-//Listens to the 
+//Listens to the
 var markdownPlugin = new Plugin("slideChangePlugin");
 
 var vHandler = function (v) {
@@ -23,7 +47,7 @@ markdownPlugin.addCallback("PluginsLoaded", function () {
 
   //get all elements with data-markdown attribute
   var nodeList = utils.selects("*[data-markdown]");
-  
+
   var md = new MarkdownIt()
     .use(require("./markdown-it-suited-figure-block.js"))
     .use(require("./markdown-it-suited-slide-block.js"))

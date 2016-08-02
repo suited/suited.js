@@ -1,8 +1,10 @@
-//nav.js module returns a Nav constructor function... use it with a new keyword
-'use strict';
-
-/*
-Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com> 
+/**
+* @Author: Roberts Karl <Karl_Roberts>
+* @Date:   2016-Aug-02
+* @Project: suited
+* @Last modified by:   Karl_Roberts
+* @Last modified time: 2016-Aug-02
+* @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,13 +17,19 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
 */
+
+
+
+//nav.js module returns a Nav constructor function... use it with a new keyword
+'use strict';
 
 var utils = require('./utils.js');
 
 /**
  * Nav constructor
- @param modePosTester {Function (int, mode) => boolean} 
+ @param modePosTester {Function (int, mode) => boolean}
  **/
 function Nav(modePosTester, navigableNodes) {
 
@@ -40,7 +48,7 @@ function Nav(modePosTester, navigableNodes) {
     calcNextNum: function (start) {
       start = Number(start);
 
-      //Just to be safe  
+      //Just to be safe
       if (start < 0) return 0;
 
       var next = start + 1;
@@ -67,7 +75,7 @@ function Nav(modePosTester, navigableNodes) {
       if (start <= 0) {
         return 0;
       }
-      
+
       if (start >= navigableNodes.length) {
         start = navigableNodes.length;
       }

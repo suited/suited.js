@@ -1,13 +1,10 @@
-'use strict';
-//core.js
 /**
- * Core behavious of the suited.js javascript library
- *
- * mostly concerned with the interactivity of the web page that it is attached to.
- **/
-
-/*
-Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
+* @Author: Roberts Karl <Karl_Roberts>
+* @Date:   2016-Aug-02
+* @Project: suited
+* @Last modified by:   Karl_Roberts
+* @Last modified time: 2016-Aug-02
+* @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -20,8 +17,18 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
 */
 
+
+
+'use strict';
+//core.js
+/**
+ * Core behavious of the suited.js javascript library
+ *
+ * mostly concerned with the interactivity of the web page that it is attached to.
+ **/
 
 /* Core features and management - eg finds and tags all slide elements */
 

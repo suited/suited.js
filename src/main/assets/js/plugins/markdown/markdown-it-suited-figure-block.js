@@ -1,3 +1,27 @@
+/**
+* @Author: Roberts Karl <Karl_Roberts>
+* @Date:   2016-Aug-02
+* @Project: suited
+* @Last modified by:   Karl_Roberts
+* @Last modified time: 2016-Aug-02
+* @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+*/
+
+
+
 'use strict';
 
 module.exports = function suitedfigureblock_plugin(md, theAlt) {
@@ -111,27 +135,27 @@ module.exports = function suitedfigureblock_plugin(md, theAlt) {
 
     token = state.push('suitedfigureblock_open', 'section', 1);
     token.attrs = [ ['data-figure', '']];
-    // token.info    = params; // I think s 
+    // token.info    = params; // I think s
     token.children = [];
-    
+
     //IF we want a seperate div so we can style it differntly uncomment below or use magig option
-//    token = state.push('block', 'div', 0);    
+//    token = state.push('block', 'div', 0);
     var theCOntent = state.getLines(startLine + 1, endLine - 1, len, true);
     console.log("jjjjjjjjjj cotheCOntentntent = " + theCOntent);
 //    token.content = state.md.render(theCOntent);
     token.content = state.md.block.parse(theCOntent, state.md, state.env, state.tokens);
 //    state.md.block.parse(theCOntent, state.md, state.env, state.tokens);
 //    state.md.core.process(theCOntent, state.md, state.env, state.tokens);
-    
+
     console.log("jjjjjjjjjj2 token.content = " + token.content);
     token.markup = startToken;
     token.map = [startLine, endLine];
-        
+
     // FINALIZE
     token = state.push('suitedfigureblock_close', 'section', -1);
     token.markup = endToken;
-    
-    
+
+
 
     return true;
   };

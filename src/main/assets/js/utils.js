@@ -1,15 +1,10 @@
-'use strict';
-//utils.js
-
-/*
- * module utils:
- 
- * Utilies needed by the suited framework
- */
-
-
-/*
-Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com> 
+/**
+* @Author: Roberts Karl <Karl_Roberts>
+* @Date:   2016-Aug-02
+* @Project: suited
+* @Last modified by:   Karl_Roberts
+* @Last modified time: 2016-Aug-02
+* @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -22,17 +17,26 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
 */
 
 
 
+'use strict';
+//utils.js
+
+/*
+ * module utils:
+
+ * Utilies needed by the suited framework
+ */
 var konstants = require('./konstantes.js');
 var k = konstants;
 
 var konfig = require('./konfig.js');
 var c = konfig;
 /**
- * Return the list of CSS classes on the element as an array 
+ * Return the list of CSS classes on the element as an array
  * @param   {Element} element The element to inspect for classes
  * @returns {Array}    Of Strings. The class names applied to the element
  */
@@ -49,9 +53,9 @@ var utils = {};
 
 /**
  * Replace on class in the list of classes with another. Replace clazz1 with clazz2
- * 
+ *
  * if classes on the element are: ["c1","c2","c3"] and clazz1='c2' and clazz2='c4' then resulting array is: ["c1","c4","c3"]
- * 
+ *
  * @param   {Element} element The element whose classes to change
  * @param   {String} clazz1  Classname to find and replace with clazz2
  * @param   {String} clazz2  Classname to use in place of clazz1
@@ -72,10 +76,10 @@ utils.toggleClass = function (element, clazz1, clazz2) {
 
 /**
  * Add the class to the list of classes if present and addit=false, remove it. If NOT present and addit=true, add it.
- * 
+ *
  * @param {Element} element   The element whose classes to modify
  * @param {String}  clazzname The name of the class to add or remove
- * @param {Boolean} addit     Indicates if class should exist. Will be added or removed where necessary 
+ * @param {Boolean} addit     Indicates if class should exist. Will be added or removed where necessary
  * @returns {void}  Side affecting. Changes the clases of the element in place
  */
 utils.classed = function (element, clazzname, addit) {
@@ -93,13 +97,13 @@ utils.classed = function (element, clazzname, addit) {
   element.setAttribute("class", oldclasses.join(" "));
 
 };
-  
+
 /**
  * Add the style to the element. if no stylePropertyValue is supplied remove that style from an element.
- * 
+ *
  * @param {Element} element   The element whose style to modify
  * @param {String}  stylePropertyName The name of the style to add or remove
- * @param {Boolean} addit     Indicates if class should exist. Will be added or removed where necessary 
+ * @param {Boolean} addit     Indicates if class should exist. Will be added or removed where necessary
  * @returns {void}  Side affecting. Changes the clases of the element in place
  */
 utils.styled = function (element, stylePropertyName, stylePropertyValue) {
@@ -119,7 +123,7 @@ utils.styled = function (element, stylePropertyName, stylePropertyValue) {
        console.error("styled(): Bad style: propname:"+ stylePropertyName + " value'" + stylePropertyValue + "'")
        return;
      }
-     
+
      if(!!stylePropertyValue) {
         //set the style
         element.style[stylePropertyName] = stylePropertyValue;
@@ -128,12 +132,12 @@ utils.styled = function (element, stylePropertyName, stylePropertyValue) {
        console.log("deleteing style "+stylePropertyName+ " for element "+element)
        element.style.removeProperty(stylePropertyName);
      }
-    
+
   }
 
 /**
  * Query using the selector within the scope of the provided parent node.
- * 
+ *
  * @param   {String} selection Query selection string
  * @param   {Element} parent    The parent node to search within
  * @returns {NodeList} The list of nodes matching the query. Empty list of nothing is found
