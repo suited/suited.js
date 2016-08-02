@@ -1,7 +1,7 @@
 {
   "name": "suited.js",
-  "version": "0.0.1+bd.2016-7-21-113911-000.commitish.58f9be6e6e28bb6a4ad0325332707d7ed597c544",
-  "description": "driver app using angular.",
+  "version": "1.0.9-alpha+bd.2016-7-21-113911-000.commitish.58f9be6e6e28bb6a4ad0325332707d7ed597c544",
+  "description": "The awesome presentation framework allowing you to flick between handy talk slides and detailed document all in a single write once file.",
   "main": "gulpfile.js",
   "scripts": {
     "publish": "gulp publish",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@foobar.com"
+    "url": "git@github.com:suited/suited.js.git"
   },
   "keywords": [
     "presentation",

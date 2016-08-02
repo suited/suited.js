@@ -1,6 +1,11 @@
-  /*
-Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com> 
+// @Author: Roberts Karl <Karl_Roberts>
+// @Date:   2016-Aug-02
+// @Project: suited
+// @Last modified by:   Karl_Roberts
+// @Last modified time: 2016-Aug-02
+// @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
+/*
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -30,23 +35,23 @@ Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <di
   .slide-highlight.muted {
     background: #20f0fd;
   }
- 
 
-body { 
+
+body {
     margin:0 auto;
-    
+
     @media (min-width: $screen-lg-min) {
-        width:1000px; 
+        width:1000px;
     }
     @media (max-width: $screen-md-max) {
-        width:800px; 
-    }    
+        width:800px;
+    }
     @media (max-width: $screen-sm-max) {
-        width:600px; 
-    }    
+        width:600px;
+    }
     @media (max-width: $screen-xs-max) {
-        width: 400px; 
-    }    
+        width: 400px;
+    }
 }
 
   /* zoom */
@@ -55,18 +60,18 @@ body {
     /* IE */
     /**
     -moz-transform: scale(2);
-    // Firefox 
+    // Firefox
     -moz-transform-origin: 0 0;
     -o-transform: scale(2);
-    // Opera 
+    // Opera
     -o-transform-origin: 0 0;
     -webkit-transform: scale(2);
-    // Safari And Chrome 
+    // Safari And Chrome
     -webkit-transform-origin: 0 0;
     transform: scale(2);
-    // Standard Property 
+    // Standard Property
     transform-origin: 0 0;
-    // Standard Property 
+    // Standard Property
   */
     transform: scale(2);
     transform-origin: 0 0;
