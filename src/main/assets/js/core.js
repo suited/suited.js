@@ -3,7 +3,7 @@
 * @Date:   2016-Aug-02
 * @Project: suited
 * @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified time: 2016-Aug-03
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -136,62 +136,62 @@ core.addKeyListeners = function () {
     //TODO Do I just make the keypress fire the appropriate events an run all the correct handlers in post processing?
     var kc = evt.keyCode;
     switch (kc) {
-      case 13: //Enter clicked
+    case 13: //Enter clicked
         window.suited.fireEvent("ENTER", state, evt);
         break;
-      case 27: //escape just let the world know with special ESC Event, modes can do what is appropriate
-//        core.toggleMode('doc');
-//        console.log("Mode reset to doc");
+    case 27: //escape just let the world know with special ESC Event, modes can do what is appropriate
+        //        core.toggleMode('doc');
+        //        console.log("Mode reset to doc");
         window.suited.fireEvent("ESC", state, evt);
 
         break;
-      case 37: // Left arrow
+    case 37: // Left arrow
         console.log("Previous " + evt.keyCode);
 
         window.suited.fireEvent("BeforeSlideChange", state);
         window.suited.fireEvent("GoBack", state);
         window.suited.fireEvent("AfterSlideChange", state);
         break;
-      case 39: // Right arrow
+    case 39: // Right arrow
         console.log("Next " + evt.keyCode);
         window.suited.fireEvent("BeforeSlideChange", state);
         window.suited.fireEvent("GoForward", state);
         window.suited.fireEvent("AfterSlideChange", state);
         break;
-      case 83: //s
-        if (evt.shiftKey) {
-          core.toggleMode(); //side effect on state.mode
-          console.log("current mode: " + state.currentMode);
-        }
+    case 83: //s
+        // if (evt.shiftKey) {
+        core.toggleMode(); //side effect on state.mode
+        console.log("current mode: " + state.currentMode);
+        // }
         break;
-      case 49: // '1'
-      case 50: // '2'
-      case 51: // '3'
-      case 52: // '4'
-      case 53: // '5'
-      case 54: // '6'
-      case 55: // '7'
-      case 56: // '8'
-      case 57: // '9'
-        if(evt.shiftKey) {
-          var keyNum = parseInt(kc);
-          core.toggleModeByNum((keyNum - 48)); //map 49 ->1 ... 57 -> 9
-        }
+    case 49: // '1'
+    case 50: // '2'
+    case 51: // '3'
+    case 52: // '4'
+    case 53: // '5'
+    case 54: // '6'
+    case 55: // '7'
+    case 56: // '8'
+    case 57: // '9'
+        // if(evt.shiftKey) {
+        var keyNum = parseInt(kc);
+        core.toggleModeByNum((keyNum - 48)); //map 49 ->1 ... 57 -> 9
+        // }
         break;
 
-      case 84: //t
+    case 84: //t
         if (evt.shiftKey) {
-          var transitionFunc = state.findTransition("top", null);
-          transitionFunc(null);
-          window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
+            var transitionFunc = state.findTransition("top", null);
+            transitionFunc(null);
+            window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
 
-          console.log("current mode: " + state.currentMode);
+            console.log("current mode: " + state.currentMode);
         }
         break;
-      default: //anything else
+    default: //anything else
         window.suited.fireEvent("KEY_PRESSED_" + kc, state, evt);
         break;
-    };
+};
 
     //do anything that needs to be done..
     core.processEventQueueAfterAction();
