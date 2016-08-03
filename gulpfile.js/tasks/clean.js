@@ -27,7 +27,7 @@ var del    = require('del')
 var config = require('../config')
 
 var cleanTask = function (cb) {
-  del([config.root.dest, config.root.dist, config.root.project+"/"+config.tasks.deploy.src]).then(function (paths) {
+  del([config.root.dest, config.root.dist]).then(function (paths) {
     cb()
   })
 }
