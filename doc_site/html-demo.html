@@ -1,35 +1,10 @@
-<!--
-@Author: Roberts Karl <Karl_Roberts>
-@Date:   2016-Aug-02
-@Project: suited
-@Last modified by:   Karl_Roberts
-@Last modified time: 2016-Aug-02
-@License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-
--->
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Suited Demo</title>
-  <link rel="stylesheet" type="text/css" href="css/reset-4ebce0f2d2.css">
-  <!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-0dfd7c8db5.css">-->
-  <link rel="stylesheet" type="text/css" href="css/suited-light-da08560318.css">
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <!--  <link rel="stylesheet" type="text/css" href="css/suited-dark.css">-->
+  <link rel="stylesheet" type="text/css" href="css/suited-light.css">
 </head>
 
 <body>
@@ -63,9 +38,6 @@
   <p>
     Traditional presentations have slides with more details embedded as speaker notes. Suited takes the opposite approach - a full document with embedded presentation slides. The slides can either be existing figures, graphs or quotes in the document, or hidden slides only visible in presentation mode.
   </p>
-  <div style="width: 80px; height: 80px; margin-right: 10px; padding: 10px; float: left; background: green;">
-				Float
-			</div>
 
   <section data-slide>
     <h4>Example</h4>
@@ -106,7 +78,7 @@
 
 
   <p>
-    There is no <em>need</em> to start with the presentation in mind, any document can be transformed into a presentation by adding slides, or marking sections that should be displayed in slide mode.
+    There is no need to start with the presentation in mind, any document can be transformed into a presentation by adding slides, or marking sections that should be displayed in slide mode.
   </p>
 
   <h2>Figures, graphs, quotes and things</h2>
@@ -123,8 +95,8 @@
     <p>
         Suited has three built in modes:
     </p>
-    <section data-figure transition="jump">
-      <img src="images/jackOfSpades-208a622d79.png" width="60%" />
+    <section data-figure>
+      <img src="images/jackOfSpades.png" width="60%" />
     </section>
   </div>
   <div>Suited logo</div>
@@ -148,7 +120,7 @@
     <section data-figure>
             <h4>An image</h4>
             <div style="width: 100%; text-align: center;">
-            <img src="images/jackOfSpades-208a622d79.png"  width="60%" />
+            <img src="images/jackOfSpades.png"  width="60%" />
             </div>
     </section>
     </div>
@@ -248,7 +220,7 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
 
   <section data-slide>
     <h4>Fist slide B</h4>
-    <img src="images/jackOfSpades-208a622d79.png" width="60%" />
+    <img src="images/jackOfSpades.png" width="60%" />
   </section>
 
   Morbi vehicula quis tortor cursus aliquam. Donec fringilla neque ut posuere imperdiet. Vestibulum auctor sapien sed hendrerit eleifend. Phasellus lorem nulla, mattis in faucibus sed, porttitor vel turpis. Nunc odio lectus, ultrices id feugiat ac, porta dictum lacus. Vestibulum turpis massa, luctus convallis facilisis quis, convallis eget mauris. Nulla id dui sem. Quisque feugiat arcu non odio fermentum, vitae elementum magna consequat.
@@ -692,6 +664,6 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 
 </body>
 
-<script type="text/javascript" src="js/suited-f151d89ebba315115a6b.js"></script>
+<script type="text/javascript" src="js/suited.js"></script>
 
 </html>
