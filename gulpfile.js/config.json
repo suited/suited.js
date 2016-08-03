@@ -4,9 +4,7 @@
     "src": "./src/main/assets",
     "dest": "./public",
     "tests": "./src/test",
-    "dist": "./dist",
-    "docs": "./docs",
-    "doc_site": "./doc_site"
+    "dist": "./dist"
   },
 
   "node_modules": {
@@ -101,7 +99,17 @@
       "versionFiles": ["package.json"],
       "promulgateVersionFiles": ["./src/main/assets/js/kontantes.js"],
       "excludeFolders": ["layouts", "shared", "macros", "data"]
+    },
+
+    "gendocs": {
+      "src": "docs",
+      "dest": "doc_site"
+    },
+
+    "deploy": {
+      "src": "gh-pages"
     }
+
   }
 
 }
