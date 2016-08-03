@@ -38,7 +38,7 @@ var settings = {
     demo_src: path.join(config.root.dest, '/**/*'),
     demo_dest: path.join(config.root.dist, config.tasks.deploy.src),
     doc_src: path.join(config.root.project, config.tasks.gendocs.dest, '/**/*'),
-    doc_dest: path.join(config.root.project, config.tasks.deploy.src, config.tasks.gendocs.dest),
+    doc_dest: path.join(config.root.dist, config.tasks.deploy.src, config.tasks.gendocs.dest),
     ghPagesSrc: path.join(config.root.dist, config.tasks.deploy.src, '/**/*'),
     ghPages: {
         cacheDir: path.join(os.tmpdir(), package.name)
@@ -67,6 +67,8 @@ gulp.task('gather-suited-doco', gatherSuitedDoco);
 
 var prepareDeploy = function(cb) {
     gulpSequence('gather-demo-doco', 'gather-suited-doco', cb)
+    // gulpSequence('gather-demo-doco', cb)
+    // gulpSequence('gather-suited-doco', cb)
 }
 
 gulp.task('prepare-deploy', ['production', 'gendocs'], prepareDeploy)
