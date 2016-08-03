@@ -44,9 +44,9 @@ gulp.task('cleanDocsDir', function () {
 
 gulp.task('mkdocs', shell.task(['mkdocs build']));
 
-gulp.task('copyOthers', function () {
-  return gulp.src(settings.src).pipe(gulp.dest(settings.dest));
-});
+// gulp.task('copyOthers', function () {
+//   return gulp.src(settings.src).pipe(gulp.dest(settings.dest));
+// });
 
-var gendocsTask = gulp.task('gendocs', gulpSequence('cleanDocsDir','mkdocs', 'copyOthers'));
+var gendocsTask = gulp.task('gendocs', gulpSequence('cleanDocsDir','mkdocs'/*, 'copyOthers' */));
 module.exports = gendocsTask;

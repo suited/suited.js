@@ -14,7 +14,7 @@
     "release": "gulp release",
     "clean": "gulp clean"
   },
-  "homepage": "https://suited.github.io/suited.js/",
+  "homepage": "https://suited.github.io/suited.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:suited/suited.js.git"
