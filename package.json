@@ -9,7 +9,7 @@
     "demo": "gulp production && gulp server",
     "gulp": "gulp",
     "development": "gulp",
-    "test": "gulp production && karma start --single-run",
+    "test": "gulp production && karma start --browsers Firefox --single-run",
     "test-debug": "karma start",
     "release": "gulp release",
     "clean": "gulp clean"
