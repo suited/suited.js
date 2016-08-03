@@ -19,6 +19,7 @@
    limitations under the License.
 
 -->
+![travis status](https://travis-ci.org/suited/suited.js.svg?branch=master)
 status: alpha.
 
 [see the demo](https://suited.github.io/suited.js)
