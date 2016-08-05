@@ -69,7 +69,8 @@ function deckMode(enable) {
     utils.classed(modal, "not-displayed", !enable);
 }
 
-function cleanUp() {
+function cleanUp(state) {
+    beforeSlide(state.currentSlideName());
     deckMode(false);
 }
 
