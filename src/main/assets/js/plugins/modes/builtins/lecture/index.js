@@ -60,8 +60,12 @@ var unzoomDelay = parseInt(constants.ZOOM_DURATION);
 
 
 function beforeModeChange() {
-  //add listeners
   console.log("lectureMode beforeModeChange")
+
+  var slides = utils.selects("section[data-slide]");
+  for (var i = 0; i < slides.length; ++i) {
+      utils.classed(slides[i], "not-displayed", true);
+  }
   zoom.setup();
 
 }

@@ -92,7 +92,7 @@ modePlugin.setMode = function(modeName, state) {
     var oldMode = this.getCurrentMode();
     if (!!oldMode) {
         //TODO should I fire MODECLEANUP event here and have modes listen for it? or just call the cleanup function?
-        oldMode.cleanUp(); // this can fix the display, and kills the mode specific listeners
+        oldMode.cleanUp(state); // this can fix the display, and kills the mode specific listeners
         //dregister the mode as a plugin
         window.suited.removePlugin(oldMode.name)
     }

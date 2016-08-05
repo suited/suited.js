@@ -129,9 +129,9 @@ var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBefore
     }
   };
 
-  this.cleanUp = function () {
+  this.cleanUp = function (state) {
     if (fnCleanUp) {
-      return fnCleanUp();
+      return fnCleanUp(state);
     } else {
       console.debug("No clean up function defined for mode: " + name);
     }
