@@ -52,18 +52,9 @@ function beforeModeChange(state, evData) {
     walkMode(true);
 }
 
-function cleanUp() {
+function cleanUp(state) {
+    beforeSlide(state.currentSlideName());
     walkMode(false);
-
-    //remove lingering css changes
-    var highligted = utils.selects(".slide-highlight");
-    for (var i = 0; i < highligted.length; ++i) {
-      utils.classed(highligted[i], "slide-highlight", false);
-    }
-    var muted = utils.selects(".muted");
-    for (var i = 0; i < muted.length; ++i) {
-      utils.classed(muted[i], "muted", false);
-    }
 }
 
 export default new Mode(name, beforeSlide, afterSlide, beforeModeChange, null, cleanUp, modeutils.getShouldShowSlideFunction(name))
