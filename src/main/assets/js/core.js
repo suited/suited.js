@@ -70,7 +70,7 @@ core.toggleMode = function (newMode) {
   //@@@state.mode().afterSlideChange(state.currentSlideName());
 
   //fix location bar
-  window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
+  window.suited.fireEvent("LocationChanged", state);
 }
 
 /**
@@ -92,7 +92,7 @@ core.toggleModeByNum = function (keyNumber) {
   //@@@state.mode().afterSlideChange(state.currentSlideName());
 
   //fix location bar
-  window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
+  window.suited.fireEvent("LocationChanged", state);
 }
 
 core.hashChanged = function (location) {
@@ -183,7 +183,8 @@ core.addKeyListeners = function () {
         if (evt.shiftKey) {
             var transitionFunc = state.findTransition("top", null);
             transitionFunc(null);
-            window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.currentMode + "#");
+
+            window.suited.fireEvent("LocationChanged", state);
 
             console.log("current mode: " + state.currentMode);
         }

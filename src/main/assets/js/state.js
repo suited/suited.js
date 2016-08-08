@@ -96,7 +96,7 @@ var State = function (desiredPos, navigableNodes) {
         nav = new Nav(fnShouldShowSlide, navigableNodes);
     }
 
-    function makeSlideName(num) {
+    this.makeSlideName = function (num) {
         return slidePrefix + num;
     }
 
@@ -105,7 +105,7 @@ var State = function (desiredPos, navigableNodes) {
     }
 
     this.currentSlideName = function currentSlideName() {
-        return makeSlideName(currentSlide);
+        return this.makeSlideName(currentSlide);
     };
 
     /**
@@ -113,7 +113,7 @@ var State = function (desiredPos, navigableNodes) {
      * @returns new currentID name.
      **/
     this.next = function next() {
-      return makeSlideName(nav.calcNextNum(currentSlide));
+      return this.makeSlideName(nav.calcNextNum(currentSlide));
     };
 
     /**
@@ -121,7 +121,7 @@ var State = function (desiredPos, navigableNodes) {
      * @returns new currentID name.
      **/
     this.previous = function previous() {
-      return makeSlideName(nav.calcPrevNum(currentSlide));
+      return this.makeSlideName(nav.calcPrevNum(currentSlide));
     };
 
   } // end constructor

@@ -1,9 +1,9 @@
 /**
 * @Author: Roberts Karl <Karl_Roberts>
-* @Date:   2016-Aug-02
+* @Date:   2016-Aug-08
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   Dirk_van_Rensburg
+* @Last modified time: 2016-Aug-08
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,23 +20,22 @@
 
 */
 
-
-
 'use strict';
 
-var builtins = [];
+var Plugin = require('../../plugin.js');
 
-builtins.push(require("./markdown").plugin);
-builtins.push(require("./slideChange"));
+var locationPlugin = new Plugin("LocationManagerPlugin");
 
-var modePlugin = require("./modes").plugin;
-builtins.push(modePlugin);
+locationPlugin.addCallback("LocationChanged", function(state, evData) {
+  var slideId = state.currentSlideName();
 
-builtins.push(require("./location").plugin);
+  if (evData && evData.slideId) {
+    slideId = evData.slideId;
+  }
+  if (window.location.protocol != 'file:') {
+    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + slideId);
+  }
+});
 
-module.exports = {
-  "builtins": builtins
-  , "markdownPlugin": require("./markdown").plugin
-  , "slideChangePlugin": require("./slideChange")
-  , "modePlugin" : modePlugin
-}
+
+module.exports = locationPlugin;
