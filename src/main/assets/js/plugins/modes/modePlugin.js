@@ -171,7 +171,17 @@ modePlugin.addCallback("SetModeNum", function(state, evData) {
     };
 });
 
+modePlugin.addCallback("ESC", function(state, evData) {
+  if (!modePlugin.getCurrentMode().handlesEvent("ESC")) {
+    modePlugin.setMode(modePlugin.modeNames[0], state);
 
+    //TODO: A bit nasty to do it here too. We need a plugin to maintin the browser history state
+    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
+  }
+  return {
+    'state': state
+  }
+});
 
 // modePlugin.addCallback("BeforeSlideChange", function(state, evData){
 //     var slideId = state.currentSlideName();

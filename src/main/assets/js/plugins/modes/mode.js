@@ -66,7 +66,10 @@ var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBefore
   //internal map of transitions name -> transitionObject that this Mode supports
   var transitions = {};
 
-
+  //Stub. Modes can override this to prevent modePlugin from eating their events
+  this.handlesEvent = function (key) {
+    return false;
+  }
 
   // caution, at present this will ruthlessly overwtite a transition of the same name //TODO decide on policy
   this.addTransition = function (aTransition) {

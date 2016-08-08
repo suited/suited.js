@@ -71,7 +71,8 @@ function beforeModeChange() {
 }
 
 function cleanUp() {
-  console.log("lectureMode teardown")
+  console.log("lectureMode teardown");
+  zoom.out();
   zoom.teardown();
 }
 
@@ -117,6 +118,10 @@ transitions.push(constants.defaultTransitions.jump);
 
 let mode = new Mode(name, beforeSlide, afterSlide, beforeModeChange, null, cleanUp, modeutils.getShouldShowSlideFunction(name), transitions);
 
+
+mode.handlesEvent = function (eventName) {
+  return eventName === "ESC";
+}
 
 //Handle custon Events
 mode.addCallback("ESC", function() {
