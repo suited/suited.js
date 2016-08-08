@@ -41,7 +41,9 @@ slideChangePlugin.addCallback("GoBack", function (state, evData) {
     var theMode = state.getCurrentMode();
     var transitionFunc = theMode.findTransition("top", elId);
     transitionFunc(elId);
-    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#");
+
+    state.setSlideNumber(0);
+    window.suited.fireEvent("LocationChanged", state);
   } else {
     var slideNum = utils.parseSlideNum("#" + elId);
     var theMode = state.getCurrentMode();
@@ -49,7 +51,7 @@ slideChangePlugin.addCallback("GoBack", function (state, evData) {
     transitionFunc(elId);
     state.setSlideNumber(slideNum); // side effect on state mode and currentSlide ie state is modified too as it contains that
 
-    window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
+    window.suited.fireEvent("LocationChanged", state);
 
     console.log("slideChangePlugin: slide=" + state.currentSlideName() + " state.mode is " + state.getCurrentModeName());
   }
@@ -69,7 +71,8 @@ slideChangePlugin.addCallback("GoForward", function (state, evData) {
   var transitionFunc = theMode.findTransition("right", elId);
   transitionFunc(elId);
   state.setSlideNumber(slideNum);
-  window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + state.currentSlideName());
+
+  window.suited.fireEvent("LocationChanged", state);
 
   console.log("slideChangePlugin: slide=" + state.currentSlideName() + " state.mode is " + state.getCurrentModeName());
   return {

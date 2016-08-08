@@ -1,8 +1,8 @@
 /**
 * @Author: Roberts Karl <Karl_Roberts>
-* @Date:   2016-Aug-02
+* @Date:   2016-Aug-08
 * @Project: suited
-* @Last modified by:   Karl_Roberts
+* @Last modified by:   Dirk_van_Rensburg
 * @Last modified time: 2016-Aug-02
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
@@ -20,23 +20,8 @@
 
 */
 
-
-
 'use strict';
 
-var builtins = [];
-
-builtins.push(require("./markdown").plugin);
-builtins.push(require("./slideChange"));
-
-var modePlugin = require("./modes").plugin;
-builtins.push(modePlugin);
-
-builtins.push(require("./location").plugin);
-
 module.exports = {
-  "builtins": builtins
-  , "markdownPlugin": require("./markdown").plugin
-  , "slideChangePlugin": require("./slideChange")
-  , "modePlugin" : modePlugin
+  "plugin" : require("./locationManagerPlugin")
 }
