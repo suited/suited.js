@@ -2,8 +2,8 @@
 * @Author: Roberts Karl <Karl_Roberts>
 * @Date:   2016-Aug-02
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   robertk
+* @Last modified time: 2016-Aug-14
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ var utils = require('../utils.js');
 var Dispatch = require('../dispatch.js');
 var Plugin = require('../plugin.js');
 
-var slideChangePlugin = new Plugin("slideChangePlugin");
+var slideChangePlugin = new Plugin("SlideChangePlugin");
 
 slideChangePlugin.addCallback("GoBack", function (state, evData) {
   console.log("slideChangePlugin: currentSlide before: " + state.currentSlideName())

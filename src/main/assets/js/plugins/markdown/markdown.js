@@ -3,7 +3,7 @@
 * @Date:   2016-Aug-02
 * @Project: suited
 * @Last modified by:   robertk
-* @Last modified time: 2016-Aug-08
+* @Last modified time: 2016-Aug-11
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ var Plugin = require('../../plugin.js');
 
 
 //Listens to the
-var markdownPlugin = new Plugin("slideChangePlugin");
+var markdownPlugin = new Plugin("MarkdownPlugin");
 
 var vHandler = function (v) {
   if (v.value !== 0) console.error("markdownPlugin failed!!! ");

@@ -2,8 +2,8 @@
 * @Author: Roberts Karl <Karl_Roberts>
 * @Date:   2016-Aug-02
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   robertk
+* @Last modified time: 2016-Aug-14
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -99,13 +99,9 @@ function Plugin(name) {
     if (!valueHandler) {
       cbs.push(callbackFunc);
     } else {
-      //      console.log("valueHandler::::::::: " + valueHandler);
       var f = function (state, eventdata) {
-        //        console.log("%%%%%%%%%%%  state" + JSON.stringify(state));
         var v = callbackFunc(state, eventdata);
-        //        console.log("%%%%%%%%%%%  v" + JSON.stringify(v));
         var vv = valueHandler(v);
-        //        console.log("%%%%%%%%%%%  vv" + JSON.stringify(vv));
         var ret = {};
         if (!!v && !!v.state) {
           ret.state = v.state;

@@ -2,8 +2,8 @@
 * @Author: Roberts Karl <Karl_Roberts>
 * @Date:   2016-Aug-02
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   robertk
+* @Last modified time: 2016-Aug-14
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,20 +32,6 @@
 import konstants from '../../konstantes.js'
 import Plugin from '../../plugin.js'
 
-//TODO FIXME - karl - Should we allow the mode to add a callback for events for each of these functions when activated or have ModePlugin manage it
-// or have mode plugin call these funcs as currently happens? My vote is to have a function that registers them with
-// the Mode as a plugin then ModePlugin doesn't have to know anything, just manage register and deregister the Mode with the Dispatcher
-// on mode change. What do you think?
-/**
- *
- * arrTransitions: Array[{
-     name:String,
-     left:function(elementId:String),
-     right:function(elementId:String),
-     up:function(elementId:String),
-     down:function(elementId:String)
-   }]
- */
 var Mode = function (modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange, fnCleanUp, fnShouldShowslide, arrTransitions) {
 
   var self = this; //safekeeping
