@@ -2,8 +2,8 @@
 * @Author: Roberts Karl <Karl_Roberts>
 * @Date:   2016-Aug-02
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   robertk
+* @Last modified time: 2016-Aug-12
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,42 @@ var Plugin = require('../../plugin.js');
 var Mode = require('./mode.js');
 var modePlugin = new Plugin("ModePlugin");
 import builtinModeList from './builtins';
+import utils from '../../utils.js'
+import constants from '../../konstantes.js'
+
+
+function  cleanUpOldStyle() {
+  var modeCss = document.getElementById(constants.STYLE_FOR_MODE_ID)
+  modeCss.innerHTML = "";
+}
+function  addModeStyleElement() {
+  // var theHeadHTML = document.head.innerHTML
+  // var newHTML = theHeadHTML + ' <style id="'+ constants.STYLE_FOR_MODE_ID +'" type="text/css">'
+  // document.head.innerHTML = newHTML;
+  var h = document.getElementsByTagName('head').item(0);
+  var s = document.createElement("style");
+  s.type = "text/css";
+  s.id = constants.STYLE_FOR_MODE_ID;
+  //s.appendChild(document.createTextNode("a{font-size:100px;}");
+  h.appendChild(s);
+  return constants.STYLE_FOR_MODE_ID;
+}
+function  cleanUpBodyClass(modename) {
+  if(!!modename) _bodyClass(modename, false);
+}
+function  addBodyClass(modename) {
+  if(!!modename) _bodyClass(modename, true);
+}
+
+function _bodyClass(modename, addit){
+  utils.classed(document.body, modename, addit)
+}
 
 
 modePlugin.modeNames = [];
 modePlugin.modes = {};
 modePlugin.currentMode = 0;
+modePlugin.modeCssId = addModeStyleElement(); // side effect on HEAD
 
 modePlugin.addMode = function(mode) {
     console.debug("Adding mode: " + mode);
@@ -97,20 +128,28 @@ modePlugin.setMode = function(modeName, state) {
         window.suited.removePlugin(oldMode.name)
     }
 
+
+
     var newMode = this.modes[modeName];
     this.currentMode = this.modeNames.indexOf(modeName);
 
     window.suited.addPlugins([newMode]);
     state.setMode(newMode, newMode.shouldShowSlide);
 
+
+
     //fire mode change lifecycle event
     window.suited.fireEvent("BeforeModeChange", state, {"oldMode": oldMode, "newMode": newMode});
+    cleanUpOldStyle();
+    cleanUpBodyClass(oldMode.name);
 
     // refire lifecycle events to get next mode to behave as if it was already seleted and moved to this point.
     window.suited.fireEvent("BeforeSlideChange", state);
     window.suited.fireEvent("AfterSlideChange", state);
 
     //fire mode change lifecycle event
+    addBodyClass(newMode.name)
+    window.suited.fireEvent("ModeCSSFree", state, {"styleId": constants.STYLE_FOR_MODE_ID});
     window.suited.fireEvent("AfterModeChange", state, {"oldMode": oldMode, "newMode": newMode});
 
     return newMode;
@@ -202,5 +241,9 @@ modePlugin.addCallback("ESC", function(state, evData) {
 builtinModeList.forEach(function(v){
     modePlugin.addMode(v);
 })
+
+
+
+
 
 module.exports = modePlugin;
