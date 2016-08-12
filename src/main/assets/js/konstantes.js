@@ -2,8 +2,8 @@
 * @Author: Roberts Karl <Karl_Roberts>
 * @Date:   2016-Aug-02
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   robertk
+* @Last modified time: 2016-Aug-12
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,6 +102,7 @@ var k = {
         "scroll": "scroll",
         "jump": "jump",
     },
+    STYLE_FOR_MODE_ID: "mode-style", //e element added to head by ModePlugin
     ZOOM_DURATION: 800,
     SCROLL_DURATION: 400,
     SCROLL_DELAY_DURATION: 15
