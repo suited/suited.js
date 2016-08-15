@@ -26,32 +26,70 @@
 <html lang="en">
 
 <head>
-  <title>Suited Demo of Markdown rendering. </title>
-  <!--  <link rel="stylesheet" type="text/css" href="css/suited-dark.css">-->
-  <link rel="stylesheet" type="text/css" href="css/suited-light.css">
+<title>Suited Demo of Markdown rendering. </title>
+<!--  <link rel="stylesheet" type="text/css" href="css/suited-dark.css">-->
+<link rel="stylesheet" type="text/css" href="css/suited-light.css">
+<style>
+section[data-figure] {
+  border-width: thin;
+  border-style: solid;
+  border-color: hsla(134, 1%, 42%, 0.2);
+  margin-left: 20px;
+  margin-bottom: 20px;
+  width: 85%;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+section[data-figure] img {
+  max-width: 100%;
+}
+
+.slide-box {
+  background: #fff;
+}
+
+table {
+  border-style: solid;
+  border-width: thin;
+}
+
+table th {
+  border-left: solid;
+  border-width: thin;
+}
+
+table tr td {
+  border-style: solid;
+  border-width: thin;
+}
+
+
+</style>
 </head>
 
 <body>
 
-  <h1 align="center">Suited</h1>
-  <p align="center">
-      <small><small>For the architecture and API docs see <a href="./doc_site" target="docs">here</a></small></small>
-  </p>
-  <p align="center">
-      <small><small>For the <a href="./index.html" target="#_self">main demo see here</a></small></small>
-  </p>
-  <p align="center">
-      <small><small>For the <a href="https://github.com/suited/suited.js" target="#_self">usage see this README</a></small></small>
-  </p>
+<h1 align="center">Suited</h1>
+<p align="center">
+<small><small>For the architecture and API docs see <a href="./doc_site" target="docs">here</a></small></small>
+</p>
+<p align="center">
+<small><small>For the <a href="./index.html" target="#_self">main demo see here</a></small></small>
+</p>
+<p align="center">
+<small><small>For the <a href="https://github.com/suited/suited.js" target="#_self">usage see this README</a></small></small>
+</p>
 
-  <p>
-    Suited's markdown plugin is based on <a href="https://markdown-it.github.io/">markdown-it</a> and so can use other markdown-it plugins for special mark-up.
+<p>
+Suited's markdown plugin is based on <a href="https://markdown-it.github.io/">markdown-it</a> and so can use other markdown-it plugins for special mark-up.
 
-    Suited's Markdown plugin add special markdown syntax to allow you to easily add fif=gures and slides using markdown.
-  </p>
+Suited's Markdown plugin add special markdown syntax to allow you to easily add fif=gures and slides using markdown.
+</p>
 
 
-  <div>
+<div>
   # Special markdown syntax for figures and slides
 
   <p>
@@ -68,115 +106,115 @@
   NB that if the &#126;&#126;&#58; and &#58;&#126;&#126; is on one line it is an inline-figure.<br/><br/>
   NB for block level figures put &#126;&#126;&#58; on a line by itself and follow with &#58;&#126;&#126; on a line by itself.</br>
 
-  </div>
+</div>
 
-  <div data-markdown>
+<div data-markdown>
 
   # Check out figures
-   I kind of ~~:want a **bold figure** here:~~ so lets gie it a go
+  I kind of ~~:want a **bold figure** here:~~ so lets gie it a go
 
 
-    ~~:
-      * l1
-      * l2
-        - l377777
-      * l4
-    :~~
+  ~~:
+  * l1
+  * l2
+  - l377777
+  * l4
+  :~~
 
-    </div>
+</div>
 
-    <div data-markdown>
-    # nested inline figures
-    ~~:
-      * fig1
-      * fig2
-        - ~~:fig2a nested:~~
-      * l4
-    :~~
-    </div>
+<div data-markdown>
+  # nested inline figures
+  ~~:
+  * fig1
+  * fig2
+  - ~~:fig2a nested:~~
+  * l4
+  :~~
+</div>
 
-    <div data-markdown>
-    # nested block figures
-    ~~:
-      * fig1
-      * fig2
+<div data-markdown>
+  # nested block figures
+  ~~:
+  * fig1
+  * fig2
 
-        ~~:
-          - fig2a nested1
-          - fig2a nested2
-        :~~
+  ~~:
+  - fig2a nested1
+  - fig2a nested2
+  :~~
 
-      * l4
-    :~~
-    </div>
+  * l4
+  :~~
+</div>
 
 
-    <div data-markdown>
+<div data-markdown>
   # Check out  slides
-   I kind of ~~*want a **inline** slide here*~~ so lets give it a go
-    </div>
+  I kind of ~~*want a **inline** slide here*~~ so lets give it a go
+</div>
 
-    <div data-markdown>
-    ~~*
-      * l1 in slide block
-      * l2
-        - l377777
-      * l4
-    *~~
+<div data-markdown>
+  ~~*
+  * l1 in slide block
+  * l2
+  - l377777
+  * l4
+  *~~
 
-    </div>
+</div>
 
-    <div data-markdown>
-    # Slide wide nested inline figure
-    ~~*
-      * slide1
-      * slide2
-        - ~~:fig2a nested:~~
-      * slide3
-    *~~
-    </div>
+<div data-markdown>
+  # Slide wide nested inline figure
+  ~~*
+  * slide1
+  * slide2
+  - ~~:fig2a nested:~~
+  * slide3
+  *~~
+</div>
 
-    <div data-markdown>
-    # Slide wide nested inline slide
-    ~~*
-      * slide1
-      * slide2
-        - ~~*slide2a nested*~~
-      * slide3
-    *~~
-    </div>
+<div data-markdown>
+  # Slide wide nested inline slide
+  ~~*
+  * slide1
+  * slide2
+  - ~~*slide2a nested*~~
+  * slide3
+  *~~
+</div>
 
-    <div data-markdown>
-    # block slide with nested block figures
-    ~~*
-      * slide1
-      * slide2
+<div data-markdown>
+  # block slide with nested block figures
+  ~~*
+  * slide1
+  * slide2
 
-        ~~:
-          - block fig2a nested1
-          - block fig2a nested2
-        :~~
+  ~~:
+  - block fig2a nested1
+  - block fig2a nested2
+  :~~
 
-      * slide3
-    *~~
-    </div>
+  * slide3
+  *~~
+</div>
 
-    <div data-markdown>
-    # block slide with nested block slide
-    ~~*
-      * slide1
-      * slide2
+<div data-markdown>
+  # block slide with nested block slide
+  ~~*
+  * slide1
+  * slide2
 
-        ~~*
-          - block slide2a nested1
-          - block slide2a nested2
-        *~~
+  ~~*
+  - block slide2a nested1
+  - block slide2a nested2
+  *~~
 
-      * slide3
-    *~~
-    </div>
+  * slide3
+  *~~
+</div>
 
-  <p data-markdown>
+<p data-markdown>
 **Boldmarkdown** is cool
 
 lists are cool
@@ -201,39 +239,39 @@ Right aligned columns
 | ext    | extension to be used for dest files. |
 
 
-  </p>
+</p>
 
 <div data-markdown>
 
----
-__Advertisement :)__
+  ---
+  __Advertisement :)__
 
-- __[pica](https://nodeca.github.io/pica/demo/)__ - high quality and fast image
+  - __[pica](https://nodeca.github.io/pica/demo/)__ - high quality and fast image
   resize in browser.
-- __[babelfish](https://github.com/nodeca/babelfish/)__ - developer friendly
+  - __[babelfish](https://github.com/nodeca/babelfish/)__ - developer friendly
   i18n with plurals support and easy syntax.
 
-You will like those projects!
+  You will like those projects!
 
----
+  ---
 
-# h1 Heading 8-)
-## h2 Heading
-### h3 Heading
-#### h4 Heading
-##### h5 Heading
-###### h6 Heading
+  # h1 Heading 8-)
+  ## h2 Heading
+  ### h3 Heading
+  #### h4 Heading
+  ##### h5 Heading
+  ###### h6 Heading
 
 
-## Horizontal Rules
+  ## Horizontal Rules
 
-___
+  ___
 
----
+  ---
 
-***
+  ***
 
-<!--
+  <!--
 ## Typographic replacements
 
 Enable typographer option to see result.
@@ -247,123 +285,123 @@ test.. test... test..... test?..... test!....
 "Smartypants, double quotes" and 'single quotes'
 -->
 
-## Emphasis
+  ## Emphasis
 
-**This is bold text**
+  **This is bold text**
 
-__This is bold text__
+  __This is bold text__
 
-*This is italic text*
+  *This is italic text*
 
-_This is italic text_
+  _This is italic text_
 
-~~Strikethrough~~
-
-
-## Blockquotes
+  ~~Strikethrough~~
 
 
-> Blockquotes can also be nested...
->> ...by using additional greater-than signs right next to each other...
-> > > ...or with spaces between arrows.
+  ## Blockquotes
 
 
-## Lists
+  > Blockquotes can also be nested...
+  >> ...by using additional greater-than signs right next to each other...
+  > > > ...or with spaces between arrows.
 
-Unordered
 
-+ Create a list by starting a line with `+`, `-`, or `*`
-+ Sub-lists are made by indenting 2 spaces:
+  ## Lists
+
+  Unordered
+
+  + Create a list by starting a line with `+`, `-`, or `*`
+  + Sub-lists are made by indenting 2 spaces:
   - Marker character change forces new list start:
-    * Ac tristique libero volutpat at
-    + Facilisis in pretium nisl aliquet
-    - Nulla volutpat aliquam velit
-+ Very easy!
+  * Ac tristique libero volutpat at
+  + Facilisis in pretium nisl aliquet
+  - Nulla volutpat aliquam velit
+  + Very easy!
 
-Ordered
+  Ordered
 
-1. Lorem ipsum dolor sit amet
-2. Consectetur adipiscing elit
-3. Integer molestie lorem at massa
-
-
-1. You can use sequential numbers...
-1. ...or keep all the numbers as `1.`
-
-Start numbering with offset:
-
-57. foo
-1. bar
+  1. Lorem ipsum dolor sit amet
+  2. Consectetur adipiscing elit
+  3. Integer molestie lorem at massa
 
 
-## Code
+  1. You can use sequential numbers...
+  1. ...or keep all the numbers as `1.`
 
-Inline `code`
+  Start numbering with offset:
 
-Indented code
-
-    // Some comments
-    line 1 of code
-    line 2 of code
-    line 3 of code
+  57. foo
+  1. bar
 
 
-Block code "fences"
+  ## Code
 
-```
-Sample text here...
-```
+  Inline `code`
 
-Syntax highlighting
+  Indented code
 
-``` js
-var foo = function (bar) {
+  // Some comments
+  line 1 of code
+  line 2 of code
+  line 3 of code
+
+
+  Block code "fences"
+
+  ```
+  Sample text here...
+  ```
+
+  Syntax highlighting
+
+  ``` js
+  var foo = function (bar) {
   return bar++;
-};
+  };
 
-console.log(foo(5));
-```
+  console.log(foo(5));
+  ```
 
-## Tables
+  ## Tables
 
-| Option | Description |
-| ------ | ----------- |
-| data   | path to data files to supply the data that will be passed into templates. |
-| engine | engine to be used for processing templates. Handlebars is the default. |
-| ext    | extension to be used for dest files. |
+  | Option | Description |
+  | ------ | ----------- |
+  | data   | path to data files to supply the data that will be passed into templates. |
+  | engine | engine to be used for processing templates. Handlebars is the default. |
+  | ext    | extension to be used for dest files. |
 
-Right aligned columns
+  Right aligned columns
 
-| Option | Description |
-| ------:| -----------:|
-| data   | path to data files to supply the data that will be passed into templates. |
-| engine | engine to be used for processing templates. Handlebars is the default. |
-| ext    | extension to be used for dest files. |
-
-
-## Links
-
-[link text](http://dev.nodeca.com)
-
-[link with title](http://nodeca.github.io/pica/demo/ "title text!")
-
-Autoconverted link https://github.com/nodeca/pica (enable linkify to see)
+  | Option | Description |
+  | ------:| -----------:|
+  | data   | path to data files to supply the data that will be passed into templates. |
+  | engine | engine to be used for processing templates. Handlebars is the default. |
+  | ext    | extension to be used for dest files. |
 
 
-## Images
+  ## Links
 
-![Minion](https://octodex.github.com/images/minion.png)
-![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
+  [link text](http://dev.nodeca.com)
 
-Like links, Images also have a footnote style syntax
+  [link with title](http://nodeca.github.io/pica/demo/ "title text!")
 
-![Alt text][id]
+  Autoconverted link https://github.com/nodeca/pica (enable linkify to see)
 
-With a reference later in the document defining the URL location:
 
-[id]: https://octodex.github.com/images/dojocat.jpg  "The Dojocat"
+  ## Images
 
-<!-- TODO uncomment when the markdown it plugins are added to the demo...
+  ![Minion](https://octodex.github.com/images/minion.png)
+  ![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
+
+  Like links, Images also have a footnote style syntax
+
+  ![Alt text][id]
+
+  With a reference later in the document defining the URL location:
+
+  [id]: https://octodex.github.com/images/dojocat.jpg  "The Dojocat"
+
+  <!-- TODO uncomment when the markdown it plugins are added to the demo...
 
 ## Plugins
 
@@ -459,14 +497,14 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 
 
 
-  <div>
+<div>
   just finnish
-  </div>
+</div>
 
 <!-- below is not needed for demo -->
-  <a href="https://github.com/suited">
-    <a href="https://github.com/suited"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
-  </a>
+<a href="https://github.com/suited">
+  <a href="https://github.com/suited"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+</a>
 
 
 </body>
