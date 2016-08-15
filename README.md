@@ -23,6 +23,7 @@
 status: alpha.
 
 [see the demo](https://suited.github.io/suited.js)
+
 [see the API and howto docs](https://suited.github.io/suited.js/doc_site)
 
 ## Suited
