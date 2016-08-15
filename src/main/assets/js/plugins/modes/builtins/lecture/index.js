@@ -3,7 +3,7 @@
 * @Date:   2016-Aug-02
 * @Project: suited
 * @Last modified by:   robertk
-* @Last modified time: 2016-Aug-12
+* @Last modified time: 2016-Aug-15
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -185,8 +185,9 @@ mode.addCallback("KEY_PRESSED_89", function(state, event) {
 });
 
 mode.addCallback("ModeCSSFree", function(state, eventdata) {
-  var modeCss = document.getElementById(eventdata.styleId)
-  modeCss.innerHTML="h1, h2, h3, h4, h5 { color: red; }"
+  /**  Uncomment below for an example of mode specific style **/
+  // var modeCss = document.getElementById(eventdata.styleId)
+  // modeCss.innerHTML="h1, h2, h3, h4, h5 { color: red; }"
 });
 
 
