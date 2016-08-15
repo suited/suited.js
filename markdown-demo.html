@@ -2,8 +2,8 @@
 @Author: Roberts Karl <Karl_Roberts>
 @Date:   2016-Aug-02
 @Project: suited
-@Last modified by:   Karl_Roberts
-@Last modified time: 2016-Aug-03
+@Last modified by:   robertk
+@Last modified time: 2016-Aug-15
 @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,6 @@
 
 <head>
   <title>Suited Demo of Markdown rendering. </title>
-  <link rel="stylesheet" type="text/css" href="css/reset-83e2b424d8.css">
   <!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-3e0bb6a16e.css">-->
   <link rel="stylesheet" type="text/css" href="css/suited-light-83c6db50e6.css">
 </head>
@@ -44,8 +43,143 @@
   <p align="center">
       <small><small>For the <a href="https://github.com/suited/suited.js" target="#_self">usage see this README</a></small></small>
   </p>
+
+  <p>
+    Suited's markdown plugin is based on <a href="https://markdown-it.github.io/">markdown-it</a> and so can use other markdown-it plugins for special mark-up.
+
+    Suited's Markdown plugin add special markdown syntax to allow you to easily add fif=gures and slides using markdown.
+  </p>
+
+
+  <div>
+  # Special markdown syntax for figures and slides
+
+  <p>
+  For figures surround with your markdown like so <br/>
+  <code>&#126;&#126;&#58;  **your bold stuff** &#58;&#126;&#126;</code>
+  </p>
+
+  <p>
+  For slides surround your markdown like so <br/>
+  <code>&#126;&#126;&#42;  **your bold stuff** &#42;&#126;&#126;</code>
+  </p>
+
+
+  NB that if the &#126;&#126;&#58; and &#58;&#126;&#126; is on one line it is an inline-figure.<br/><br/>
+  NB for block level figures put &#126;&#126;&#58; on a line by itself and follow with &#58;&#126;&#126; on a line by itself.</br>
+
+  </div>
+
+  <div data-markdown>
+
+  # Check out figures
+   I kind of ~~:want a **bold figure** here:~~ so lets gie it a go
+
+
+    ~~:
+      * l1
+      * l2
+        - l377777
+      * l4
+    :~~
+
+    </div>
+
+    <div data-markdown>
+    # nested inline figures
+    ~~:
+      * fig1
+      * fig2
+        - ~~:fig2a nested:~~
+      * l4
+    :~~
+    </div>
+
+    <div data-markdown>
+    # nested block figures
+    ~~:
+      * fig1
+      * fig2
+
+        ~~:
+          - fig2a nested1
+          - fig2a nested2
+        :~~
+
+      * l4
+    :~~
+    </div>
+
+
+    <div data-markdown>
+  # Check out  slides
+   I kind of ~~*want a **inline** slide here*~~ so lets give it a go
+    </div>
+
+    <div data-markdown>
+    ~~*
+      * l1 in slide block
+      * l2
+        - l377777
+      * l4
+    *~~
+
+    </div>
+
+    <div data-markdown>
+    # Slide wide nested inline figure
+    ~~*
+      * slide1
+      * slide2
+        - ~~:fig2a nested:~~
+      * slide3
+    *~~
+    </div>
+
+    <div data-markdown>
+    # Slide wide nested inline slide
+    ~~*
+      * slide1
+      * slide2
+        - ~~*slide2a nested*~~
+      * slide3
+    *~~
+    </div>
+
+    <div data-markdown>
+    # block slide with nested block figures
+    ~~*
+      * slide1
+      * slide2
+
+        ~~:
+          - block fig2a nested1
+          - block fig2a nested2
+        :~~
+
+      * slide3
+    *~~
+    </div>
+
+    <div data-markdown>
+    # block slide with nested block slide
+    ~~*
+      * slide1
+      * slide2
+
+        ~~*
+          - block slide2a nested1
+          - block slide2a nested2
+        *~~
+
+      * slide3
+    *~~
+    </div>
+
   <p data-markdown>
 **Boldmarkdown** is cool
+
+lists are cool
 
 * ggg
 * hhh
@@ -99,7 +233,7 @@ ___
 
 ***
 
-
+<!--
 ## Typographic replacements
 
 Enable typographer option to see result.
@@ -111,7 +245,7 @@ test.. test... test..... test?..... test!....
 !!!!!! ???? ,,  -- ---
 
 "Smartypants, double quotes" and 'single quotes'
-
+-->
 
 ## Emphasis
 
@@ -229,6 +363,7 @@ With a reference later in the document defining the URL location:
 
 [id]: https://octodex.github.com/images/dojocat.jpg  "The Dojocat"
 
+<!-- TODO uncomment when the markdown it plugins are added to the demo...
 
 ## Plugins
 
@@ -317,123 +452,13 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 *here be dragons*
 :::
 
+-->
 
 </div>
 
-<div data-markdown>
-
-# Special markdown syntax for figures and slides
-
-for figures surround with &#126;&#126;&#58;  your stuff &#58;&#126;&#126;
-
-for slides surround with &#126;&#126;&#42;  your stuff &#42;&#126;&#126;
-
-note that if the &#126;&#126;&#58; and &#58;&#126;&#126; is on one line it is an inline-figure.
-note for block level figures put &#126;&#126;&#58; on a line by itself and follow with &#58;&#126;&#126; on a line by itself.
-
-# Check out figures
- I kind of ~~:want a **figure** here:~~ so lets givre it a go
 
 
-  ~~:
-    * l1
-    * l2
-      - l377777
-    * l4
-  :~~
 
-  </div>
-
-  <div data-markdown>
-  # nested inline figures
-  ~~:
-    * fig1
-    * fig2
-      - ~~:fig2a nested:~~
-    * l4
-  :~~
-  </div>
-
-  <div data-markdown>
-  # nested block figures
-  ~~:
-    * fig1
-    * fig2
-
-      ~~:
-        - fig2a nested1
-        - fig2a nested2
-      :~~
-
-    * l4
-  :~~
-  </div>
-
-
-  <div data-markdown>
-# Check out  slides
- I kind of ~~*want a **inline** slide here*~~ so lets give it a go
-  </div>
-
-  <div data-markdown>
-  ~~*
-    * l1 in slide block
-    * l2
-      - l377777
-    * l4
-  *~~
-
-  </div>
-
-  <div data-markdown>
-  # Slide wide nested inline figure
-  ~~*
-    * slide1
-    * slide2
-      - ~~:fig2a nested:~~
-    * slide3
-  *~~
-  </div>
-
-  <div data-markdown>
-  # Slide wide nested inline slide
-  ~~*
-    * slide1
-    * slide2
-      - ~~*slide2a nested*~~
-    * slide3
-  *~~
-  </div>
-
-  <div data-markdown>
-  # block slide with nested block figures
-  ~~*
-    * slide1
-    * slide2
-
-      ~~:
-        - block fig2a nested1
-        - block fig2a nested2
-      :~~
-
-    * slide3
-  *~~
-  </div>
-
-  <div data-markdown>
-  # block slide with nested block slide
-  ~~*
-    * slide1
-    * slide2
-
-      ~~*
-        - block slide2a nested1
-        - block slide2a nested2
-      *~~
-
-    * slide3
-  *~~
-  </div>
   <div>
   just finnish
   </div>
@@ -446,6 +471,7 @@ note for block level figures put &#126;&#126;&#58; on a line by itself and follo
 
 </body>
 
+<script src="https://twemoji.maxcdn.com/twemoji.min.js"></script>
 <script type="text/javascript" src="js/suited-970e605ee9fd84bb670b.js"></script>
 
 </html>
