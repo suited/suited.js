@@ -26,119 +26,157 @@
 <html lang="en">
 
 <head>
-    <title>Suited Demo</title>
-    <!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-3e0bb6a16e.css">-->
-    <link rel="stylesheet" type="text/css" href="css/suited-light-83c6db50e6.css">
+<title>Suited Demo</title>
+<!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-3e0bb6a16e.css">-->
+<link rel="stylesheet" type="text/css" href="css/suited-light-83c6db50e6.css">
+<style>
+section[data-figure] {
+  border-width: thin;
+  border-style: solid;
+  border-color: hsla(134, 1%, 42%, 0.2);
+  margin-left: 20px;
+  margin-bottom: 20px;
+  width: 85%;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+section[data-figure] img {
+  max-width: 100%;
+}
+
+.slide-box {
+  background: #fff;
+}
+
+table {
+  border-style: solid;
+  border-width: thin;
+}
+
+table th {
+  border-left: solid;
+  border-width: thin;
+}
+
+table tr td {
+  border-style: solid;
+  border-width: thin;
+}
+
+
+</style>
 </head>
 
 <body>
 
-    <img src="https://travis-ci.org/suited/suited.js.svg?branch=master"></img>
-    <h1 align="center">Suited</h1>
-    <p align="center">
-        <small><small>For the architecture and API docs see <a href="./doc_site" target="docs">here</a></small></small>
-    </p>
-    <p align="center">
-        <small><small>For the <a href="./markdown-demo.html" target="#_self">markdown demo see here</a></small></small>
-    </p>
-    <p align="center">
-        <small><small>For the <a href="https://github.com/suited/suited.js" target="#_self">usage see this README</a></small></small>
-    </p>
+<img src="https://travis-ci.org/suited/suited.js.svg?branch=master"></img>
+<h1 align="center">Suited</h1>
+<p align="center">
+<small><small>For the architecture and API docs see <a href="./doc_site" target="docs">here</a></small></small>
+</p>
+<p align="center">
+<small><small>For the <a href="./markdown-demo.html" target="#_self">markdown demo see here</a></small></small>
+</p>
+<p align="center">
+<small><small>For the <a href="https://github.com/suited/suited.js" target="#_self">usage see this README</a></small></small>
+</p>
 
-    <section data-slide>
-        <a href="https://github.com/suited">
-            <a href="https://github.com/suited"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
-                    alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
-        </a>
-        <div class="title">
-            <h2>Introducing</h2>
-            <h1>Suited</h1>
-        </div>
-    </section>
+<section data-slide>
+  <a href="https://github.com/suited">
+    <a href="https://github.com/suited"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+      alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+  </a>
+  <div class="title">
+    <h2>Introducing</h2>
+    <h1>Suited</h1>
+  </div>
+</section>
 
-    <section data-slide>
-        <blockquote>Turn any document into a stylish presentation</blockquote>
-    </section>
+<section data-slide>
+  <blockquote>Turn any document into a stylish presentation</blockquote>
+</section>
 
-    <p>
-        Suited is a JavaScript library which turns documents into presentations! No longer do you have to separate the detailed information from the presentation. The article becomes the presentation.
-    </p>
-    <section data-figure>
-        <blockquote>The article is a presentation and the presentation is the article!</blockquote>
-    </section>
-    <p>
-        Lecturers can use slides to teach the class and distribute the slides and the details at the same time in one document. Business presentations can now be detailed documents, which can be published and colleagues can see the slides at the click of a button!
-    </p>
-    <p>
-        Traditional presentations have slides with more details embedded as speaker notes. Suited takes the opposite approach - a full document with embedded presentation slides. The slides can either be existing figures, graphs or quotes in the document, or
-        hidden slides only visible in presentation mode.
-    </p>
+<p>
+Suited is a JavaScript library which turns documents into presentations! No longer do you have to separate the detailed information from the presentation. The article becomes the presentation.
+</p>
+<section data-figure>
+  <blockquote>The article is a presentation and the presentation is the article!</blockquote>
+</section>
+<p>
+Lecturers can use slides to teach the class and distribute the slides and the details at the same time in one document. Business presentations can now be detailed documents, which can be published and colleagues can see the slides at the click of a button!
+</p>
+<p>
+Traditional presentations have slides with more details embedded as speaker notes. Suited takes the opposite approach - a full document with embedded presentation slides. The slides can either be existing figures, graphs or quotes in the document, or
+hidden slides only visible in presentation mode.
+</p>
 
-    <section data-slide>
-        <h4>Example</h4>
-        <blockquote>Lecturers can distribute slides and notes in one document</blockquote>
-    </section>
+<section data-slide>
+  <h4>Example</h4>
+  <blockquote>Lecturers can distribute slides and notes in one document</blockquote>
+</section>
 
-    <section data-slide>
-        <h4>Example</h4>
-        <blockquote>Colleagues can read the document and reuse the presentation</blockquote>
-    </section>
+<section data-slide>
+  <h4>Example</h4>
+  <blockquote>Colleagues can read the document and reuse the presentation</blockquote>
+</section>
 
-    <h3>Modes</h3>
-    <p>
-        Modes display the document in different ways.<br/>
-        and manage transitions between navigatable sections.
-    </p>
-    <p>
-        Suited has four built in modes:
-    </p>
-    <section data-figure>
-        <h4>Built-in modes</h4>
-        <br/>
-        <ol>
-            <li>doc - <small>Normal reading mode, scrolls to next figure section on navigation</small></li>
-            <li>deck - <small>Slides for presenting the information for a talk</small></li>
-            <li>walkthrough - <small>Highlight sections on navigation</small></li>
-            <li>lecture - <small>Scroll to sections on navigation and allow zoom of section on click or enter</small></li>
-        </ol>
-    </section>
+<h3>Modes</h3>
+<p>
+Modes display the document in different ways.<br/>
+and manage transitions between navigatable sections.
+</p>
+<p>
+Suited has four built in modes:
+</p>
+<section data-figure>
+  <h4>Built-in modes</h4>
+  <br/>
+  <ol>
+    <li>doc - <small>Normal reading mode, scrolls to next figure section on navigation</small></li>
+    <li>deck - <small>Slides for presenting the information for a talk</small></li>
+    <li>walkthrough - <small>Highlight sections on navigation</small></li>
+    <li>lecture - <small>Scroll to sections on navigation and allow zoom of section on click or enter</small></li>
+  </ol>
+</section>
 
-    <section data-figure>
-        <blockquote> Give it a go! Press 's' now to switch modes</blockquote>
-        <blockquote> Use the arrow keys to navigate around the document</blockquote>
-    </section>
+<section data-figure>
+  <blockquote> Give it a go! Press 's' now to switch modes</blockquote>
+  <blockquote> Use the arrow keys to navigate around the document</blockquote>
+</section>
 
-    <section data-slide>
-        <blockquote> Press 'Esc' to jump directly to document mode</blockquote>
-    </section>
+<section data-slide>
+  <blockquote> Press 'Esc' to jump directly to document mode</blockquote>
+</section>
 
-    <section data-slide>
-        <blockquote> Press '1' to '9' to jump directly mode 1 to 9</blockquote>
-    </section>
+<section data-slide>
+  <blockquote> Press '1' to '9' to jump directly mode 1 to 9</blockquote>
+</section>
 
 
-    <p>
-        There is no <em>need</em> to start with the presentation in mind, any document can be transformed into a presentation by adding slides, or marking sections that should be displayed in slide mode.
-    </p>
+<p>
+There is no <em>need</em> to start with the presentation in mind, any document can be transformed into a presentation by adding slides, or marking sections that should be displayed in slide mode.
+</p>
 
-    <h2>Figures, graphs, quotes and things</h2>
-    <p>
-        Articles often have sections that are perfect for displaying as a slide. These can be images, graphs, tables, code sections or just quotes or text etc. The following image illustrates an image in the document and on a presentation slide.
-    </p>
+<h2>Figures, graphs, quotes and things</h2>
+<p>
+Articles often have sections that are perfect for displaying as a slide. These can be images, graphs, tables, code sections or just quotes or text etc. The following image illustrates an image in the document and on a presentation slide.
+</p>
 
-    <section data-figure transition="jump">
-        <img src="images/jackOfSpades-208a622d79.png" width="60%" />
-    </section>
+<section data-figure transition="jump">
+  <img src="images/jackOfSpades-208a622d79.png" width="60%" />
+</section>
     </div>
     <div>Suited logo</div>
 
     slide mode. Slides can be added in one of two ways:
     </p>
     <section data-figure>
-        <ol>
-            <li>Put an existing portion of the document on a slide</li>
-            <li>Embed a slide so that it is only visible in deck mode</li>
-        </ol>
+<ol>
+  <li>Put an existing portion of the document on a slide</li>
+  <li>Embed a slide so that it is only visible in deck mode</li>
+</ol>
     </section>
 
     <h2>Put an existing portion of the document on a slide</h2>
@@ -147,17 +185,17 @@
     </p>
 
     <div style="border: 2px solid rgba(0, 0, 0, 0.27);">
-        <section data-figure>
-            <h4>An image</h4>
-            <div style="width: 100%; text-align: center;">
-                <img src="images/jackOfSpades-208a622d79.png" width="60%" />
-            </div>
-        </section>
+<section data-figure>
+  <h4>An image</h4>
+  <div style="width: 100%; text-align: center;">
+    <img src="images/jackOfSpades-208a622d79.png" width="60%" />
+  </div>
+</section>
     </div>
 
     <section data-figure>
-        <p> A code snippet </p>
-        <pre>
+<p> A code snippet </p>
+<pre>
             /**
              * Recursively calculate X to the power Y
              */
@@ -169,7 +207,7 @@
                     return x * power(x, y - 1);
                 }
             }
-        </pre>
+</pre>
     </section>
 
     <p>
@@ -184,93 +222,93 @@
     <p>
         The slide becomes visible when the document is placed in deck mode. There is two ways to do this.
         <ul>
-            <li>press SHIFT+S (to make a captial S)</li>
-            <ul>
-                <li> This cycles through all the modes</li>
-            </ul>
-            <li>Change mode in URL to be mode=deck</li>
+<li>press SHIFT+S (to make a captial S)</li>
+<ul>
+  <li> This cycles through all the modes</li>
+</ul>
+<li>Change mode in URL to be mode=deck</li>
         </ul>
 
     </p>
     <section data-slide>
-        <h3>Feature</h3>
-        <h4>Embedded slides</h4>
-        <ul>
-            <li>This</li>
-            <li>slide is only visible</li>
-            <li>in</li>
-            <li>deck mode</li>
-        </ul>
+<h3>Feature</h3>
+<h4>Embedded slides</h4>
+<ul>
+  <li>This</li>
+  <li>slide is only visible</li>
+  <li>in</li>
+  <li>deck mode</li>
+</ul>
     </section>
 
     <section data-figure>
-        <h4> Code for embedded slide </h4>
-        <pre>
+<h4> Code for embedded slide </h4>
+<pre>
             <code>
                 function Test1234()
             </code>
-        </pre>
+</pre>
     </section>
 
 
     <section data-figure>
-        <h1>First H1</h1>
-        <h1>Second H1</h1>
-        <h2>This is H2</h2>
-        <h3>This is H3</h3>
-        <h4>This is H4</h4>
-        <h5>This is H5</h5>
-        <h6>This is H6</h6>
+<h1>First H1</h1>
+<h1>Second H1</h1>
+<h2>This is H2</h2>
+<h3>This is H3</h3>
+<h4>This is H4</h4>
+<h5>This is H5</h5>
+<h6>This is H6</h6>
     </section>
 
 
     <section data-slide>
-        <h4>First slide A</h4>
-        <pre>
+<h4>First slide A</h4>
+<pre>
 
 def someFunc(a: A, b: B, f: (A,B) => C) = {
     f(a, b)
 }
 
-        </pre>
+</pre>
     </section>
 
     Morbi vehicula quis tortor cursus aliquam. Donec fringilla neque ut posuere imperdiet. Vestibulum auctor sapien sed hendrerit eleifend. Phasellus lorem nulla, mattis in faucibus sed, porttitor vel turpis. Nunc odio lectus, ultrices id feugiat ac, porta
     dictum lacus. Vestibulum turpis massa, luctus convallis facilisis quis, convallis eget mauris. Nulla id dui sem. Quisque feugiat arcu non odio fermentum, vitae elementum magna consequat.
 
     <section data-figure>
-        <h4>Second Figure</h4>
-        <pre>
+<h4>Second Figure</h4>
+<pre>
 //this should appear in doc and deck modes
 def someFunc(a: A, b: B, f: (A,B) => C) = {
     f(a, b)
 }
-            </pre>
+</pre>
     </section>
 
 
 
     <section data-slide>
-        <h4>Fist slide B</h4>
-        <img src="images/jackOfSpades-208a622d79.png" width="60%" />
+<h4>Fist slide B</h4>
+<img src="images/jackOfSpades-208a622d79.png" width="60%" />
     </section>
 
     Morbi vehicula quis tortor cursus aliquam. Donec fringilla neque ut posuere imperdiet. Vestibulum auctor sapien sed hendrerit eleifend. Phasellus lorem nulla, mattis in faucibus sed, porttitor vel turpis. Nunc odio lectus, ultrices id feugiat ac, porta
     dictum lacus. Vestibulum turpis massa, luctus convallis facilisis quis, convallis eget mauris. Nulla id dui sem. Quisque feugiat arcu non odio fermentum, vitae elementum magna consequat.
 
     <section data-figure>
-        <h4>3rd another Figure</h4> nothing here really
+<h4>3rd another Figure</h4> nothing here really
     </section>
 
     <section data-slide>
-        <h4>Fist slide C</h4>
-        <pre>
+<h4>Fist slide C</h4>
+<pre>
 
 def someFunc(a: A, b: B, f: (A,B) => C) = {
     f(a, b)
 }
 
-            </pre>
+</pre>
     </section>
 
     Morbi vehicula quis tortor cursus aliquam. Donec fringilla neque ut posuere imperdiet. Vestibulum auctor sapien sed hendrerit eleifend. Phasellus lorem nulla, mattis in faucibus sed, porttitor vel turpis. Nunc odio lectus, ultrices id feugiat ac, porta
@@ -278,21 +316,21 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
 
 
     <section data-slide>
-        <h1>Second slide</h1> There are unordered lists:
-        <ul>
-            <li>Some thing </li>
-            <li>Some other thing</li>
-        </ul>
+<h1>Second slide</h1> There are unordered lists:
+<ul>
+  <li>Some thing </li>
+  <li>Some other thing</li>
+</ul>
 
-        <p>There are ordered lists:</p>
+<p>There are ordered lists:</p>
 
-        <ol>
-            <li>Some thing </li>
-            <ul>
-                <li>some sub thing</li>
-            </ul>
-            <li>Some other thing</li>
-        </ol>
+<ol>
+  <li>Some thing </li>
+  <ul>
+    <li>some sub thing</li>
+  </ul>
+  <li>Some other thing</li>
+</ol>
     </section>
 
     Sed non interdum ligula. Ut vel viverra lectus. In hac habitasse platea dictumst. Suspendisse nec elementum eros. Vivamus et luctus sem. Vivamus egestas, leo non pharetra hendrerit, nisl dui lacinia massa, ac viverra ante tellus quis lectus. Morbi erat
@@ -302,14 +340,14 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
     vitae, venenatis justo.
 
     <section data-figure>
-        <h4>4th yet another Figure</h4> nothing here really
+<h4>4th yet another Figure</h4> nothing here really
     </section>
 
     <section data-slide>
-        <h4>Third slide</h4> Some thing Some other thing Even more things
-        <section id="nested" data-slide>
-            <h2>haha im nested section</h2>
-        </section>
+<h4>Third slide</h4> Some thing Some other thing Even more things
+<section id="nested" data-slide>
+  <h2>haha im nested section</h2>
+</section>
     </section>
 
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam commodo ultricies posuere. Fusce sit amet felis in sem dapibus suscipit sit amet sit amet nunc. Integer ullamcorper egestas dapibus. Nunc est libero, venenatis
@@ -323,14 +361,14 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
 
 
     <div>
-        just finnish
+just finnish
     </div>
 
 
     <!-- cruft for github banner -->
     <a href="https://github.com/suited">
-        <a href="https://github.com/suited"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
-                alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+<a href="https://github.com/suited"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+  alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
     </a>
 
 </body>
