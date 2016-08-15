@@ -16,7 +16,7 @@
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
-   limitations under the License.
+   limitations under this License.
 
 -->
 
@@ -36,7 +36,7 @@ Suited is event based. All browser events are mapped into suited events. All eve
 
 The [`dispatch`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/dispatch.js) sends events to all plugins that have registered a callback for that event. [`Plugin`'s](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugin.js) can also fire events for others to consume.
 
-The framework generates some lifecycle events and there are some core runtime events related to default features such as changing Mode or slide. Lifecycle events are useful if you want your plugin to run some code or tranform the document after other transformations have run, for instance the Markdown plugin listens to the `PluginsLoaded` event and then walks the document transforming markdown into html, it wants the other plugins to be loaded as they may introduce extra dom elements that need to be taken into account.
+The framework generates some lifecycle events and there are some core runtime events related to default features such as changing Mode or slide. Lifecycle events are useful if you want your plugin to run some code or transform the document after other transformations have run, for instance the Markdown plugin listens to the `PluginsLoaded` event and then walks the document transforming markdown into html, it wants the other plugins to be loaded as they may introduce extra DOM elements that need to be taken into account.
 
 ### Lifecycle Events
 * `ConfigLoaded`:- Configuration has been been consolidated, defaults merges with user supplied overrides.
@@ -64,7 +64,7 @@ The framework generates some lifecycle events and there are some core runtime ev
 
 
 #### Reserved key events
-The [`core.js`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/core.js) listens to browser events such as key presses and clicks for the core features. The handlers simple fire `suited` events for the builtin plugins to handle. While you can also add a plugin to listen to these `suited` events should not attempt to change the browser event handlers for these keys.
+The [`core.js`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/core.js) listens to browser events such as key presses and clicks for the core features. The handlers simple fire `suited` events for the built-in plugins to handle. While you can also add a plugin to listen to these `suited` events should not attempt to change the browser event handlers for these keys.
 
 ##### Key listeners
 * "left arrow"
@@ -102,7 +102,7 @@ The [`core.js`](https://github.com/suited/suited.js/blob/master/src/main/assets/
 * "any other key press"
   - fires:-
     - "KEY_PRESSED_" + javascript key code
-      - eg KEY_PRESSED_90 key 'z' pressed
+      - e.g. KEY_PRESSED_90 key 'z' pressed
 
 ##### click listeners
 * 'left mouse click'
@@ -129,7 +129,7 @@ Plugins must have a 'registerCallbacks(dispatch)' and a 'deregisterCallbacks(dis
 It is recomended that you use plugin.js's [`new Plugin(name)`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugin.js) constructor then this will all be taken care of for you.
 
 When Suited adds a plugin it first tests that `registerCallbacks` adds callbacks and `deregisterCallbacks`
-compleatly removes them before allowing the plugin to be added.
+completely removes them before allowing the plugin to be added.
 
 If your plugin uses plugin.js's [`new Plugin(name)`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugin.js) constructor then it will also have the `addCallback(eventname, callbackFunc, valueHandler)` function, where valueHandler is optional, which can be used to add a callback for an event to a plugin.
 
@@ -145,12 +145,12 @@ passed to the next callback.
 In addition to returning state, a callback may return a value
 eg return {state: somestate, value: calculation }
 
-Normally nothing will be done withthat value, however if you wish to handle It then you
+Normally nothing will be done with that value, however if you wish to handle It then you
 can supply an optional 3rd parameter to Plugin.addCallback(). The 3rd parameter is a "valueHandler'
 function. It expects to be passed the callback's return object and can then extract the value and do whatever it needs to do with it.
 
 
-#### Builtin Plugins
+#### Built-in Plugins
 * `LocationManagerPlugin`
   - Fixes the URL after a mode or slide change.
   - listens to:- `LocationChanged` event.
@@ -162,14 +162,14 @@ function. It expects to be passed the callback's return object and can then extr
   - listens to:- `GoBack` and `GoForward` event.
   - fires:- `LocationChanged`
 * [`ModePlugin`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugins/modes/modePlugin.js)
-  - responsible for setting the current `Mode` and setting up a &lt;style&gt; placeholder for Modes to attach custom style to.
+  - responsible for setting the current `Mode` and setting up a &lt;style&gt; place-holder for Modes to attach custom style to.
   - listens to:- `NextMode`, `PrevMode`, `SetMode`, `SetModeNum` and `ESC`
-  - fires:- `BeforeModeChange`, `AfterModeChange` to allow modes to setup and teardown and DOM or style changes that they make.
-  - fires:- `BeforeSlideChange` and `AfterSlideChange` to allow the Mode to dress the current slide as if it had just been transitioned to rat in the new Mode rhather than simply changing mode.
+  - fires:- `BeforeModeChange`, `AfterModeChange` to allow modes to set-up and tear-down DOM or style changes that they make.
+  - fires:- `BeforeSlideChange` and `AfterSlideChange` to allow the Mode to dress the current slide as if it had just been transitioned to rat in the new Mode rather than simply changing mode.
   - fires:- `ModeCSSFree` to let the new mode that the previous modes style placehoder has been cleaned up and it is free to add style if it chooses.
-  - fires `LocationChanged` in the event of receiving `ESC` because it not only chnages to default mode but moves the navigation pointer back to the top of the document.
+  - fires `LocationChanged` in the event of receiving `ESC` because it not only changes to default mode but moves the navigation pointer back to the top of the document.
 
-  Technically the builtin Modes are also plugins but they willl be discussed below.
+  Technically the built-in Modes are also plugins but they will be discussed below.
 
 #### Modes
 
@@ -177,17 +177,17 @@ function. It expects to be passed the callback's return object and can then extr
 
 Technically they are plugins and extent from [Plugin](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugin.js) but rather than all being loaded/registered with `suited` only one Mode is loaded at a time by the [`ModePlugin`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugins/modes/modePlugin.js).
 
-Being plugins, they must have unique names, and their actions are triggered by registering callbacks to the lifecycle events. However they are special special plugins and must also define a transition function that is fired when moving from one slide to the next.
+Being plugins, they must have unique names, and their actions are triggered by registering callbacks to the life-cycle events. However they are special special plugins and must also define a transition function that is fired when moving from one slide to the next.
 
-Modes are plugins and can also add callbacks for custom events that they may actually fire themselves in their normal function. For example the `lecture` mode listens the the default Lifecycle events but also listens to the CLICK event and ENTER upon which it zooms the document.
+Modes are plugins and can also add callbacks for custom events that they may actually fire themselves in their normal function. For example the `lecture` mode listens the the default Life-cycle events but also listens to the CLICK event and ENTER upon which it zooms the document.
 
-It is recomended that you you create your own modes using [`new Mode(modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange, fnCleanUp, fnShouldShowslide, arrTransitions)`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugins/modes/mode.js). all but modeName parameter are optional parameters, but if nothing is supplied it will be a boring Mode.
+It is recommended that you you create your own modes using [`new Mode(modeName, fnBeforeSlideChange, fnAfterSlideChange, fnBeforeModeChange, fnAfterModeChange, fnCleanUp, fnShouldShowslide, arrTransitions)`](https://github.com/suited/suited.js/blob/master/src/main/assets/js/plugins/modes/mode.js). all but modeName parameter are optional parameters, but if nothing is supplied it will be a boring Mode.
 
-`fnBeforeSlideChange`, `fnAfterSlideChange`, `fnBeforeModeChange`, `fnAfterModeChange` are plugin callbacks that fire on the lifecycle events `BeforeSlideChange`, `AfterSlideChange`, `BeforeModeChange` and `AfterModeChange` respectivly. If null then the mode performs no action on those events. Common actions would be changing the style or class of the new and old slides to modify the display or adding extra DOM elements to the document as needed by the mode or its transitions.
+`fnBeforeSlideChange`, `fnAfterSlideChange`, `fnBeforeModeChange`, `fnAfterModeChange` are plugin callbacks that fire on the life-cycle events `BeforeSlideChange`, `AfterSlideChange`, `BeforeModeChange` and `AfterModeChange` respectively. If null then the mode performs no action on those events. Common actions would be changing the style or class of the new and old slides to modify the display or adding extra DOM elements to the document as needed by the mode or its transitions.
 
 `fnCleanUp` should remove and trace that the Mode existed reverting the document to its state before the Mode was applied.
 
-`fnShouldShowslide` is a predicate function that returns true if a slide is to be displayed, if false the navigation will skip it and move to the next. While this could be fancy and run different rules for each slide or consult state to determine if a slide is to display, the default Modes only use it to descriminate between `data-figure` and `data-slide` &lt;section&gt;'s'. Most Modes only display the `data-figure` sections while `deck` mode is the slide deck and shows both. In this way it is posssible to add slides to the deck that dont show up in the `doc` view of the document. If this function is null then all are displayed by that mode.
+`fnShouldShowslide` is a predicate function that returns true if a slide is to be displayed, if false the navigation will skip it and move to the next. While this could be fancy and run different rules for each slide or consult state to determine if a slide is to display, the default Modes only use it to discriminate between `data-figure` and `data-slide` &lt;section&gt;'s'. Most Modes only display the `data-figure` sections while `deck` mode is the slide deck and shows both. In this way it is possible to add slides to the deck that don't show up in the `doc` view of the document. If this function is null then all are displayed by that mode.
 
 `arrTransitions` is an array of transition objects that the mode supports, with the first one being a default.
 
