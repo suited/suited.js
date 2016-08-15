@@ -2,8 +2,8 @@
 @Author: Roberts Karl <Karl_Roberts>
 @Date:   2016-Aug-02
 @Project: suited
-@Last modified by:   robertk
-@Last modified time: 2016-Aug-15
+@Last modified by:   dirk
+@Last modified time: 2016-08-15T23:33:58+10:00
 @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -137,6 +137,9 @@ Suited has four built in modes:
     <li>doc - <small>Normal reading mode, scrolls to next figure section on navigation</small></li>
     <li>deck - <small>Slides for presenting the information for a talk</small></li>
     <li>walkthrough - <small>Highlight sections on navigation</small></li>
+    <ul>
+      <li>Nested</li>
+    </ul>
     <li>lecture - <small>Scroll to sections on navigation and allow zoom of section on click or enter</small></li>
   </ol>
 </section>
@@ -165,7 +168,7 @@ Articles often have sections that are perfect for displaying as a slide. These c
 </p>
 
 <section data-figure transition="jump">
-  <img src="images/jackOfSpades.png" width="60%" />
+  <img src="images/jackOfSpades-large.png"/>
 </section>
     </div>
     <div>Suited logo</div>
@@ -194,19 +197,19 @@ Articles often have sections that are perfect for displaying as a slide. These c
     </div>
 
     <section data-figure>
-<p> A code snippet </p>
+<h3> A code snippet </h3>
 <pre>
-            /**
-             * Recursively calculate X to the power Y
-             */
-            function power(x, y) {
-                if (y === 0) {
-                    return 1;
-                }
-                else {
-                    return x * power(x, y - 1);
-                }
-            }
+/**
+ * Recursively calculate X to the power Y
+ */
+function power(x, y) {
+    if (y === 0) {
+        return 1;
+    }
+    else {
+        return x * power(x, y - 1);
+    }
+}
 </pre>
     </section>
 

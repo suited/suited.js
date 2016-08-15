@@ -2,8 +2,8 @@
 * @Author: Roberts Karl <Karl_Roberts>
 * @Date:   2016-Aug-02
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   dirk
+* @Last modified time: 2016-08-15T22:15:30+10:00
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,55 @@ import Mode from '../../mode';
 
 let name = "deck";
 
+
+
+function placeIn(container, child) {
+  container.innerHTML = "";
+  var header = document.createElement("div");
+  utils.classed(header, "header", true);
+  container.appendChild(header);
+  var middle = document.createElement("div");
+  utils.classed(middle, "middle", true);
+  container.appendChild(middle);
+
+  var elems = Array.prototype.slice.call(child.childNodes);
+  elems = elems.map(function(el) {
+    if (el.tagName && el.tagName.trim().length > 0) {
+      return el;
+    }
+  }).filter(function(el){
+    if (el) return el;
+  });
+
+//  var wrapper = document.createElement("div");
+  utils.classed(container, "slide-root", true);
+
+  var headers = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+  if (elems.length > 0 && headers.indexOf(elems[0].tagName) >= 0) {
+    header.appendChild(elems[0]);
+    if (elems.length > 1) {
+      elems = elems.slice(1);
+    }
+  }
+
+  for (var i = 0; i < elems.length; i++) {
+    var elem = elems[i];
+
+    //Support free floating text in a slide section by wrapping it in a P
+    if (!elem.tagName && elem.textContent.trim().length > 0) {
+      var txtWrapper = document.createElement("p");
+      txtWrapper.appendChild(elem);
+      elem = txtWrapper;
+    }
+
+    if (elem.tagName) {
+      var tag = elem.tagName.toUpperCase();
+      middle.appendChild(elem);
+    }
+    
+  }
+}
+
 function beforeSlide(slideId) {
     var currentNode = document.getElementById(slideId);
     utils.classed(currentNode, "slide-highlight", false);
@@ -47,7 +96,7 @@ function afterSlide(slideId) {
     var copy = document.createElement("div");
     copy.innerHTML = currentNode.innerHTML;
 
-    utils.placeIn(modal, copy);
+    placeIn(modal, copy);
 }
 
 function deckMode(enable) {

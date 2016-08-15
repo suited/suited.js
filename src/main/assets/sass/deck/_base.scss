@@ -1,8 +1,8 @@
 // @Author: Roberts Karl <Karl_Roberts>
 // @Date:   2016-Aug-02
 // @Project: suited
-// @Last modified by:   Karl_Roberts
-// @Last modified time: 2016-Aug-02
+// @Last modified by:   dirk
+// @Last modified time: 2016-08-15T23:42:08+10:00
 // @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
 /*
@@ -23,7 +23,7 @@
 
 .slide-root{
     height: 100%;
-    widht: 100%;
+    width: 100%;
 //    position: relative;
     top: 10%;
 }
@@ -122,18 +122,45 @@
   .slide-box.scrollable {
     overflow-y: scroll;
   }
+
   .slide-box li {
+    margin-left: 20%;
+    max-width: 70%;
+
     line-height: 1.3;
+    text-align: left;
+    display: list-item;
+
+    @media (min-width: $screen-lg-min) {
+      font-size: 1.5em;
+    }
+    ;
+    @media (max-width: $screen-lg-min) {
+      font-size: 1em;
+    }
+    ;
+    @media (max-width: $screen-md-max) {
+      font-size: 0.8em;
+    }
+    ;
+    @media (max-width: $screen-md-min) {
+      font-size: 0.7em;
+    }
+
   }
+
   .slide-box pre {
     //    font-size: 1em;
-    width: 100%;
+    width: auto;
+    text-align: left;
+    max-height: 90%;
     font-variant: normal;
     font-family: monospace;
     font-weight: 200;
 
     @media (min-width: $screen-md-max) {
       font-size: 1em;
+      line-height: 1.4;
     }
     ;
     @media (max-width: $screen-md-max) {
@@ -149,13 +176,25 @@
     }
   }
 
-  .slide-box blockquote {
-    //    font-size: 1em;
+  .slide-box .header {
     text-align: center;
-    position: absolute;
-    top: 30%;
-    border-left: none;
+    min-height: 3.5em;
+    width: 100%;
+  }
+
+  .slide-box .middle {
+    text-align: center;
+    width: 100%;
+    height: 80%;
+  }
+
+  .slide-box blockquote {
+    text-align: center;
+    position: relative;
     width: 90%;
+    left: 5%;
+    top: 5%;
+    border-left: none;
 
     @media (min-width: $screen-md-max) {
       font-size: 1.8em;
@@ -173,6 +212,14 @@
         font-size: 1em;
     }
   }
+
+.slide-box img {
+  width: auto;
+  height: auto;
+  margin-top: 0;
+  max-width: 90%;
+  max-height: 90%;
+}
 
 .slide-box .title {
     position: absolute;
