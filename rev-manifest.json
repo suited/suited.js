@@ -1,9 +1,10 @@
 {
   "css/reset.css": "css/reset-83e2b424d8.css",
-  "css/suited-dark.css": "css/suited-dark-3e0bb6a16e.css",
-  "css/suited-light.css": "css/suited-light-83c6db50e6.css",
+  "css/suited-dark.css": "css/suited-dark-e06b1b8a72.css",
+  "css/suited-light.css": "css/suited-light-b63bc92f3f.css",
   "images/jackOfSpades-centered.png": "images/jackOfSpades-centered-d9ad0d8cf7.png",
+  "images/jackOfSpades-large.png": "images/jackOfSpades-large-97f3cc6b0b.png",
   "images/jackOfSpades.png": "images/jackOfSpades-208a622d79.png",
   "images/jackOfSpades.svg": "images/jackOfSpades-b1fcfd1c70.svg",
-  "js/suited.js": "js/suited-970e605ee9fd84bb670b.js"
+  "js/suited.js": "js/suited-0dc22f71fb131dc56672.js"
 }
