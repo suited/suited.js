@@ -2,8 +2,8 @@
 * @Author: Roberts Karl <Karl_Roberts>
 * @Date:   2016-Aug-02
 * @Project: suited
-* @Last modified by:   Karl_Roberts
-* @Last modified time: 2016-Aug-02
+* @Last modified by:   dirk
+* @Last modified time: 2016-08-15T20:45:36+10:00
 * @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -197,57 +197,6 @@ utils.typeSlide = function (slideEl) {
   }
   return ret;
 }
-
-
-
-utils.placeIn = function (container, child) {
-  container.innerHTML = "";
-
-  var elems = Array.prototype.slice.call(child.childNodes);
-
-  var wrapper = document.createElement("div");
-  utils.classed(wrapper, "slide-root", true);
-
-  for (var i = 0; i < elems.length; i++) {
-    var elem = elems[i];
-
-    //Support free floating text in a slide section by wrapping it in a P
-    if (!elem.tagName && elem.textContent.trim().length > 0) {
-      var txtWrapper = document.createElement("p");
-      txtWrapper.appendChild(elem);
-      elem = txtWrapper;
-    }
-
-    if (elem.tagName) {
-      var tag = elem.tagName.toUpperCase();
-      wrapper.appendChild(elem);
-
-      //var indent = (tag != "PRE" && tag != "BLOCKQUOTE" && !(tag.length == 2 && tag.charAt(0) == "H"))
-      var indent = (tag == "UL" || tag == "OL" || tag == "P")
-
-      utils.classed(elem, "col-md-offset-3", indent);
-      utils.classed(elem, "col-md-offset-0", !indent);
-
-      container.appendChild(wrapper);
-    }
-  }
-}
-
-utils.placeInZoom = function (container, child) {
-  var width = child.clientWidth;
-  var height = child.clientHeight;
-
-  var wRatio = container.clientWidth / width;
-  var hRatio = container.clientHeight / height;
-
-  var ratio = Math.min(wRatio, hRatio);
-  ratio = ratio * 0.95;
-
-  container.innerHTML = ""
-  container.appendChild(child);
-  child.setAttribute("style", "float: left; transform: scale(" + ratio + "); transform-origin: 0 0;");
-}
-
 
 /** parse parameters from a search string where
 searchStr = location.search
