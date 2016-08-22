@@ -30,7 +30,7 @@ Suited is a new way to write and present documents. You can write a document onc
 
 ### But why?
 
-Sometimes you write a report on a piece of work only to hear they want you to present the report on Monday. Sometimes you do a cool brown bag presentation and people ask for the slides, but what good are the slides on their own without your speach? Have you ever wished the lecturer had more detail on their slides?  
+Sometimes you write a report on a piece of work only to hear they want you to present the report on Monday. Sometimes you do a cool brown bag presentation and people ask for the slides, but what good are the slides on their own without your speech? Have you ever wished the lecturer had more detail on their slides?  
 
 Using Suited you can create one document to fill all those roles by simply marking out the parts of the document you want to highlight.
 
