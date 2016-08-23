@@ -1,8 +1,8 @@
 // @Author: Roberts Karl <Karl_Roberts>
 // @Date:   2016-Aug-02
 // @Project: suited
-// @Last modified by:   dirk
-// @Last modified time: 2016-08-15T23:42:08+10:00
+// @Last modified by:   robertk
+// @Last modified time: 2016-Aug-16
 // @License: Copyright 2016 Karl Roberts <karl.roberts@owtelse.com> and Dirk van Rensburg <dirk.van.rensburg@gmail.com>
 
 /*
@@ -132,7 +132,7 @@
     display: list-item;
 
     @media (min-width: $screen-lg-min) {
-      font-size: 1.5em;
+      font-size: 1em;
     }
     ;
     @media (max-width: $screen-lg-min) {
