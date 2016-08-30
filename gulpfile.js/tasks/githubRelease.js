@@ -128,6 +128,9 @@ gulp.task('githubrelease', ['production','release'], function(){
   var theToken = getToken();
   var theVersion = getCurrentVersion();
   var theNotes = readReleaseNotes();
+  console.log("<<><><><>< token:"+theToken);
+  console.log("<<><><><>< version:"+ theVersion);
+  // console.log("<<><><><>< readReleaseNotes:" + theNotes);
   gulp.src(paths.src)
     .pipe(debug())
     .pipe(ghrelease({
