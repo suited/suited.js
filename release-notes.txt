@@ -42,3 +42,9 @@ First release. we have these features:-
     - or initiated by adding a transition="<transition-name>" on a slide or figure.
 
 --------------------
+
+suited.js v1.0.11-alpha
+
+* artifacts attached to github release
+
+-------------------

@@ -101,6 +101,12 @@
       "excludeFolders": ["layouts", "shared", "macros", "data"]
     },
 
+    "githubrelease": {
+      "src": ".",
+      "versionFiles": ["package.json"],
+      "releaseNotes": "release-notes.txt"
+    },
+
     "gendocs": {
       "src": "docs",
       "dest": "doc_site"
