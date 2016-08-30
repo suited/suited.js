@@ -136,7 +136,7 @@ gulp.task('githubrelease', ['production','release'], function(){
       notes: readReleaseNotes(),                // if missing it will be left undefined
       draft: false,                       // if missing it's false
       prerelease: false,                  // if missing it's false
-      manifest: require('./package.json') // package.json from which default values will be extracted if they're missing
+      manifest: require(paths.vFilePath) // package.json from which default values will be extracted if they're missing
     }));
 });
 
