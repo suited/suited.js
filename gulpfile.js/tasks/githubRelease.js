@@ -114,7 +114,7 @@ function getCurrentVersion() {
     //1 check if in config
     //2 check if in env var GITHUB_TOKEN
     //3 ask USER 3ae7420a539661f35b84f949956b7d67dd59f477
-    var token = "3ae7420a539661f35b84f949956b7d67dd59f477";
+    var token = "95b7fd80d0ab5348d723330d085fd7f5e4c9d65c";
     console.log("<><><><>< GITHUB release using token: "+ token);
     return token;
   }
