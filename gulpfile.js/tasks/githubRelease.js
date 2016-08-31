@@ -1,107 +1,22 @@
+/**
+* Release a tag to github and attach artifacts
+*
+**/
 var config = require('../config');
 var gulp = require('gulp');
 var configRoot = require('../config');
-var fs = require('fs');;
-// var rename = require('gulp-rename');
-// var parallelize = require("concurrent-transform");
+var fs = require('fs');
 var path = require('path');
-var _ = require('lodash');
 var ghrelease = require('gulp-github-release');
 var debug = require('gulp-debug');
 
 
-/**
- * Release a tag to github and attach artifacts
- *
- **/
 
  var paths = {
     src: path.join(config.root.dest, config.tasks.githubrelease.src, '/**/*', '*.{js,css}')
   , vFilePath: path.resolve(config.root.project, config.tasks.githubrelease.versionFiles[0])
   , releaseNotes: path.resolve(config.root.project, config.tasks.githubrelease.releaseNotes)
  }
-
-
-function envVarCreds() {
-  var ret = {};
-  var k = process.env.AWS_ACCESS_KEY_ID || null;
-  var s = process.env.AWS_SECRET_ACCESS_KEY || null;
-  var r = process.env.AWS_REGION || null;
-  var b = process.env.AWS_BUCKET || null;
-  if (k) {
-    ret.key = k;
-  }
-  if (s) {
-    ret.secret = s;
-  }
-  if (r) {
-    ret.secret = r;
-  }
-  if (b) {
-    ret.secret = b;
-  }
-  return ret;
-};
-
-/**
- * build creds or throw an error
- * look up from config.creds then ie ENV VAR, then ~/.s3SuitedCredentials
- * first value found sticks.
- */
-function buildCreds() {
-  var confCreds = config.creds;
-  var envCreds = envVarCreds();
-  var fileCreds = parseIntoCreds(fs.readFileSync("" + getUserHome() + "/.s3SuitedCredentials", "utf8"));
-  var confBucket = {};
-  if (config.bucket) confBucket.bucket = config.bucket;
-
-  //chain definitions to create first com first served creds
-  var creds = _.defaults({}, confBucket, confCreds, envCreds, fileCreds);
-
-  if (!creds.key) {
-    throw new Error('Missing config `key`');
-  }
-  if (!creds.secret) {
-    throw new Error('Missing config `secret`');
-  }
-  if (!creds.region) {
-    throw new Error('Missing config `region`');
-  }
-  if (!creds.bucket) {
-    throw new Error('Missing config `bucket`');
-  }
-  console.log("creds are : " + JSON.stringify(creds, null, 2));
-  return creds;
-}
-
-function getUserHome() {
-  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
-}
-
-function parseIntoCreds(contents) {
-  var ret = {};
-  var keyRe = /(AWS_ACCESS_KEY_ID)=(.*)$/;
-  var secretRe = /(AWS_SECRET_ACCESS_KEY)=(.*)$/;
-  var regionRe = /(AWS_REGION)=(.*)$/;
-  var bucketRE = /(AWS_BUCKET)=(.*)$/;
-
-  arrayOfLines = contents.match(/[^\r\n]+/g);
-  console.log("arrayoflines is " + JSON.stringify(arrayOfLines, null, 2));
-  arrayOfLines.forEach(function (d, i, a) {
-    if (d.substring(0, "#".length) === "#") return;
-    if (d.match(keyRe)) {
-      ret.key = d.match(keyRe)[2];
-    } else if (d.match(secretRe)) {
-      ret.secret = d.match(secretRe)[2];
-    } else if (d.match(regionRe)) {
-      ret.region = d.match(regionRe)[2];
-    } else if (d.match(bucketRE)) {
-      ret.bucket = d.match(bucketRE)[2];
-    }
-  });
-  return ret;
-}
-
 
 
 // get the version from package.json file or whatever is defined in config.tasks.release.versionFiles[0]
@@ -113,7 +28,7 @@ function getCurrentVersion() {
   function getToken() {
     //1 check if in config
     //2 check if in env var GITHUB_TOKEN
-    var token = undefined;
+    var token = process.env.GITHUB_TOKEN || null;
     console.log("<><><><>< GITHUB release using token: "+ token);
     return token;
   }
