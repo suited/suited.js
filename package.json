@@ -17,7 +17,7 @@
   "homepage": "https://suited.github.io/suited.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:suited/suited.js.git"
+    "url": "git+ssh://git@github.com:suited/suited.js.git"
   },
   "bugs": {
     "url": "https://github.com/suited/suited.js/issues"
