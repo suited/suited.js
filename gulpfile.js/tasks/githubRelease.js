@@ -136,7 +136,7 @@ gulp.task('githubrelease', ['production','release'], function(){
     .pipe(ghrelease({
       token: theToken,                     // or you can set an env var called GITHUB_TOKEN instead
       // owner: 'suited',                    // if missing, it will be extracted from manifest (the repository.url field)
-      // repo: 'suited.js',            // if missing, it will be extracted from manifest (the repository.url field)
+      repo: 'suited.js',            // if missing, it will be extracted from manifest (the repository.url field)
       tag: getCurrentVersion(),                      // if missing, the version will be extracted from manifest and prepended by a 'v'
       // name: 'publish-release v1.0.0',     // if missing, it will be the same as the tag
       notes: theNotes,                // if missing it will be left undefined
