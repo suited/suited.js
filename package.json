@@ -1,6 +1,6 @@
 {
   "name": "suited.js",
-  "version": "1.0.11-alpha+bd.2016-8-31-105115-000.commitish.3011235fe69220f41d7301ea8cb5b6ea6ef14382",
+  "version": "1.0.11-alpha+bd.2016-8-31-1455-000.commitish.66b60cfd3f7e2e6006e69085b5c5b45853d6c797",
   "description": "The awesome presentation framework allowing you to flick between handy talk slides and detailed document all in a single write once file.",
   "main": "gulpfile.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "slide-deck"
   ],
   "author": "karl.roberts@owtelse.com",
-  "license": "TBD",
+  "license": "Apache-2.0",
   "browser": {
     "underscore": "backbone/node_modules/underscore",
     "plugin": "./src/javascript/vendor/jquery-plugin.js"
