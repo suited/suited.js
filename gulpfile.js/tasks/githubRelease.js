@@ -124,7 +124,7 @@ function getCurrentVersion() {
     return notes;
   }
 
-gulp.task('githubrelease', [], function(){
+gulp.task('githubrelease', ['production', 'release'], function(){
   var theToken = getToken();
   var theVersion = getCurrentVersion();
   var theNotes = readReleaseNotes();
@@ -141,7 +141,7 @@ gulp.task('githubrelease', [], function(){
       // name: 'publish-release v1.0.0',     // if missing, it will be the same as the tag
       notes: theNotes,                // if missing it will be left undefined
       draft: false,                       // if missing it's false
-      prerelease: true,                  // if missing it's false
+      prerelease: false,                  // if missing it's false
       manifest: require(paths.vFilePath), // package.json from which default values will be extracted if they're missing
       reuseRelease: true
     }));
