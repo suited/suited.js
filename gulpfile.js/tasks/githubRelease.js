@@ -113,8 +113,8 @@ function getCurrentVersion() {
   function getToken() {
     //1 check if in config
     //2 check if in env var GITHUB_TOKEN
-    //3 ask USER
-    var token = "b5e7e83752b4324175bba6b1d9d8045e76e3532a";
+    //3 ask USER 3ae7420a539661f35b84f949956b7d67dd59f477
+    var token = "3ae7420a539661f35b84f949956b7d67dd59f477";
     console.log("<><><><>< GITHUB release using token: "+ token);
     return token;
   }
@@ -124,7 +124,7 @@ function getCurrentVersion() {
     return notes;
   }
 
-gulp.task('githubrelease', ['production','release'], function(){
+gulp.task('githubrelease', [], function(){
   var theToken = getToken();
   var theVersion = getCurrentVersion();
   var theNotes = readReleaseNotes();
@@ -142,7 +142,8 @@ gulp.task('githubrelease', ['production','release'], function(){
       notes: theNotes,                // if missing it will be left undefined
       draft: false,                       // if missing it's false
       prerelease: true,                  // if missing it's false
-      manifest: require(paths.vFilePath) // package.json from which default values will be extracted if they're missing
+      manifest: require(paths.vFilePath), // package.json from which default values will be extracted if they're missing
+      reuseRelease: true
     }));
 });
 
