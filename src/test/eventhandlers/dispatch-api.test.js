@@ -280,7 +280,6 @@ describe("Dispatch API tests.", function () {
       console.log("dummy callback3");
       return "handler3";
     });
-    console.log("<><><><><>< handle2 =  " + handle1)
     expect(handle2).to.equals('beginexperimentevent-listener-1')
 
     var e0hs2 = dispatch.listeners(es[0]);
