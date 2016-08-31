@@ -113,8 +113,7 @@ function getCurrentVersion() {
   function getToken() {
     //1 check if in config
     //2 check if in env var GITHUB_TOKEN
-    //3 ask USER 3ae7420a539661f35b84f949956b7d67dd59f477
-    var token = "95b7fd80d0ab5348d723330d085fd7f5e4c9d65c";
+    var token = undefined;
     console.log("<><><><>< GITHUB release using token: "+ token);
     return token;
   }
@@ -134,7 +133,7 @@ gulp.task('githubrelease', ['production', 'release'], function(){
   gulp.src(paths.src)
     .pipe(debug())
     .pipe(ghrelease({
-      token: theToken,                     // or you can set an env var called GITHUB_TOKEN instead
+      //token: theToken,                     // or you can set an env var called GITHUB_TOKEN instead
       // owner: 'suited',                    // if missing, it will be extracted from manifest (the repository.url field)
       repo: 'suited.js',            // if missing, it will be extracted from manifest (the repository.url field)
       tag: getCurrentVersion(),                      // if missing, the version will be extracted from manifest and prepended by a 'v'
