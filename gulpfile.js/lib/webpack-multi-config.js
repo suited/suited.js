@@ -5,12 +5,12 @@ var path = require('path')
 var webpack = require('webpack')
 var webpackManifest = require('./webpackManifest')
 
-module.exports = function (env) {
+module.exports = function(env) {
   var jsSrc = path.resolve(config.root.src, config.tasks.js.src)
   var jsDest = path.resolve(config.root.dest, config.tasks.js.dest)
   var publicPath = path.join(config.tasks.js.dest, '/')
   var filenamePattern = env === 'production' ? '[name]-[hash].js' : '[name].js'
-  var extensions = config.tasks.js.extensions.map(function (extension) {
+  var extensions = config.tasks.js.extensions.map(function(extension) {
     return '.' + extension
   })
 
@@ -22,18 +22,19 @@ module.exports = function (env) {
       extensions: [''].concat(extensions)
     },
     module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          loader: 'babel-loader?stage=1',
-          exclude: /node_modules/
-          },
-        {
-          //npm install json-loader --save-dev; // needed so Modules that use JSON as their index can be loaded.
-          test: /\.json$/,
-          loader: 'json'
+      loaders: [{
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel', // 'babel-loader' is also a legal name to reference
+        query: {
+          presets: ['latest']
         }
-      ]
+      },
+      {
+        //npm install json-loader --save-dev; // needed so Modules that use JSON as their index can be loaded.
+        test: /\.json$/,
+        loader: 'json'
+      }]
     }
   }
 

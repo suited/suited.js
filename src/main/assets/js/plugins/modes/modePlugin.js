@@ -20,7 +20,9 @@
 
 */
 
-
+import builtinModeList from './builtins';
+import utils from '../../utils.js';
+import constants from '../../konstantes.js';
 
 'use strict';
 //state.js
@@ -30,12 +32,10 @@
  *
  * @returns {Object}   Containing the functions necessary to check and manipulate the state
  */
+
 var Plugin = require('../../plugin.js');
 var Mode = require('./mode.js');
 var modePlugin = new Plugin("ModePlugin");
-import builtinModeList from './builtins';
-import utils from '../../utils.js'
-import constants from '../../konstantes.js'
 
 
 function  cleanUpOldStyle() {
