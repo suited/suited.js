@@ -52,6 +52,7 @@
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-preset-latest": "^6.14.0",
+    "browser-sync": "^2.14.3",
     "chai": "^3.5.0",
     "compression": "^1.5.1",
     "concurrent-transform": "^1.0.0",
