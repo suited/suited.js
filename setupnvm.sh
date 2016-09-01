@@ -26,6 +26,7 @@
 
 source ~/.nvm/nvm.sh
 
+nvm install v6.3.1
 nvm list
-# nvm use v0.12.2
-nvm use v0.12.9
+# nvm use v6.3.1
+nvm use v6.3.1
