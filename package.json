@@ -1,6 +1,6 @@
 {
   "name": "suited.js",
-  "version": "1.0.11-alpha+bd.2016-9-1-153028-000.commitish.7a1a6453111d7bc2c0fa9c18010595a84de6a21a",
+  "version": "1.0.11-alpha+bd.2016-9-1-153241-000.commitish.89b04055c20eb2a32fd115a20c9376d0519cfa92",
   "description": "The awesome presentation framework allowing you to flick between handy talk slides and detailed document all in a single write once file.",
   "main": "gulpfile.js",
   "scripts": {
