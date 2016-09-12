@@ -141,13 +141,19 @@ module.exports = function suitedSlideblock_plugin(md, theAlt) {
     //IF we want a seperate div so we can style it differntly uncomment below or use magig option
 //    token = state.push('block', 'div', 0);
     var theCOntent = state.getLines(startLine + 1, endLine - 1, len, true);
-    console.log("slide content ----> cotheCOntentntent = " + theCOntent);
+    if(!!window.suited.config.log && window.suited.config.debug)
+    {
+      console.log("slide content ---->  the Content = " + theCOntent);
+    }
 //    token.content = state.md.render(theCOntent);
     token.content = state.md.block.parse(theCOntent, state.md, state.env, state.tokens);
 //    state.md.block.parse(theCOntent, state.md, state.env, state.tokens);
 //    state.md.core.process(theCOntent, state.md, state.env, state.tokens);
 
-    console.log("slide content ----> token.content = " + token.content);
+    if(!!window.suited.config.log && window.suited.config.debug)
+    {
+      console.log("slide content ----> token.content = " + token.content);
+    }
     token.markup = startToken;
     token.map = [startLine, endLine];
 

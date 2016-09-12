@@ -35,24 +35,24 @@ var Plugin = require('../../plugin.js');
 //Listens to the
 var markdownPlugin = new Plugin("MarkdownPlugin");
 
+//set it with a default
+var md = new MarkdownIt( {html: true})
+  .use(require("./markdown-it-suited-figure-block.js"))
+  .use(require("./markdown-it-suited-slide-block.js"))
+  .use(require("./markdown-it-suited-figure-inline.js"))
+  .use(require("./markdown-it-suited-slide-inline.js"));
+
 var vHandler = function (v) {
   if (v.value !== 0) console.error("markdownPlugin failed!!! ");
   else console.log("markdownPlugin succeeded");
 }
 
-markdownPlugin.addCallback("PluginsLoaded", function () {
-  console.log("markdownPlugin: parsing document");
-
+function parseDocument(){
   // node.js, "classic" way:
+  console.log("markdownPlugin: parsing document");
 
   //get all elements with data-markdown attribute
   var nodeList = utils.selects("*[data-markdown]");
-
-  var md = new MarkdownIt( {html: true})
-    .use(require("./markdown-it-suited-figure-block.js"))
-    .use(require("./markdown-it-suited-slide-block.js"))
-    .use(require("./markdown-it-suited-figure-inline.js"))
-    .use(require("./markdown-it-suited-slide-inline.js"));
 
   for (var i = 0; i < nodeList.length; ++i) {
     var markedup = md.render(nodeList[i].innerHTML);
@@ -64,13 +64,32 @@ markdownPlugin.addCallback("PluginsLoaded", function () {
   // node.js, the same, but with sugar:
   //  var md = require('markdown-it')();
   //  var result = md.render('# markdown-it rulezz!');
-
-
-
   return {
     'value': 0
   };
+}
+
+markdownPlugin.addCallback("MarkdownPlugin-ConfigMerged", function () {
+  console.log("markdownPlugin: fixing config");
+  //get config
+   var myConf = markdownPlugin.config();
+   if(!!window.suited.config.log && window.suited.config.debug)
+   {
+     console.log("<><<<><><><><<><>< MarkdownPlugin: myConf= "+ JSON.stringify(myConf,null,2))
+   }
+  var parseEmbededHTML = (!!myConf && !!myConf.html) ? myConf.html : false;
+
+  //pas config to MarkdownIt
+  md = new MarkdownIt( {html: parseEmbededHTML})
+    .use(require("./markdown-it-suited-figure-block.js"))
+    .use(require("./markdown-it-suited-slide-block.js"))
+    .use(require("./markdown-it-suited-figure-inline.js"))
+    .use(require("./markdown-it-suited-slide-inline.js"));
+
+  return parseDocument();
 }, vHandler)
+
+markdownPlugin.addCallback("PluginsLoaded", parseDocument, vHandler)
 
 
 module.exports = markdownPlugin;

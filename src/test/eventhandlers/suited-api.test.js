@@ -28,6 +28,7 @@ var k = require('../../main/assets/js/konstantes.js');
 var Plugin = require('../../main/assets/js/plugin.js');
 var Dispatch = require('../../main/assets/js/dispatch.js');
 var Suited = require('../../main/assets/js/suited.js');
+var State = require('../../main/assets/js/state.js');
 
 describe("Suited API tests.", function () {
 
@@ -61,13 +62,14 @@ describe("Suited API tests.", function () {
         }
       }, vHandler)
 
-      var ok = suited.addPlugins([p1]);
+      var ok = suited.addPlugins([p1], state);
       expect(ok).to.be.true;
 
     });
 
 
     it("InValid Plugins are not added.", function () {
+      var state = new State();
       var fakeDispatch = new Dispatch();
       var suited = new Suited(fakeDispatch);
       expect(suited).to.exist;
@@ -87,13 +89,14 @@ describe("Suited API tests.", function () {
 
       p1.deregisterCallbacks = function () {}; //overrite it with do nothing
 
-      var ok = suited.addPlugins([p1]);
+      var ok = suited.addPlugins([p1], state);
       expect(ok).to.be.false;
 
     });*/
 
 
   it("Plugins can be removed.", function () {
+    var state = new State();
     var fakeDispatch = new Dispatch();
     var suited = new Suited(fakeDispatch);
     expect(suited).to.exist;
@@ -125,7 +128,7 @@ describe("Suited API tests.", function () {
     }, vHandler)
 
 
-    var ok = suited.addPlugins([p1, p2]);
+    var ok = suited.addPlugins([p1, p2], state);
     expect(ok).to.be.true;
 
     var ps = suited.getPluginsByName("goodPlugin3");
