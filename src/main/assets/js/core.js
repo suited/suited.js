@@ -118,7 +118,7 @@ core.processEventQueueBeforeAction = function () {
 core.processEventQueueAfterAction = function () {
   //TODO do i need to lock the queue?
   console.log("post-process Queue");
-  //TODO should I process the queue to the end, or just within a timeout, and have a reeper thread running to keep emptying the queue? while the user does nothing?
+  //TODO should I process the queue to the end, or just within a timeout, and have a reeper thread running to keep emptying the queue? while the user does nothing?/config
 }
 
 
@@ -224,6 +224,9 @@ core.addClickListeners = function() {
 
 core.init = function () {
 
+  // SETUP the initial state.
+  state = new State(0, []);
+
   //add a defaul
   var pageLogger = new Plugin("pageLogger");
 
@@ -251,19 +254,60 @@ core.init = function () {
 
 
   var theDispatch = new Dispatch();
-  window.suited = new Suited(theDispatch);
-  window.suited.addPlugins(defaultPlugins);
 
+  //get user specified settings fron the document and merge with our settings
+  var userSuited = window.suited || {};
+  //replace with ours
+  window.suited = new Suited(theDispatch);
+
+
+  //read custom userConfig and add it to plugins
+  if(!!userSuited.config) {
+    window.suited.config(userSuited.config);
+    console.log("<><><><<><>!!!!!!!!!!!! config now ", JSON.stringify(window.suited.config(),null,2))
+  }
+  window.suited.fireEvent("ConfigMerged", state);
+
+  //suited add plugin will add plugin config too
+  window.suited.addPlugins(defaultPlugins, state);
+
+  //user defined plugins
+  if(!!userSuited.plugins){
+    var ps = Array.prototype.slice.call(userSuited.plugins); //coerce array
+    window.suited.addPlugins(ps, state);
+  }
   window.suited.fireEvent("PluginsLoaded", state);
+  //fixup any navigableify state
+  // some plugins (eg Markdown) modify the DOM which may change or create navigableSlides
+  // TODO Mode should walk doc for navigable slides do this on mode change, let it set up state
+  var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
+  var navigableSlides = utils.selects(selectString)
+  utils.number(navigableSlides);
+  state.setNavigableNodes(navigableSlides)
+
+
+  // configure plugins
+  //add user config
+  var pnames = window.suited.getPluginNames();
+  pnames.forEach(function(pname,i,a){
+    var ps = window.suited.getPluginsByName(pname);
+    ps.forEach(function(p,ii,aa){
+      var configForPlugin = window.suited.config().plugins[p.name];
+      if(!!configForPlugin) {
+        console.log("Suited: Seen config for plugin: "+p.name+ ". Passing to plugin");
+        p.config(configForPlugin);
+        window.suited.fireEvent(p.name+"-ConfigMerged", state);
+      }
+    })
+
+  })
+
+
 
 
   console.log("Suited is " + JSON.stringify(window.suited));
 
-  var selectString = "section[" + k.slideAttrs['figure'] + "], section[" + k.slideAttrs['slide'] + "]";
-  var navigableSlides = utils.selects(selectString)
-  utils.number(navigableSlides);
 
-  state = new State(0, navigableSlides);
 
 
   // add placeholder for Modal backdrop

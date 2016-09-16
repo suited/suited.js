@@ -109,6 +109,12 @@ Suited's Markdown plugin add special markdown syntax to allow you to easily add 
 </div>
 
 <div data-markdown>
+  I kind of want a **nested html evaluated to** here: so lets gie it a go
+  <p>this is text in a paragraph<br/>This is on new line</p>
+  <p>this is text in aanother paragraph<br/>This is also on new line</p>
+</div>
+
+<div data-markdown>
 
   # Check out figures
   I kind of ~~:want a **bold figure** here:~~ so lets gie it a go
@@ -511,5 +517,21 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 
 <script src="https://twemoji.maxcdn.com/twemoji.min.js"></script>
 <script type="text/javascript" src="js/suited.js"></script>
+<script type="text/javascript">
+var suited = {
+  config: {
+   "foo": "bar",
+   "log": {
+     "debug": false
+   }
+   "plugins": {
+     "MarkdownPlugin": {
+       "html": true
+     }
+   }
+
+  }
+};
+</script>
 
 </html>

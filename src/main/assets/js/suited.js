@@ -42,10 +42,15 @@ var Suited = function suited(adispatcher) {
   }
   var dispatch = adispatcher;
 
-  var myrunconfig = {
+  // default config
+  var defaultrunconfig = {
     log: true,
-    transition: undefined // name of default transition... TODO should add this to Mode - Plugin config
+    transition: undefined, // name of default transition... TODO should add this to Mode - Plugin config
+    plugins: {} //config for plugins
   };
+
+  //holds final value of merged configs inc userConfig if set.
+  var runconfig = Object.assign({},defaultrunconfig);
 
   var plugins = [];
 
@@ -78,9 +83,17 @@ var Suited = function suited(adispatcher) {
   /**
    * runconfig sets properties of suited run, eg turns on an of logging for all built in plugins
    **/
-  this.config = function (runconfig) {
-    if (!!runconfig) {
-      myrunconfig[log] = runconfig.log;
+  this.config = function(userConfig) {
+    if(arguments.length) {
+      //setter
+
+      // nb could have set runconfig as target, but preffer functionl style
+      // Object.assign(runconfig, defaultrunconfig, runconfig, userConfig)
+      runconfig = Object.assign({},defaultrunconfig, runconfig, userConfig)
+
+    } else {
+      //getter
+      return runconfig;
     }
   }
 
@@ -144,7 +157,7 @@ var Suited = function suited(adispatcher) {
   }
 
   //test all plugins and add the good ones and register them
-  this.addPlugins = function (wantedPluginsArray) {
+  this.addPlugins = function (wantedPluginsArray, state) {
     var goodPlugins = self.verifyPlugins(wantedPluginsArray);
 
     //register the good plugins with the dispatch

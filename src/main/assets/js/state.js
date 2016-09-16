@@ -56,7 +56,7 @@ var State = function (desiredPos, navigableNodes) {
     }
 
     if (!navigableNodes || navigableNodes.length == 0) {
-        console.error("Navigation will not work. Navigablenodes is null or empty");
+        console.warn("Navigation will not work. Navigablenodes is null or empty");
     }
 
     var self = this; //For the private methods
@@ -76,6 +76,10 @@ var State = function (desiredPos, navigableNodes) {
             return slideIndex >= 0;
         }
     };
+
+    self.setNavigableNodes = function (slides) {
+      navigableNodes = slides;
+    }
 
     self.getCurrentModeName = function() {
         return currentMode.name;

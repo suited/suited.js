@@ -47,11 +47,19 @@
  * can supply an optional 3rd parameter to Plugin.addCallback(). The 3rd parameter is a "valueHandler'
  * function. It expects to be passed the callbacks return object and can then extract the .value and does stuff to it.
  *
+ * @param name:String manditory plugin name, must be unique.
+ * @param config:Object:Any Optional plugin config see specific plugin for valid values.
  * TODO should I allow the valueHandler to modify state? to pass back up the chain too?
  */
-function Plugin(name) {
+function Plugin(name, config) {
   var self = this;
   this.name = "unnamed";
+
+
+
+  //user specified config, plugin instance may use or ignore this.
+  //should be documented by the plugin.
+  var runconfig = {};
 
   var theeventCallbacks = {};
 
@@ -63,6 +71,7 @@ function Plugin(name) {
   }
 
   self.name = name;
+  self.config = config || {};
 
   /**
    * Add a callback to the plugin.
@@ -167,6 +176,20 @@ function Plugin(name) {
       theeventCallbackHandles[e] = []; //reset
 
     });
+  }
+
+  /**
+   * user specified config, plugin instance may use or ignore this.
+   * should be documented by the plugin.
+   **/
+  this.config = function(configObject) {
+    if(arguments.length) {
+      //sette
+      runconfig = Object.assign({}, runconfig, configObject)
+    } else {
+      //getter
+      return runconfig;
+    }
   }
 
 }

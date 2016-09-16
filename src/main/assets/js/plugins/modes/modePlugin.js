@@ -133,7 +133,7 @@ modePlugin.setMode = function(modeName, state) {
     var newMode = this.modes[modeName];
     this.currentMode = this.modeNames.indexOf(modeName);
 
-    window.suited.addPlugins([newMode]);
+    window.suited.addPlugins([newMode], state);
     state.setMode(newMode, newMode.shouldShowSlide);
 
 
