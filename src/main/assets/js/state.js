@@ -104,6 +104,11 @@ var State = function (desiredPos, navigableNodes) {
         return slidePrefix + num;
     }
 
+    this.getSlideNumFromName = function (name) {
+        var num =  name.slice(slidePrefix.length);
+        return num;
+    }
+
     this.setSlideNumber = function (slideNum) {
         currentSlide = slideNum;
     }

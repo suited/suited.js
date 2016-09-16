@@ -26,6 +26,7 @@ import docMode         from './doc';
 import lectureMode     from './lecture';
 import thedeckMode     from './deck';
 import walkthroughMode from './walkthrough';
+import speakerMode     from './speaker';
 
 var builtins = [];
 
@@ -33,5 +34,6 @@ builtins.push(docMode);
 builtins.push(thedeckMode);
 builtins.push(walkthroughMode);
 builtins.push(lectureMode);
+builtins.push(speakerMode);
 
 export default builtins;

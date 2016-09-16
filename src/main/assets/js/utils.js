@@ -253,4 +253,40 @@ utils.unique = function (xs) {
   });
 }
 
+/**
+ * if (storageAvailable('localStorage'))
+ **/
+utils.storageAvailable = function (type) {
+	try {
+		var storage = window[type],
+			x = '__storage_test__';
+		storage.setItem(x, x);
+		storage.removeItem(x);
+		return true;
+	}
+	catch(e) {
+		return false;
+	}
+}
+
+utils.localstore = function(item,value) {
+   var PREFIX="suited-";
+   if (!!utils.storageOK || utils.storageAvailable('localStorage')) {
+     utils.storageOK = true;
+     var storage = window['localStorage']
+     if(!item) { return; }
+     if(!value) {
+       //getter
+       return storage.getItem(item);
+     } else {
+       //setter
+       storage.setItem(item,value);
+     }
+   }
+   else {
+     utils.storageOK = false;
+     console.log("Oops cant do localstorage so no speaker notes");
+   }
+}
+
 module.exports = utils;

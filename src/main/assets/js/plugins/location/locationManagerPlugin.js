@@ -23,6 +23,7 @@
 'use strict';
 
 var Plugin = require('../../plugin.js');
+var utils = require('../../utils.js');
 
 var locationPlugin = new Plugin("LocationManagerPlugin");
 
@@ -35,6 +36,8 @@ locationPlugin.addCallback("LocationChanged", function(state, evData) {
   if (window.location.protocol != 'file:') {
     window.history.pushState("", window.title, window.location.origin + window.location.pathname + "?mode=" + state.getCurrentModeName() + "#" + slideId);
   }
+  utils.localstore("suited-slide-num",slideId );
+
 });
 
 
