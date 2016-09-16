@@ -31,13 +31,21 @@ let name = "deck";
 
 
 function placeIn(container, child) {
+  var heightUsed = 0;
+//  console.log("@@@@@@>1 CONTAINER SIZE: H:" + container.offsetHeight + " W:" + container.offsetWidth);
   container.innerHTML = "";
   var header = document.createElement("div");
   utils.classed(header, "header", true);
   container.appendChild(header);
+
   var middle = document.createElement("div");
-  utils.classed(middle, "middle", true);
   container.appendChild(middle);
+  utils.classed(middle, "middle", true);
+  utils.styled(middle, "height", (middle.clientHeight - header.offsetHeight - 30) + "px");
+
+  var maxWidth = middle.clientWidth;
+  var maxHeight = middle.clientHeight;
+  var middleRatio = maxWidth / 1.0 * maxHeight;
 
   var elems = Array.prototype.slice.call(child.childNodes);
   elems = elems.map(function(el) {
@@ -48,7 +56,6 @@ function placeIn(container, child) {
     if (el) return el;
   });
 
-//  var wrapper = document.createElement("div");
   utils.classed(container, "slide-root", true);
 
   var headers = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
@@ -69,12 +76,53 @@ function placeIn(container, child) {
       elem = txtWrapper;
     }
 
+    if (elem.tagName && elem.tagName.toUpperCase() == 'IMG') {
+      var imgH = elem.naturalHeight;
+      var imgW = elem.naturalWidth;
+      var isPortrait = imgH > imgW;
+      var aspectRatio = imgH / (1.0*imgW);
+//      console.log("IMAGE SIZE. Is portrait:" + isPortrait + " H: " + imgH + " W: " + imgW + "AspectRatio:" + aspectRatio);
+
+      var newImgH = 0;
+      var newImgW = 0;
+      //first see if our image is too tall already or is a portrait
+      if (isPortrait) {
+        newImgH = maxHeight;
+        newImgW = newImgH * (1.0/aspectRatio)
+      }
+      else {
+        newImgW = maxWidth;
+        newImgH = newImgW * aspectRatio;
+      }
+//      console.log("NEW IMAGE SIZE: H: " + newImgH + " W: " + newImgW + "AspectRatio:" + ( newImgH * 1.0 / newImgW  ));
+
+      var imgcontainer =  document.createElement("div");
+      //utils.styled("width",);
+      utils.classed(imgcontainer, "image", true);
+      imgcontainer.appendChild(elem);
+
+      if (newImgH > maxHeight) {
+//        console.log("Limiting by height: " + maxHeight);
+        utils.styled(elem, "height", maxHeight + "px");
+        utils.styled(elem, "width", "auto");
+      }
+      else {
+//        console.log("Limiting by width: " + maxWidth);
+        utils.styled(elem, "width", maxWidth + "px");
+        utils.styled(elem, "height", "auto");
+      }
+
+      middle.appendChild(imgcontainer);
+    }
+
     if (elem.tagName) {
       var tag = elem.tagName.toUpperCase();
       middle.appendChild(elem);
     }
-    
+//    console.log("@@@@@@@> (" + i + ") ELEMENT tag[" + elem.tagName + "] HEIGHT: " + elem.offsetHeight + " WIDTH: " + elem.offsetWidth);
   }
+//  console.log("@@@@@@>4 CONTAINER SIZE: H:" + container.offsetHeight + " W:" + container.offsetWidth);
+
 }
 
 function beforeSlide(slideId) {
@@ -108,14 +156,14 @@ function deckMode(enable) {
     var slideWall = document.getElementById("slideWall");
     utils.classed(slideWall, "slide-backdrop", enable);
     utils.classed(slideWall, "container", enable);
-    slideWall.setAttribute("style", "opacity: 60%"); //TODO should be a scss variable
+  //  slideWall.setAttribute("style", "opacity: 60%"); //TODO should be a scss variable
 
     var slideHolder = document.getElementById("slideHolder");
     utils.classed(slideHolder, "slide-holder", enable);
 
     var modal = document.getElementById("modal");
     utils.classed(modal, "slide-box", enable);
-    utils.classed(modal, "not-displayed", !enable);
+    utils.classed(modal, "invisible", !enable);
 }
 
 function cleanUp(state) {
