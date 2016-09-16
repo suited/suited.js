@@ -29,26 +29,21 @@ import Mode from '../../mode';
 let name = "deck";
 
 
+function calcVerticalHeight(elem) {
+  var result = elem.offsetHeight;
 
-function placeIn(container, child) {
-  var heightUsed = 0;
-//  console.log("@@@@@@>1 CONTAINER SIZE: H:" + container.offsetHeight + " W:" + container.offsetWidth);
-  container.innerHTML = "";
-  var header = document.createElement("div");
-  utils.classed(header, "header", true);
-  container.appendChild(header);
+  var computedStyles = window.getComputedStyle(elem);
+  result += parseInt(computedStyles.getPropertyValue('margin-top'));
+  result += parseInt(computedStyles.getPropertyValue('margin-bottom'));
 
-  var middle = document.createElement("div");
-  container.appendChild(middle);
-  utils.classed(middle, "middle", true);
-  utils.styled(middle, "height", (middle.clientHeight - header.offsetHeight - 30) + "px");
+  return result;
+}
 
-  var maxWidth = middle.clientWidth;
-  var maxHeight = middle.clientHeight;
-  var middleRatio = maxWidth / 1.0 * maxHeight;
-
-  var elems = Array.prototype.slice.call(child.childNodes);
-  elems = elems.map(function(el) {
+/**
+ * Remove elements with no name from the element list
+ */
+function stripNoNameElements(elems) {
+  var result = elems.map(function(el) {
     if (el.tagName && el.tagName.trim().length > 0) {
       return el;
     }
@@ -56,73 +51,157 @@ function placeIn(container, child) {
     if (el) return el;
   });
 
-  utils.classed(container, "slide-root", true);
+  return result;
+}
 
+/**
+ * Place the element in the space reserved for the header if the first element
+ * in the list is a header element.
+ * SIDE EFFECT: If placed the element is sliced from the list and the rest is returned
+ */
+function placeHeaderIfPresent(header, elems) {
   var headers = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
   if (elems.length > 0 && headers.indexOf(elems[0].tagName) >= 0) {
     header.appendChild(elems[0]);
+
     if (elems.length > 1) {
       elems = elems.slice(1);
     }
+    else {
+      elems = []
+    }
   }
+  return elems;
+}
 
+/**
+ * Place the list of elements in the middle space. if an element is an image
+ * then keep track of it to be resized later
+ */
+function placeElementsInMiddle(middle, elems, maxWidth, maxHeight) {
+  var heightUsed = 0;
+
+  var images = [];
   for (var i = 0; i < elems.length; i++) {
     var elem = elems[i];
 
     //Support free floating text in a slide section by wrapping it in a P
-    if (!elem.tagName && elem.textContent.trim().length > 0) {
-      var txtWrapper = document.createElement("p");
-      txtWrapper.appendChild(elem);
-      elem = txtWrapper;
-    }
+    elem = wrapIn_P_IfNecessary(elem);
+    elem = ripImageFrom_P_IfApplicable(elem);
 
     if (elem.tagName && elem.tagName.toUpperCase() == 'IMG') {
-      var imgH = elem.naturalHeight;
-      var imgW = elem.naturalWidth;
-      var isPortrait = imgH > imgW;
-      var aspectRatio = imgH / (1.0*imgW);
-//      console.log("IMAGE SIZE. Is portrait:" + isPortrait + " H: " + imgH + " W: " + imgW + "AspectRatio:" + aspectRatio);
-
-      var newImgH = 0;
-      var newImgW = 0;
-      //first see if our image is too tall already or is a portrait
-      if (isPortrait) {
-        newImgH = maxHeight;
-        newImgW = newImgH * (1.0/aspectRatio)
-      }
-      else {
-        newImgW = maxWidth;
-        newImgH = newImgW * aspectRatio;
-      }
-//      console.log("NEW IMAGE SIZE: H: " + newImgH + " W: " + newImgW + "AspectRatio:" + ( newImgH * 1.0 / newImgW  ));
-
       var imgcontainer =  document.createElement("div");
-      //utils.styled("width",);
       utils.classed(imgcontainer, "image", true);
       imgcontainer.appendChild(elem);
-
-      if (newImgH > maxHeight) {
-//        console.log("Limiting by height: " + maxHeight);
-        utils.styled(elem, "height", maxHeight + "px");
-        utils.styled(elem, "width", "auto");
-      }
-      else {
-//        console.log("Limiting by width: " + maxWidth);
-        utils.styled(elem, "width", maxWidth + "px");
-        utils.styled(elem, "height", "auto");
-      }
-
       middle.appendChild(imgcontainer);
+      //image don't contribute to height used because we make them fit later
+      images.push(elem);
     }
-
-    if (elem.tagName) {
+    else if (elem.tagName) {
       var tag = elem.tagName.toUpperCase();
       middle.appendChild(elem);
+      heightUsed += calcVerticalHeight(elem);
     }
-//    console.log("@@@@@@@> (" + i + ") ELEMENT tag[" + elem.tagName + "] HEIGHT: " + elem.offsetHeight + " WIDTH: " + elem.offsetWidth);
   }
-//  console.log("@@@@@@>4 CONTAINER SIZE: H:" + container.offsetHeight + " W:" + container.offsetWidth);
 
+  if (images.length > 0) {
+    resizeImages(images, (maxHeight - heightUsed), maxWidth);
+  }
+}
+
+/**
+ * If the element is a <p> with an <img> as the only child, then return the <img>
+ */
+function ripImageFrom_P_IfApplicable(elem) {
+  if (elem.tagName && elem.tagName.toUpperCase() == 'P') {
+    //check if only one child and that child is an image then rip it out
+    if (elem.childNodes.length == 1 && elem.childNodes[0].tagName && elem.childNodes[0].tagName == 'IMG') {
+      elem = elem.childNodes[0];
+    }
+  }
+  return elem;
+}
+
+/**
+ * If the element is a free floating text element, wrap it in a <p>
+ */
+function wrapIn_P_IfNecessary(elem) {
+  if (!elem.tagName && elem.textContent.trim().length > 0) {
+    var txtWrapper = document.createElement("p");
+    txtWrapper.appendChild(elem);
+    elem = txtWrapper;
+  }
+  return elem;
+}
+
+/**
+ * Go through the list of images and resize them based on available space
+ **/
+function resizeImages(images, heightAvailable, widthAvailable) {
+  var maxHeightPerImage = 1.0 * heightAvailable / images.length;
+
+  for (var i=0; i < images.length; i++ ) {
+    var img = images[i];
+
+    var imgH = img.naturalHeight;
+    var imgW = img.naturalWidth;
+    var isPortrait = imgH > imgW;
+    var aspectRatio = imgH / (1.0*imgW);
+
+    var newImgH = 0;
+    var newImgW = 0;
+    //first see if our image is too tall already or is a portrait
+    if (isPortrait) {
+      newImgH = maxHeightPerImage;
+      newImgW = newImgH * (1.0/aspectRatio)
+    }
+    else {
+      newImgW = widthAvailable;
+      newImgH = newImgW * aspectRatio;
+    }
+
+    if (newImgH > maxHeightPerImage) {
+      console.log("Limiting by height: " + maxHeightPerImage);
+      utils.styled(img, "height", maxHeightPerImage + "px");
+      utils.styled(img, "width", "auto");
+    }
+    else {
+      console.log("Limiting by width: " + widthAvailable);
+      utils.styled(img, "width", widthAvailable + "px");
+      utils.styled(img, "height", "auto");
+    }
+  }
+}
+
+/**
+ * Place the elements of the child in the container
+ **/
+function placeIn(container, child) {
+  container.innerHTML = "";
+  utils.classed(container, "slide-root", true);
+
+  //Clean the contents of the child and get element list
+  var elems = Array.prototype.slice.call(child.childNodes);
+  elems = stripNoNameElements(elems);
+
+  //Add a special place for the header
+  var header = document.createElement("div");
+  utils.classed(header, "header", true);
+  container.appendChild(header);
+
+  elems = placeHeaderIfPresent(header, elems);
+
+  //Add the body section where all the elemnts go
+  var middle = document.createElement("div");
+  container.appendChild(middle);
+  utils.classed(middle, "middle", true);
+
+  //Now add the elements
+  var maxWidth = middle.clientWidth;
+  var maxHeight = (middle.clientHeight - header.offsetHeight - 30);
+  utils.styled(middle, "height", maxHeight + "px");
+
+  placeElementsInMiddle(middle, elems, maxWidth, maxHeight);
 }
 
 function beforeSlide(slideId) {
