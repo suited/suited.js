@@ -67,8 +67,8 @@ mode.addCallback("STORAGE", function(state, event, evData) {
       console.log("speaker mode seen STORAGE event. oldval=" + event.oldValue + " newval="+ event.newValue);
       if(state.currentSlideName() !== event.newValue) {
         console.log("speaker mode seen STORAGE event. LETS GO THERE curr="+state.currentSlideName() + " new="+event.newValue);
-        state.setSlideNumber(state.getSlideNumFromName(event.newValue));
-        window.suited.fireEvent("LocationChanged", state);
+        // state.setSlideNumber(state.getSlideNumFromName(event.newValue));
+        window.suited.fireEvent("GoToSlide", state, event.newValue);
       }else {
         console.log("speaker mode seen STORAGE event. SAME PAGE DO NOTHING");
       }

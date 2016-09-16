@@ -32,7 +32,55 @@ var Plugin = require('../plugin.js');
 
 var slideChangePlugin = new Plugin("SlideChangePlugin");
 
-slideChangePlugin.addCallback("GoBack", function (state, evData) {
+function forward(state, evData) {
+  console.log("slideChangePlugin: currentSlide before: " + state.currentSlideName());
+
+  //handle state change and transition
+  var elId = state.next(); // side effect on state
+  var slideNum = utils.parseSlideNum("#" + elId);
+  var theMode = state.getCurrentMode();
+  var transitionFunc = theMode.findTransition("right", elId);
+  transitionFunc(elId);
+  state.setSlideNumber(slideNum);
+
+  window.suited.fireEvent("LocationChanged", state);
+
+  console.log("slideChangePlugin: slide=" + state.currentSlideName() + " state.mode is " + state.getCurrentModeName());
+  return {
+    'state': state
+      //,'value': "BeforeStateChange Magic Value1"
+  }
+}
+
+function gotoslide(state, evData) {
+  console.log("slideChangePlugin: currentSlide before: " + state.currentSlideName());
+
+  //handle state change and transition
+  var currentSlideName = state.currentSlideName();
+  var currNum = parseInt(state.getSlideNumFromName(currentSlideName));
+  var slideName = evData;
+  var slideNum = parseInt(state.getSlideNumFromName(slideName));
+  var theMode = state.getCurrentMode();
+  var transitionFunc = null;
+  if(slideNum >= currNum) {
+    transitionFunc = theMode.findTransition("right", slideName);
+  }
+  else {
+    transitionFunc = theMode.findTransition("left", slideName);
+  }
+  transitionFunc(slideName);
+  state.setSlideNumber(slideNum);
+
+  window.suited.fireEvent("LocationChanged", state);
+
+  console.log("slideChangePlugin: slide=" + state.currentSlideName() + " state.mode is " + state.getCurrentModeName());
+  return {
+    'state': state
+      //,'value': "BeforeStateChange Magic Value1"
+  }
+}
+
+function back(state, evData) {
   console.log("slideChangePlugin: currentSlide before: " + state.currentSlideName())
     //handle state change and transition
   var currentSlide = state.currentSlideName();
@@ -59,26 +107,12 @@ slideChangePlugin.addCallback("GoBack", function (state, evData) {
     'state': state
       //,'value': "BeforeStateChange Magic Value1"
   }
-})
+}
 
-slideChangePlugin.addCallback("GoForward", function (state, evData) {
-  console.log("slideChangePlugin: currentSlide before: " + state.currentSlideName());
+slideChangePlugin.addCallback("GoBack", back)
 
-  //handle state change and transition
-  var elId = state.next(); // side effect on state
-  var slideNum = utils.parseSlideNum("#" + elId);
-  var theMode = state.getCurrentMode();
-  var transitionFunc = theMode.findTransition("right", elId);
-  transitionFunc(elId);
-  state.setSlideNumber(slideNum);
+slideChangePlugin.addCallback("GoForward", forward)
 
-  window.suited.fireEvent("LocationChanged", state);
-
-  console.log("slideChangePlugin: slide=" + state.currentSlideName() + " state.mode is " + state.getCurrentModeName());
-  return {
-    'state': state
-      //,'value': "BeforeStateChange Magic Value1"
-  }
-})
+slideChangePlugin.addCallback("GoToSlide", gotoslide)
 
 module.exports = slideChangePlugin;
