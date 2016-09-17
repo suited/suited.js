@@ -43,6 +43,8 @@ Suited currently supports HTML mark-up and also markdown (with special syntax fo
 
 In `deck` mode -> all slides included nested are flattened in the nav order eg left and right only with nested showing after their parents.
 
+Markdown plugin is based on MarkdownIt so we can use existing markdown it plugins for fancy markdown syntax.
+
 ---------------
 
 ### Usage
