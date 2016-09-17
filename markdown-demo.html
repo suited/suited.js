@@ -27,8 +27,8 @@
 
 <head>
 <title>Suited Demo of Markdown rendering. </title>
-<!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-e06b1b8a72.css">-->
-<link rel="stylesheet" type="text/css" href="css/suited-light-b63bc92f3f.css">
+<!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-879c147512.css">-->
+<link rel="stylesheet" type="text/css" href="css/suited-light-d1f620d498.css">
 <style>
 section[data-figure] {
   border-width: thin;
@@ -109,6 +109,12 @@ Suited's Markdown plugin add special markdown syntax to allow you to easily add 
 </div>
 
 <div data-markdown>
+  I kind of want a **nested html evaluated to** here: so lets gie it a go
+  <p>this is text in a paragraph<br/>This is on new line</p>
+  <p>this is text in aanother paragraph<br/>This is also on new line</p>
+</div>
+
+<div data-markdown>
 
   # Check out figures
   I kind of ~~:want a **bold figure** here:~~ so lets gie it a go
@@ -183,6 +189,25 @@ Suited's Markdown plugin add special markdown syntax to allow you to easily add 
   * slide3
   *~~
 </div>
+
+<div data-markdown>
+  ~~*
+  ### Slide with image
+  ![jackOfSpades](images/jackOfSpades-208a622d79.png)
+  *~~
+</div>
+
+<div data-markdown>
+  ~~*
+  ### Slide with image and text
+  some text before
+
+  ![jackOfSpades](images/jackOfSpades-208a622d79.png)
+
+  some text before
+  *~~
+</div>
+
 
 <div data-markdown>
   # block slide with nested block figures
@@ -510,6 +535,22 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 </body>
 
 <script src="https://twemoji.maxcdn.com/twemoji.min.js"></script>
-<script type="text/javascript" src="js/suited-0dc22f71fb131dc56672.js"></script>
+<script type="text/javascript" src="js/suited-3be7c8d9cbd795603e50.js"></script>
+<script type="text/javascript">
+var suited = {
+  config: {
+   "foo": "bar",
+   "log": {
+     "debug": false
+   }
+   "plugins": {
+     "MarkdownPlugin": {
+       "html": true
+     }
+   }
+
+  }
+};
+</script>
 
 </html>

@@ -27,8 +27,8 @@
 
 <head>
 <title>Suited Demo</title>
-<!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-e06b1b8a72.css">-->
-<link rel="stylesheet" type="text/css" href="css/suited-light-b63bc92f3f.css">
+<!--  <link rel="stylesheet" type="text/css" href="css/suited-dark-879c147512.css">-->
+<link rel="stylesheet" type="text/css" href="css/suited-light-d1f620d498.css">
 <style>
 section[data-figure] {
   border-width: thin;
@@ -191,7 +191,7 @@ Articles often have sections that are perfect for displaying as a slide. These c
 <section data-figure>
   <h4>An image</h4>
   <div style="width: 100%; text-align: center;">
-    <img src="images/jackOfSpades-208a622d79.png" width="60%" />
+    <img src="images/jackOfSpades-208a622d79.png" />
   </div>
 </section>
     </div>
@@ -293,7 +293,9 @@ def someFunc(a: A, b: B, f: (A,B) => C) = {
 
     <section data-slide>
 <h4>Fist slide B</h4>
+<p>Some text before image</p>
 <img src="images/jackOfSpades-208a622d79.png" width="60%" />
+<p>Some text after image</p>
     </section>
 
     Morbi vehicula quis tortor cursus aliquam. Donec fringilla neque ut posuere imperdiet. Vestibulum auctor sapien sed hendrerit eleifend. Phasellus lorem nulla, mattis in faucibus sed, porttitor vel turpis. Nunc odio lectus, ultrices id feugiat ac, porta
@@ -376,6 +378,20 @@ just finnish
 
 </body>
 
-<script type="text/javascript" src="js/suited-0dc22f71fb131dc56672.js"></script>
+<script type="text/javascript" src="js/suited-3be7c8d9cbd795603e50.js"></script>
+<script type="text/javascript">
+var suited = {
+  config: {
+   "foo": "bar",
+   "plugins": {
+     "MarkdownPlugin": {
+       "html": true
+     }
+   }
+
+  }
+};
+</script>
+
 
 </html>
