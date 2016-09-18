@@ -160,7 +160,13 @@ function resizeImages(images, heightAvailable, widthAvailable) {
       newImgH = newImgW * aspectRatio;
     }
 
-    if (newImgH > maxHeightPerImage) {
+    console.log("Resize:- is portrait:" + isPortrait);
+    console.log("Resize:- Image: H" + imgH + " W:" + imgW);
+    console.log("Resize:- NEW Image: H" + newImgH + " W:" + newImgW);
+    console.log("Resize:- MAX HEIGHT: " + maxHeightPerImage);
+    console.log("Resize:- MAX WIDTH: " + widthAvailable);
+
+    if (newImgH >= maxHeightPerImage || isPortrait) {
       console.log("Limiting by height: " + maxHeightPerImage);
       utils.styled(img, "height", maxHeightPerImage + "px");
       utils.styled(img, "width", "auto");
