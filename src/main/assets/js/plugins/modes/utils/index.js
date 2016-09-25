@@ -25,7 +25,7 @@
 let utils = {};
 
 utils.getShouldShowSlideFunction = function (mode) {
-    if (mode === "deck") {
+    if (mode === "deck" ) {
         return function (slideType) {return slideType === "figure" || slideType === "slide";}
     }
     else {

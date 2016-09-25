@@ -57,12 +57,28 @@ var core = function () {};
  *   - If left out then next mode is selected
  * @param {String} newMode (Optional) The mode to switch to.
  */
-core.toggleMode = function (newMode) {
-  if (newMode) {
+core.toggleMode = function (newMode, direction) {
+  if (!!newMode) {
     window.suited.fireEvent("SetMode", state, {modeName: newMode})
     //@@@state.changeMode(newMode);
   } else {
-    window.suited.fireEvent("NextMode", state)
+    if(!!direction) {
+      switch(direction) {
+        case "Next":
+          window.suited.fireEvent("NextMode", state)
+          break;
+        case "Previous":
+          window.suited.fireEvent("PrevMode", state)
+          break;
+        default:
+          window.suited.fireEvent("NextMode", state)
+          break;
+      }
+    }
+    else
+    {
+      window.suited.fireEvent("NextMode", state)
+    }
     //@@@state.toggleMode();
   }
 
@@ -199,8 +215,37 @@ core.addKeyListeners = function () {
 
   };
 
-
 };
+
+core.addTouchListeners = function() {
+  // var el = document.getElementById('someel')
+  var el = document.body;
+  swipedetect(el, function(swipedir){
+      //swipedir contains either "none", "left", "right", "top", or "down"
+      switch(swipedir) {
+        case "left":
+          console.log("LeftSwipe seen");
+          window.suited.fireEvent("BeforeSlideChange", state);
+          window.suited.fireEvent("GoForward", state);
+          window.suited.fireEvent("AfterSlideChange", state);
+          break;
+        case "right":
+          console.log("RightSwipe seen");
+          window.suited.fireEvent("BeforeSlideChange", state);
+          window.suited.fireEvent("GoBack", state);
+          window.suited.fireEvent("AfterSlideChange", state);
+          break;
+        case "up":
+          console.log("UpSwipe seen");
+          toggleMode(null,"Previous");
+          break;
+        case "down":
+          console.log("DownSwipe seen");
+          toggleMode(null,"Next");
+          break;
+      }
+  })
+}
 
 // just know where the mouse is.
 core.addMouseListeners = function() {
@@ -331,6 +376,8 @@ core.init = function () {
 
   //interactivity
   core.addKeyListeners();
+  core.addTouchListeners();
+
 
   window.addEventListener("hashchange", function (e) {
     core.hashChanged(window.location);

@@ -63,6 +63,7 @@ function placeHeaderIfPresent(header, elems) {
   var headers = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
   if (elems.length > 0 && headers.indexOf(elems[0].tagName) >= 0) {
     header.appendChild(elems[0]);
+    utils.classed(elems[0], "slide-title", true);
 
     if (elems.length > 1) {
       elems = elems.slice(1);

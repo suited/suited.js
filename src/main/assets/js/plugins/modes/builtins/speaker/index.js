@@ -28,21 +28,40 @@ import Mode from '../../mode';
 
 let name = "speaker";
 
-function beforeSlide(slideId) {
+function beforeSlide(slideId, state, evData) {
+  var previousNode = document.getElementById(state.previous());
+  utils.classed(previousNode, "slide-highlight", false);
+  utils.classed(previousNode, "previous", false);
+
     var currentNode = document.getElementById(slideId);
     utils.classed(currentNode, "slide-highlight", false);
-    utils.classed(currentNode, "muted", false);
+    utils.classed(currentNode, "current", false);
+
+    var nextNode = document.getElementById(state.next());
+    utils.classed(nextNode, "slide-highlight", false);
+    utils.classed(nextNode, "next", false);
 }
 
-function afterSlide(slideId) {
-    beforeSlide(slideId);
+function afterSlide(slideId, state, evData) {
+  var previousNode = document.getElementById(state.previous());
+  utils.classed(previousNode, "slide-highlight", true);
+  utils.classed(previousNode, "previous", true);
+
+    var currentNode = document.getElementById(slideId);
+    utils.classed(currentNode, "slide-highlight", true);
+    utils.classed(currentNode, "current", true);
+
+    var nextNode = document.getElementById(state.next());
+    utils.classed(nextNode, "slide-highlight", true);
+    utils.classed(nextNode, "next", true);
 }
+
 
 function beforeModeChange(state, evData) {
     //hide or reveal all slides as required
     var slides = utils.selects("section[data-slide]");
     for (var i = 0; i < slides.length; ++i) {
-        utils.classed(slides[i], "not-displayed", true);
+        utils.classed(slides[i], "not-displayed", false);
     }
     //register a listener for the STORAGE event
     window.addEventListener('storage', function(evt){
@@ -59,7 +78,7 @@ function cleanUp() {
 
 }
 
-let mode =  new Mode(name, beforeSlide, afterSlide, beforeModeChange, null, null, modeutils.getShouldShowSlideFunction(name))
+let mode =  new Mode(name, beforeSlide, afterSlide, beforeModeChange, null, null, null)
 
 mode.addCallback("STORAGE", function(state, event, evData) {
   console.log("speaker mode seen STORAGE event. change slide");

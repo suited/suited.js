@@ -32,8 +32,14 @@
   .slide-highlight {
     background: #ff0;
   }
-  .slide-highlight.muted {
-    background: #20f0fd;
+  .slide-highlight.current {
+    background: #7190A6;
+  }
+  .slide-highlight.previous {
+    background: #BB7CAD;
+  }
+  .slide-highlight.next {
+    background: #F4FBA6;
   }
 
 

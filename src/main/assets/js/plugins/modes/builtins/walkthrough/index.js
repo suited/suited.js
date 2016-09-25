@@ -31,13 +31,13 @@ let name = "walkthrough";
 function beforeSlide(slideId, state, evData) {
     var currentNode = document.getElementById(slideId);
     utils.classed(currentNode, "slide-highlight", false);
-    utils.classed(currentNode, "muted", false);
+    utils.classed(currentNode, "current", false);
 }
 
 function afterSlide(slideId, state, evData) {
     var currentNode = document.getElementById(slideId);
     utils.classed(currentNode, "slide-highlight", true);
-    utils.classed(currentNode, "muted", true);
+    utils.classed(currentNode, "current", true);
 }
 
 function walkMode(enable) {

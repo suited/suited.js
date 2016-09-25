@@ -118,15 +118,16 @@ var State = function (desiredPos, navigableNodes) {
     };
 
     /**
-     * modifies state to change current.
+     * Pure Function: returns the next Slide name.
      * @returns new currentID name.
      **/
     this.next = function next() {
       return this.makeSlideName(nav.calcNextNum(currentSlide));
     };
 
+
     /**
-     * modifies state to change current.
+     *  Pure Function: returns the Previous Slide name.
      * @returns new currentID name.
      **/
     this.previous = function previous() {
