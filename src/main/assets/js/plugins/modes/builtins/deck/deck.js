@@ -1,15 +1,6 @@
 
 import utils from '../../../../utils';
 
-const EMPTY = 0;
-const HEADING = 1;
-const BULLETS = 2;
-const TEXT = 4;
-const CODE = 8;
-const IMG = 16;
-const QUOTE = 32;
-const UNKNOWN = 64;
-
 function calcVerticalHeight(elem) {
   var result = elem.offsetHeight;
 
@@ -56,47 +47,6 @@ function isFeeText(elem) {
     return !elem.tagName && elem.textContent.trim().length > 0;
 }
 
-/**
- * Assumes the elements all have tag names
- * 
- * @returns bitmask of the types of elements on the slide
- */
-function calcSlideCategory(elems) {
-
-    var types = EMPTY; 
-
-
-    if (!!elems && elems.length > 0) {   
-        if (isHeading(elems[0])) {
-            types = types | HEADING;
-        }
-
-        elems.forEach(function(elem){
-            if (isBullets(elem)) {
-                types = types | BULLETS;
-            }        
-            else if (isText(elem)) {
-                types = types | TEXT;
-            }        
-            else if (isCode(elem)) {
-                types = types | CODE;
-            }        
-            else if (isImage(elem)) {
-                types = types | IMG;
-            }
-            else if (isQuote(elem)) {
-                types = types | QUOTE;
-            }
-            else {
-                console.warn("Don't know the type of element: " + elem.tagName);
-                types = types | UNKNOWN;
-            }
-
-        });
-    }
-
-    return types;
-}
 
 /**
  * If the element is a <p> with an <img> as the only child, then return the <img>
@@ -217,11 +167,15 @@ function resizeImagesToFit(images, heightAvailable, widthAvailable) {
 
 
 function placeIn(modal, elems) {
-    var category = calcSlideCategory(elems);
+    if (!elems) {
+        console.error("No elements to place on the slide");
+        return;
+    }
+
     var nonImageHeightUsed = 0;
     var images = []
 
-    if (category & HEADING) {
+    if (isHeading(elems[0])) {
         var head = document.createElement("div");
         head.appendChild(elems[0]);
         modal.appendChild(head);
@@ -230,6 +184,8 @@ function placeIn(modal, elems) {
         elems.slice(1);
     }
 
+    var middle = document.createElement("div");
+    utils.classed(middle, "middle", true);
     elems.forEach(function(elem) {
         if (isImage(elem)) {
             images.push(elem);
@@ -237,8 +193,9 @@ function placeIn(modal, elems) {
         else {
             nonImageHeightUsed += calcVerticalHeight(elem);
         }
-        modal.appendChild(elem);
+        middle.appendChild(elem);
     });
+    modal.appendChild(middle);
 
     //Fix image sizes so they fit:
     var maxWidth = modal.clientWidth;
@@ -247,16 +204,13 @@ function placeIn(modal, elems) {
 }
 
 
-export function onBeforeSlideChange(slideId) {
-    
+export function onBeforeSlideChange(slideId) {    
     console.log("SLIDE: onBeforeSlideChange(" + slideId + ")");
-    //Why these?    
 
-    //var currentNode = document.getElementById(slideId);
-    // utils.classed(currentNode, "slide-highlight", false);
-    // utils.classed(currentNode, "muted", false);
+    //Check if there are fragments on the slide.
+    //If so we need to step through them. First we need a way to let the world know
+    //we want to stay on the same slide
 }
-
 
 export function onAfterSlideChange(slideId) {
 
@@ -275,7 +229,6 @@ export function onBeforeModeChange() {
 export function onAfterModeChange() {}
 
 export function onCleanUp() {
-    onBeforeSlideChange(state.currentSlideName());
     deckMode(false);    
 }
 
