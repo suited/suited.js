@@ -58,7 +58,7 @@ function stripPfromImages(elems) {
         if (isElem(elem, 'P')) {
             //check if only one child and that child is an image then rip it out
             if (elem.childNodes.length == 1 && elem.childNodes[0].tagName) {
-                child = elem.childNodes[0];
+                var child = elem.childNodes[0];
                 if (isElem(child,'IMG')) {
                     result.push(elem.childNodes[0]);
                 }
@@ -167,7 +167,7 @@ function resizeImagesToFit(images, heightAvailable, widthAvailable) {
 
 
 function placeIn(modal, elems) {
-    if (!elems) {
+    if (!elems || elems.length == 0) {
         console.error("No elements to place on the slide");
         return;
     }
