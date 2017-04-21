@@ -19,10 +19,13 @@
    limitations under the License.
 
 */
+//TODO we should not have any bootstrap styles... 
 @import "./_bootswatch/_ngCloak";
-@import "./_bootswatch/_customBootstrapVariables";
-@import "./_bootswatch/_bootswatchVariablesPaper";
-@import "./_sass_assets/bootstrap-sass/stylesheets/_bootstrap";
-@import "./_bootswatch/_bootswatchPaper";
+// @import "./_bootswatch/_customBootstrapVariables";
+// @import "./_bootswatch/_bootswatchVariablesPaper";
+// @import "./_sass_assets/bootstrap-sass/stylesheets/_bootstrap";
+// @import "./_bootswatch/_bootswatchPaper";
+
 @import "./_myVariables";
 @import "./_myStyle";
+@import "./deck/_base.scss";

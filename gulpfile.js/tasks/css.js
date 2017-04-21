@@ -25,5 +25,6 @@ var cssTask = function () {
     .pipe(browserSync.stream())
 }
 
-gulp.task('css', ['bootstrap-sass'], cssTask)
+// gulp.task('css', ['bootstrap-sass'], cssTask)
+gulp.task('css', [], cssTask)
 module.exports = cssTask

@@ -234,6 +234,9 @@ export function onCleanUp() {
 
 
 function deckMode(enable) {
+    // var body = utils.selects("body")
+    // utils.classed(body, "deck", enable);
+
     var slides = utils.selects("section[data-slide]");
     for (var i = 0; i < slides.length; i++) {
         utils.classed(slides[i], "not-displayed", !enable);

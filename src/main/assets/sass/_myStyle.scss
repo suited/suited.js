@@ -19,6 +19,8 @@
    limitations under the License.
 
 */
+@import "_myVariables.scss";
+
   .not-displayed {
     display: none;
   }
@@ -29,31 +31,16 @@
     display: hidden;
   }
 
+  // TODO move these to mode specific scss like with deck (used in speaker mode and walkthrough mode)
   .slide-highlight {
-    background: #ff0;
+    background: $slide-highlight_color;
+
+    &.muted {
+      background: $slide-highlight_muted_color;
+    }
   }
-  .slide-highlight.muted {
-    background: #20f0fd;
-  }
-
-
-body {
-    margin:0 auto;
-
-    @media (min-width: $screen-lg-min) {
-        width:1000px;
-    }
-    @media (max-width: $screen-md-max) {
-        width:800px;
-    }
-    @media (max-width: $screen-sm-max) {
-        width:600px;
-    }
-    @media (max-width: $screen-xs-max) {
-        width: 400px;
-    }
-}
-
+  
+  // do I need this anymore? js does zoom for lecture mode!
   /* zoom */
   .zoom {
     /*            zoom: 2;*/

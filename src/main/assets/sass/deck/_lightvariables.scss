@@ -19,26 +19,7 @@
    limitations under the License.
 
 */
-@import "_base.scss";
 
-.slide-backdrop {
-    background: #000000;
-}
-.slide-highlight {
-    background: #ff0;
-}
-.slide-highlight.muted {
-    background: #20f0fd;
-}
-.slide-box {
-    background: #524141;
-    color: white;
-    text-align: left;
-
-    h1 { color: white; }
-    h2 { color: white; }
-    h3 { color: white; }
-    h4 { color: white; }
-    h5 { color: white; }
-    h6 { color: white; }
-}
+$slide-box-background: #f5f4e9 !default;
+$slide-box-color: #332727 !default;
+$slide-box_h_color: #332727 !default;

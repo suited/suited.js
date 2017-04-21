@@ -22,4 +22,7 @@
 
 /* _myVariables.scss
 */
-$h-font-weight:500 !default;
+
+//TODO move this to mode specific style! like with deck
+$slide-highlight_color: #ff0 !default;
+$slide-highlight_muted_color: #20f0fd !default;
