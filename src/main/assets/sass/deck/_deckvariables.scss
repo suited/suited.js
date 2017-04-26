@@ -66,17 +66,18 @@ $slide_backdrop_left: 0px !default;
 $slide_backdrop_z-index: 1 !default;
 $slide_holder_z-index:   3 !default;
 
-$slide-box_top:     15px;
-$slide-box_right:   0;
-$slide-box_left:    0;
+$slide-box_top:     15px !default;
+$slide-box_right:   0 !default;
+$slide-box_left:    0 !default;
 $slide-box-padding: 15px !default;
-$slide-box_z-index: 3;
+$slide-box_z-index: 3 !default;
 
 $slide-box_top_md: 20px !default;
 $slide-box_top_sm: 10px !default;
 $slide-box_top_xs: 0px !default;
 
 $middle_list_margin: 20% !default;
+$middle_padding-top: 10px !default;
 
 
 //shapes
