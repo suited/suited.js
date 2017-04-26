@@ -1,0 +1,120 @@
+// default vars for the slide backdrop
+
+// media queries breakpoints 
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+
+// Extra small screen / phone
+//** Deprecated `$screen-xs` as of v3.0.1
+$screen-xs:                  480px !default;
+//** Deprecated `$screen-xs-min` as of v3.2.0
+$screen-xs-min:              $screen-xs !default;
+//** Deprecated `$screen-phone` as of v3.0.1
+$screen-phone:               $screen-xs-min !default;
+
+// Small screen / tablet
+//** Deprecated `$screen-sm` as of v3.0.1
+$screen-sm:                  768px !default;
+$screen-sm-min:              $screen-sm !default;
+//** Deprecated `$screen-tablet` as of v3.0.1
+$screen-tablet:              $screen-sm-min !default;
+
+// Medium screen / desktop
+//** Deprecated `$screen-md` as of v3.0.1
+$screen-md:                  992px !default;
+$screen-md-min:              $screen-md !default;
+//** Deprecated `$screen-desktop` as of v3.0.1
+$screen-desktop:             $screen-md-min !default;
+
+// Large screen / wide desktop
+//** Deprecated `$screen-lg` as of v3.0.1
+$screen-lg:                  1200px !default;
+$screen-lg-min:              $screen-lg !default;
+//** Deprecated `$screen-lg-desktop` as of v3.0.1
+$screen-lg-desktop:          $screen-lg-min !default;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max:              ($screen-sm-min - 1) !default;
+$screen-sm-max:              ($screen-md-min - 1) !default;
+$screen-md-max:              ($screen-lg-min - 1) !default;
+
+
+//Sizes
+
+$slide_backdrop_width:  100% !default;
+$slide_backdrop_height: 100% !default;
+
+$slide_box_width:  100% !default;
+$slide_box_height: 95% !default;
+
+$slide_box_width_md:  95% !default;
+$slide_box_height_md: 95% !default;
+
+$slide_box_width_sm:  100% !default;
+$slide_box_height_sm: 100% !default;
+
+$slide_box_width_xs:  100% !default;
+$slide_box_height_xs: 100% !default;
+
+
+
+//positions
+$slide_backdrop_top:  0px !default;
+$slide_backdrop_left: 0px !default;
+
+$slide_backdrop_z-index: 1 !default;
+$slide_holder_z-index:   3 !default;
+
+$slide-box_top:     15px !default;
+$slide-box_right:   0 !default;
+$slide-box_left:    0 !default;
+$slide-box-padding: 15px !default;
+$slide-box_z-index: 3 !default;
+
+$slide-box_top_md: 20px !default;
+$slide-box_top_sm: 10px !default;
+$slide-box_top_xs: 0px !default;
+
+$middle_list_margin: 20% !default;
+$middle_padding-top: 10px !default;
+
+
+//shapes
+$slide-box_border-radius: 8px;
+$slide-box_box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+
+//colours
+$slide_backdrop_opacity: 1 !default;
+$slide-backdrop-color: #000000 !default;
+
+$slide-holder-color: transparent !default;
+
+$slide-box-background:#fff !default;
+$slide-box-color: black !default;
+$slide-box_h_color: black !default;
+
+//text
+$font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
+
+$h-font-weight: 500 !default;
+
+$slide-box_font-size: 2em !default;
+$slide-box_font-weight: 600 !default;
+$slide-box_font-family: $font-family-sans-serif !default;
+$slide-box_text-align: left !default;
+
+$slide-box_h1_font-size: 3em !default;
+$slide-box_h2_font-size: 2.5em !default;
+$slide-box_h3_font-size: 2em !default;
+$slide-box_h4_font-size: 1.7em !default;
+$slide-box_h5_font-size: 1.5em !default;
+$slide-box_h6_font-size: 1.2e !default;
+
+
+$slide-box_font-size_md: 1.8em !default;
+$slide-box_font-size_sm: 1em !default;
+$slide-box_font-size_xs: 0.8em !default;
